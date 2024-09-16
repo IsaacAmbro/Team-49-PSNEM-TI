@@ -1,0 +1,4 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 9/16/2024:
+This week, I worked on requesting the MSP-EXP430FR5969 evaluation board for programming the microcontroller from our sponsor at Texas Instruments. I set up Code Composer Studio for development. Additionally, I aided in wrting the CONOPS report and began working on the FSD, ICD, milestones, and validation plans. Last week, my group also met with the sponsor from Texas Instruments (TI) to discuss the project's progress.
