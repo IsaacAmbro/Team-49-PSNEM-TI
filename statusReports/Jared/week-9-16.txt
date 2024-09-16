@@ -1,1 +1,9 @@
-Jared
+Jared Sutor
+330009308
+
+Received ESP32-DEVKITC-32E from digikey (Did not order through the department, my bad), began downloading software onto desktop and laptop to begin learning how to use esp32.
+Finsihed assigned section of conops and reviewed before submission.
+
+Need to begin work on FSD, ICD, milestones, and validation plans (due sep 26).
+Need to check that I have all materials to work with esp32 (specifically cords and elec components), if not go get them.
+Aim to have a "hello world" done for next week and also blink an LED 
