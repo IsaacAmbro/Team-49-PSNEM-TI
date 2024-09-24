@@ -1,1 +1,6 @@
 Wenbin
+UIN:130007632
+Status Update:
+Downloaded IDE Android Studio
+Reviewed Basics of java and potentially exploring using Kotlin
+Developed Hello World App

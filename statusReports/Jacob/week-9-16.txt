@@ -1,1 +1,10 @@
-Jacob
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 9/16/2024:
+This week I helped finish the CONPOS report.
+Additionally, I have begun designing in Altium.
+I have completed making the schematic for the chosen DAC which did not have a premade schematic in Altium.
+Additionally, I have begun designing the overall schematic for the subsystem. I have a basic desgin for the control relays and am in the process of designing and choosing parts, this is my current issue as I am having trouble figuring out which voltage/current values I should be aiming for and how to design and pick parts around those values.
+I am currently attempting to design the values for the chosen DAC, MCU, and the required LDO.
+My plan for the next two weeks is to have the basic design done with most if not all of the parts chosen.
+I also need to communicate with Isaac to make sure the voltage/current values the MCU is capbable of sending as I design the control relays.
