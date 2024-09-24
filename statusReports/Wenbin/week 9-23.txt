@@ -1,0 +1,7 @@
+Wenbin
+UIN:130007632
+Status Update:
+Downloaded IDE Android Studio
+Worked on introductory project and started coding button for counting
+Diagramed in pseudo code.
+Worked mainly on midterm documentation.
