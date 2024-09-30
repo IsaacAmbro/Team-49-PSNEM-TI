@@ -1,0 +1,7 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 9/30/2024:
+This week I completed the FSR, ICD, Execution Plan and Validation Plan. 
+I also worked on the introduction presentation.
+Finally, I finished working on the subystem introduction project in which I made the blinking LEDs and "hello world" UART programs.
+My plan for the rest of the week is to begin creating the shematic for my subsytem in Altium.
