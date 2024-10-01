@@ -1,0 +1,10 @@
+Jared Sutor 
+330009308
+
+Not much progress made. Have had exams that have pushed my schedule back
+
+->Need to pick an ADC that has resolution at least as good as DAC and takes input voltage of 3.3 V (like everything else we are using, which shouldnt be an issue)
+->Currently trying to fix issue with VSCode and the ESP-idf (this put me behind over the weekend), but if I finish that, Ill be in a great spot to finish the subsystem intro project
+->Then get started on pcb design
+
+In short, behind due to exams and an issue in vscode, but device works and I was able to build in a different way. Dont kill me 
