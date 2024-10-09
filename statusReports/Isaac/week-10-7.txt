@@ -1,0 +1,5 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 10/7/2024:
+This week I worked on creating the schematics for my board. I have done everything except for choosing specific resistors and capacitors.
+My plan for the rest of the week is to finish my schematics and begin the layout of the pcb.
