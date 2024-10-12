@@ -4,8 +4,15 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
+import android.bluetooth.BluetoothServerSocket
+import android.bluetooth.BluetoothSocket
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -16,13 +23,30 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import java.io.IOException
+import java.util.UUID
 
 class pairedList : AppCompatActivity() {
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
     private val REQUEST_ENABLE_BLUETOOTH = 1
     lateinit var mPairedDevices: Set<BluetoothDevice>
+    private lateinit var mService: BackgroundService
 
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as BackgroundService.MyBinder
+            mService = binder.getService()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+
+        }
+    }
+
+//    private var serverSocket: BluetoothServerSocket? = null
+private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
 
 
     val registerForResult = registerForActivityResult(
@@ -49,13 +73,21 @@ class pairedList : AppCompatActivity() {
             insets
         }
 
+        Intent(this, BackgroundService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
 
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
+
+
 
         if (mBluetoothAdapter?.isEnabled == false) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
             registerForResult.launch(enableBtIntent)
         }
+
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+
 
         val refresh = findViewById<Button>(R.id.refresh)
         refresh.setOnClickListener { pairedDeviceList() }
@@ -66,27 +98,39 @@ class pairedList : AppCompatActivity() {
 
     // Get the already paired devices
     @SuppressLint("MissingPermission")
-    private fun pairedDeviceList(){
+    fun pairedDeviceList(){
         mPairedDevices = mBluetoothAdapter!!.bondedDevices
         val list : ArrayList<BluetoothDevice> = ArrayList()
-
+        val names : ArrayList<String> = ArrayList()
         if(!mPairedDevices.isEmpty()){
             for(device: BluetoothDevice in mPairedDevices){
                 list.add(device)
+                names.add(device.name ?: "Unknown Device")
             }
         }
+
+
         else{
             Toast.makeText(this, "No Paired Devices", Toast.LENGTH_LONG).show()
         }
 
-        val adapater = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
+
+        //Put the device names in a listview
+        val adapater = ArrayAdapter(this, android.R.layout.simple_list_item_1, names)
 
         val pairedList = findViewById<ListView>(R.id.pairedList)
         pairedList.adapter = adapater
         pairedList.onItemClickListener = AdapterView.OnItemClickListener{ _,_,position, _ ->
             val device : BluetoothDevice = list[position]
             val address: String = device.address
+            mService.mBluetoothService.connect(this,device)
 
+            pairedList.isEnabled = false
         }
     }
+
+
+
+
 }
+
