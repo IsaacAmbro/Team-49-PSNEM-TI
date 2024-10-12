@@ -15,7 +15,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.UUID
-
+import android.bluetooth.BluetoothProfile
 
 private const val TAG = "MY_APP_DEBUG_TAG"
 
@@ -44,23 +44,29 @@ class MyBluetoothService(
         private val mmOutStream: OutputStream = mmSocket.outputStream
         private val mmBuffer: ByteArray = ByteArray(1024) // mmBuffer store for the stream
 
+        fun socket(): BluetoothSocket {
+            return mmSocket
+        }
+
         override fun run() {
             var numBytes: Int // bytes returned from read()
-
+            Log.d(TAG, "ConnectedThread started")
             // Keep listening to the InputStream until an exception occurs.
             while (true) {
                 // Read from the InputStream.
                 numBytes = try {
+
                     mmInStream.read(mmBuffer)
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
                     break
                 }
-
+                Log.d(TAG, "Received bytes: ${String(mmBuffer, 0, numBytes)}")
                 // Send the obtained bytes to the UI activity.
                 val readMsg = handler.obtainMessage(
                     MESSAGE_READ, numBytes, -1,
                     mmBuffer)
+
                 readMsg.sendToTarget()
             }
         }
@@ -69,6 +75,7 @@ class MyBluetoothService(
         fun write(bytes: ByteArray) {
             try {
                 mmOutStream.write(bytes)
+                Log.d(TAG, "Write: ${String(bytes)}")
             } catch (e: IOException) {
                 Log.e(TAG, "Error occurred when sending data", e)
 
@@ -81,12 +88,13 @@ class MyBluetoothService(
                 handler.sendMessage(writeErrorMsg)
                 return
             }
-
             // Share the sent message with the UI activity.
             val writtenMsg = handler.obtainMessage(
                 MESSAGE_WRITE, -1, -1, mmBuffer)
             writtenMsg.sendToTarget()
         }
+
+
 
         // Call this method from the main activity to shut down the connection.
         fun cancel() {
@@ -98,11 +106,10 @@ class MyBluetoothService(
         }
     }
 
-    private fun manageMyConnectedSocket(socket: BluetoothSocket) {
-        val connectedThread = ConnectedThread(socket)
-        connectedThread.start() // Start the thread to handle communication
-    }
 
+
+
+    //Server side code
     @SuppressLint("MissingPermission")
     inner class AcceptThread : Thread() {
 
@@ -123,9 +130,16 @@ class MyBluetoothService(
                     null
                 }
                 socket?.also {
+                    Log.d("Bluetooth Server", "Server Socket Connected ${it.remoteDevice.name}")
                     mmServerSocket?.close()
                     bluetoothThread = ConnectedThread(it)
+
+                    //make sure to start the connected thread
+                    bluetoothThread.start()
                     Log.d("Bluetooth Server", "Server Socket Closed ")
+                    sleep(1000)
+                    bluetoothThread.write("Received Connection".toByteArray())
+
                     shouldLoop = false
                 }
             }
@@ -180,6 +194,20 @@ class MyBluetoothService(
                 // The connection attempt succeeded. Perform work associated with
                 // the connection in a separate thread.
                 bluetoothThread = ConnectedThread(socket)
+
+                //make sure to start the connected thread
+                bluetoothThread.start()
+
+
+                Thread.sleep(3000)
+                if (bluetoothThread.socket().isConnected) {
+                    Log.d("Bluetooth", "Bluetooth socket is connected")
+                } else {
+                    Log.d("Bluetooth", "Bluetooth socket is not connected")
+                }
+                val number = 100
+                bluetoothThread.write("Hello".toByteArray())
+
             }
         }
 
@@ -197,7 +225,7 @@ class MyBluetoothService(
     fun connect(context: Context, device: BluetoothDevice) {
         val connectThread = ConnectThread(device)
         connectThread.start()
-        Toast.makeText(context, "Connected to ${device.name}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Connecting to ${device.name}", Toast.LENGTH_LONG).show()
     }
 
 }

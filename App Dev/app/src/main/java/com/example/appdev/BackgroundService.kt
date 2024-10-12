@@ -2,7 +2,9 @@ package com.example.appdev
 
 import android.app.Service
 import android.bluetooth.BluetoothAdapter
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Binder
 import android.os.Handler
 import android.os.IBinder
@@ -17,9 +19,8 @@ class BackgroundService : Service() {
     private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
     lateinit var mBluetoothService: MyBluetoothService
 
-    private val mHandler : Handler = Handler(
-        Looper.getMainLooper()
-    )
+    private val mHandler = MyHandler(Looper.getMainLooper())
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("onStartCommand", "Started ")
@@ -41,6 +42,10 @@ class BackgroundService : Service() {
 
     inner class MyBinder : Binder() {
         fun getService(): BackgroundService = this@BackgroundService
+    }
+
+    fun setContext(context: Context) {
+        mHandler.setContext(context)
     }
 
 }

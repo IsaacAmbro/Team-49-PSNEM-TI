@@ -7,10 +7,14 @@ import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.IBinder
 import android.util.Log
 import android.widget.Button
 import android.widget.Toast
@@ -29,7 +33,20 @@ class MainActivity : AppCompatActivity() {
     private var serverSocket: BluetoothServerSocket? = null
     private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
     private lateinit var mHandler : Handler
+    private lateinit var mService: BackgroundService
 
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as BackgroundService.MyBinder
+            mService = binder.getService()
+            mService.setContext(this@MainActivity)
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+
+        }
+    }
 
 
 
@@ -63,6 +80,15 @@ class MainActivity : AppCompatActivity() {
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         startService(Intent(this, BackgroundService::class.java))
+
+
+        Intent(this, BackgroundService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
+
+
+
     }
 //        val acceptThread: AcceptThread? by lazy {
 //            AcceptThread()

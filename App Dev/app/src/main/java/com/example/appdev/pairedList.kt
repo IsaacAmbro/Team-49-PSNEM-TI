@@ -38,6 +38,7 @@ class pairedList : AppCompatActivity() {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
             val binder = service as BackgroundService.MyBinder
             mService = binder.getService()
+            mService.setContext(this@pairedList)
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -125,12 +126,18 @@ private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8
             val address: String = device.address
             mService.mBluetoothService.connect(this,device)
 
+            //mService.mBluetoothService.bluetoothThread.write("Hello".toByteArray())
+
             pairedList.isEnabled = false
         }
     }
 
 
+    override fun onDestroy() {
+        unbindService(connection)
+        super.onDestroy()
 
+    }
 
 }
 
