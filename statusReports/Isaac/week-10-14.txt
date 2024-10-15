@@ -1,0 +1,6 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 10/14/2024:
+This week I finished the schematics for my pcb. 
+I plan on asking the professor, my TA, and my teammates to do design reviews on my designs.
+In the meantime, I am going to continue working on the layout of the PCB in hopes of ordering it as soon as possible.
