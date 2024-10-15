@@ -1,0 +1,5 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 10/14/2024:
+This week I finished the subsystem introduction project. I also have nearly finished the schematic for the subsystem, I just need to check a few key details.
+By this end of this week I hope to have completed the schematic and PCB layout and sent out the order for the board and parts.
