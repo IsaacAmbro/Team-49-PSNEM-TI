@@ -1,0 +1,8 @@
+Wenbin
+UIN:130007632
+Status Update:
+Bluetooth data transfer succesfully
+Implemented background services to maintain bluetooth connection when switching to different activities
+Implemented a bluetooth services class to handle all bluetooth activity
+
+Next goals real time data plotting using either graphView or MPAndroidChart library
