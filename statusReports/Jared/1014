@@ -1,0 +1,9 @@
+jared sutor 330009308
+
+realized I didnt post this last night [10/14] so Im doing it before lab
+
+-Worked in altium, setup esp32 in it 90%, picked ADC that should work. Need to hook up ADC to esp [which should be easy just need to check one or two things], then just need to make sure Ive chosen proper connectors.
+
+need to do:
+-finish pcb schematic and layout
+-code for esp32
