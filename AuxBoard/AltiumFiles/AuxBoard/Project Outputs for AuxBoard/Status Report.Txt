@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [AuxBoard.PrjPcb]
+   Generated File[Auxboardone.TXT]
+   Generated File[Auxboardone.LDP]
+   Generated File[Auxboardone.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 3:37:34 PM On 10/18/2024
