@@ -168,6 +168,10 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=CSSBEOTM
 
+[GeneratedDocument1]
+DocumentPath=Project Outputs for Isaac MSP430 Subsystem\Design Rule Check - PSNEM-MCU-Subsystem.html
+DItemRevisionGUID=
+
 [Configuration1]
 Name=Sources
 ParameterCount=0
