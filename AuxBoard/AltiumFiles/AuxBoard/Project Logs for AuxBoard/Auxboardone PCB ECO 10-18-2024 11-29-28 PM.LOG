@@ -1,0 +1,17 @@
+Change Physical Footprint: Designator=C1 Old Footprint=FP-CL21-IPC_A New Footprint=FP-CL21-IPC_A
+Change Physical Footprint: Designator=C2 Old Footprint=FP-CC0805-0_85-MFG New Footprint=FP-CC0805-0_85-MFG
+Change Physical Footprint: Designator=C3 Old Footprint=FP-CC0805-0_85-MFG New Footprint=FP-CC0805-0_85-MFG
+Change Physical Footprint: Designator=C4 Old Footprint=FP-CC0805-0_85-MFG New Footprint=FP-CC0805-0_85-MFG
+Change Physical Footprint: Designator=C5 Old Footprint=FP-CC0805-0_85-MFG New Footprint=FP-CC0805-0_85-MFG
+Change Physical Footprint: Designator=J1 Old Footprint=FP-PREC003SAAN-RC-MFG New Footprint=FP-PREC003SAAN-RC-MFG
+Change Physical Footprint: Designator=P1 Old Footprint=61300411121 New Footprint=61300411121
+Change Physical Footprint: Designator=R1 Old Footprint=FP-RR1220-IPC_A New Footprint=FP-RR1220-IPC_A
+Change Physical Footprint: Designator=R2 Old Footprint=FP-RR1220-IPC_A New Footprint=FP-RR1220-IPC_A
+Change Physical Footprint: Designator=R3 Old Footprint=FP-RR1220-IPC_A New Footprint=FP-RR1220-IPC_A
+Change Physical Footprint: Designator=R4 Old Footprint=FP-RR1220-IPC_A New Footprint=FP-RR1220-IPC_A
+Change Physical Footprint: Designator=R5 Old Footprint=RESC2013X70X40NL20T20 New Footprint=RESC2013X70X40NL20T20
+Change Physical Footprint: Designator=R6 Old Footprint=RESC2013X70X40NL20T20 New Footprint=RESC2013X70X40NL20T20
+Change Physical Footprint: Designator=SW1 Old Footprint=D6R_CNK New Footprint=D6R_CNK
+Change Physical Footprint: Designator=SW2 Old Footprint=D6R_CNK New Footprint=D6R_CNK
+Change Physical Footprint: Designator=U1 Old Footprint=ESP32-WROOM-32E_EXP New Footprint=ESP32-WROOM-32E_EXP
+Change Physical Footprint: Designator=U2 Old Footprint=TI-DGS10_N New Footprint=TI-DGS10_N

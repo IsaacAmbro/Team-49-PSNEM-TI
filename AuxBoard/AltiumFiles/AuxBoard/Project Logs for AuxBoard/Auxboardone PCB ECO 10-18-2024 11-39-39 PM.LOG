@@ -1,0 +1,18 @@
+Added Pin To Net: NetName=+ 3.3 Pin=C1-2
+Added Pin To Net: NetName=+ 3.3 Pin=C2-2
+Added Pin To Net: NetName=+ 3.3 Pin=R5-1
+Added Pin To Net: NetName=+ 3.3 Pin=U2-8
+Added Pin To Net: NetName=+ 3.3 Pin=U2-9
+Added Pin To Net: NetName=+ 3.3 Pin=U2-10
+Added Member To Class: ClassName=Auxboardone Member=Component C1 CL21A106KOQNNNE
+Added Member To Class: ClassName=Auxboardone Member=Component C2 CC0805KKX7R7BB105
+Added Member To Class: ClassName=Auxboardone Member=Component C3 CL21A106KOQNNNE
+Added Member To Class: ClassName=Auxboardone Member=Component C4 CL21A475KAQNNNE
+Added Member To Class: ClassName=Auxboardone Member=Component C5 CL21A226MQQNNNE
+Added Member To Class: ClassName=Auxboardone Member=Component R1 RC0805FR-07226KL
+Added Member To Class: ClassName=Auxboardone Member=Component R2 RC0805FR-07100KL
+Added Member To Class: ClassName=Auxboardone Member=Component R3 RC0805FR-07100KL
+Added Member To Class: ClassName=Auxboardone Member=Component R4 RMCF0805FT22K1
+Added Member To Class: ClassName=Auxboardone Member=Component R5 1M5 5% 0805(2012)
+Added Member To Class: ClassName=Auxboardone Member=Component R6 RR1220P-103-D
+Added Member To Class: ClassName=Auxboardone Member=Component U2 TPS7A9401DSCR
