@@ -1,1 +1,5 @@
-
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 10/22/2024:
+This week I finished the Schematic and PCB design and have assembled a parts list for odering.
+My next steps are to oder parts and start assembling a board.
