@@ -1,0 +1,7 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 10/21/2024:
+This week I finished my schematics with updates.
+I also finished my PCB layout. 
+I did design reviews with my team and with Professor Lusher.
+I plan on ordering my board/parts ASAP and then begin writing the code for my MSP430.
