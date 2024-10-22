@@ -1,0 +1,3 @@
+Layer Pairs Export File for PCB: C:\Users\Public\Documents\Altium\Team-49-PSNEM-TI\MCU-Subsys\PCB-Design\PSNEM-MCU-Subsystem.PcbDoc
+LayersSetName=Top_Bot_Thru_Holes|DrillFile=psnem-mcu-subsystem-roundholes.txt|DrillLayers=gtl,gp1,gp2,gbl
+LayersSetName=Top_Bot_Slot_Holes|DrillFile=psnem-mcu-subsystem-slotholes.txt|DrillLayers=gtl,gp1,gp2,gbl
