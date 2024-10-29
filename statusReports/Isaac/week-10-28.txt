@@ -1,0 +1,7 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 10/28/2024:
+This week I ordered my PCB and parts. My parts have arrived and my boards should arrive this week.
+In the meantime, I have began working on the code for my MSP430.
+So far I have coded the GPIO functionalitiy for the buttons and LEDs.
+This week I plan on coding the UART and SPI functionalities.
