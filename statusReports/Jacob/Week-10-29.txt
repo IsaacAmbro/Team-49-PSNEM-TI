@@ -1,0 +1,4 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 10/29/2024:
+This week I fully completed board design and order the PCB board and parts. I am currently waiting for the board and parts to come in to begin work on the project.
