@@ -1,0 +1,6 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 11/4/2024:
+This week I received my parts and boards. I soldered my parts onto the board and did some minor testing of functionalities.
+I also continued to work on the code for my MSP430.
+This week I plan on continuing troublehooting on my board.
