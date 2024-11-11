@@ -1,0 +1,6 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 11/11/2024:
+This week I began and have nearly finished soldering my board.
+My next steps are to finish soldering and then test the connections.
+I have also recieved the arduindo to produce a waveform for the DAC and control the signal relays so I will begin to get thta working.
