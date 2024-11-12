@@ -1,0 +1,10 @@
+jared sutor 
+330009308
+
+Board fully soldered (Ignoring LDO, as not req of sub system)
+Board connects to b/t and sends data thru uart 
+
+TODO:
+Work on ADC signals and SPI
+Receive spi data, output to bluetooth
+Work on UART RX, not really needed this semester, good to do
