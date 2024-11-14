@@ -17,7 +17,7 @@ class MyHandler(looper: Looper) : Handler(looper) {
                 val numBytes = msg.arg1
                 val buffer = msg.obj as ByteArray
                 val readMsg = String(buffer, 0, numBytes)
-                Log.d("Bluetooth","Received message das: $readMsg")
+                Log.d("Bluetooth","Received message: $readMsg")
                 // Update UI with the received message (using context)
                 updateUi(context, readMsg)
             }
