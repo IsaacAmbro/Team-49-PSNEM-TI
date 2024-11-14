@@ -7,6 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".GraphView">
 
+
+    <Button
+        android:id="@+id/starter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="384dp"
+        android:text="start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
     <com.github.mikephil.charting.charts.LineChart
         android:layout_width="match_parent"
         android:layout_height="250dp"
@@ -14,5 +27,7 @@
         android:id="@+id/chart">
 
     </com.github.mikephil.charting.charts.LineChart>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
