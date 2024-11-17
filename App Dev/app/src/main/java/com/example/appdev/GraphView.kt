@@ -1,11 +1,16 @@
 package com.example.appdev
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.github.mikephil.charting.charts.LineChart
@@ -19,19 +24,23 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 import kotlin.math.sin
 
 const val TIME_DELAY = 0.005f
 const val MAX_ENTRIES = 100000
 const val STARTED : Int = 1
 const val STOPPED : Int = 0
-
+const val CREATE_FILE : Int = 1
 
 class GraphView : AppCompatActivity() {
 
     val xVal = ArrayList<Float>()
     val yVal = ArrayList<Float>()
-    var state = STOPPED
+    private var state = STOPPED
+    private var isClosed : Boolean = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,16 +53,18 @@ class GraphView : AppCompatActivity() {
             insets
         }
 
-        val myDB = MyDatabaseHelper(this)
+
 
         //start service to access bluetooth thread later
 
-
+        lateinit var outputStream: FileOutputStream
 
         lateinit var chart: LineChart
 
         chart = findViewById(R.id.chart)
-
+        var x = 0f
+        var index = 0
+        var y = 0f
 
         val sineWave = Array(1000) { i ->
             val x = i * (2*Math.PI/100)
@@ -61,75 +72,80 @@ class GraphView : AppCompatActivity() {
         }
 
 
+        val fileName = "temp.csv"
+        val file = File(cacheDir,fileName)
+
+        if(file.exists()) {
+            file.delete()
+        }
+
+        outputStream = FileOutputStream(file,true)
+        outputStream.write("1,2\n3,4\n5,6".toByteArray())
+
+
         val startButton = findViewById<Button>(R.id.starter)
+        val stopButton = findViewById<Button>(R.id.stopper)
+        val saveButton = findViewById<Button>(R.id.saver)
+
+
+        saveButton.setOnClickListener{
+            createFile(file.toUri())
+        }
+
 
         startButton.setOnClickListener {
             if(state == STOPPED) {
                 state = STARTED
-                lifecycleScope.launch {
-                    var x = 0f
-                    var index = 0
-                    var y = 0f
-                    val data = chart.data.getDataSetByIndex(0) as LineDataSet
-                    var jobDone = true
 
+//                if(isClosed) {
+//                    val fileName = "temp.csv"
+//                    val file = File(cacheDir,fileName)
+//
+//                    if(file.exists()) {
+//                        file.delete()
+//                    }
+//
+//                    outputStream = FileOutputStream(file,true)
+//
+//                    isClosed = false
+//                }
+
+
+                lifecycleScope.launch {
+
+                    val data = chart.data.getDataSetByIndex(0) as LineDataSet
+
+                    //scrolling
                     launch {
-                        while(isActive){
+                        while(state == STARTED){
 
                             delay(66)
                             updateView(chart, x)
-    //                        Log.d("Data Set Count: ", chart.data.dataSetCount.toString())
-    //                        Log.d("Entry Count: ", data.entryCount.toString())
                         }
                     }
 
-
+                    //clearing if too big
                     launch {
-                        while(isActive){
-    //                        if(myDB.getRowCount() % 10000 == 0) {
-    //                            Log.d("Entry Count: ", (myDB.getRowCount()/1000).toString() + "k")
-    //                        }
+                        while(state == STARTED){
 
-    //                        if(chart.data.getDataSetByIndex(0).entryCount % 10000 == 0) {
-    //
-    //                            Log.d("Datasets : ", chart.data.dataSetCount.toString())
-    //                        }
+                            Log.d("Entry Count: ", (xVal.size/1000).toString() + "k")
 
-                            if(xVal.size % 10000 == 0) {
-                                Log.d("Entry Count: ", (xVal.size/1000).toString() + "k")
-                            }
+                            if(data.entryCount > MAX_ENTRIES) {
 
-                            if(chart.data.getDataSetByIndex(0).entryCount > MAX_ENTRIES) {
-                                //data = createDataSet()
-                                //chart.data.addDataSet(data)
-                                //Log.d("Created ", chart.data.dataSetCount.toString())
-                                //data.removeFirst()
-                                //chart.notifyDataSetChanged()
                                 data.clear()
-
+                                chart.moveViewToX(x)
                                 chart.notifyDataSetChanged()
 
                             }
 
-                            if(chart.data.dataSetCount > 3) {
-                                val oldData = chart.data.getDataSetByIndex(0) as LineDataSet
-                                oldData.clear()
-                                chart.data.removeDataSet(oldData)
-                                //oldData = null
-                                chart.notifyDataSetChanged()
-                                //Log.d("Deleted ", chart.data.dataSetCount.toString())
-                            }
-
-    //                        if(((x * 1000).toInt() % 100) == 0) Log.d("x: ", x.toString())
-
-
-                            delay(1)
+                            delay(1000)
                         }
                     }
 
-                    //consider adding to a new dataset every 1000 entries or so
+
+                    //plotting
                     launch{
-                        while (isActive) {
+                        while (state == STARTED) {
                             //Log.d("Activity", "Running")
 
                             y = Random.nextFloat() * (80 - 20) + 20
@@ -143,33 +159,33 @@ class GraphView : AppCompatActivity() {
                                 if (index == 100) index = 0
                             }
 
-
-    //
-    //                        if (xVal.size > 100001 && jobDone) {
-    //                            Log.d("log", "Got here")
-    //                            val x100k = xVal.subList(0, 100000).toList()
-    //                            val y100k = yVal.subList(0, 100000).toList()
-    //
-    //                            launch{
-    //                                jobDone = false
-    //                                    //Log.d("Entry", "x: " + x100k[i] + " y: " + y100k[i])
-    //                                    myDB.insert(x100k, y100k)
-    //
-    //                            }
-    //                            xVal.subList(0, 100000).clear()
-    //                            yVal.subList(0, 100000).clear()
-    //                            Log.d("log", "Ran to here")
-    //                            jobDone = true
-    //                        }
-    //
-    //                        if(!jobDone) {
-    //                            Log.d("log", "Still running")
-    //                        }
-                            //Log.d("Entry Count After Rep: ", chart.data.getDataSetByIndex(0).entryCount.toString())
                             delay(45)
                         }
                     }
+
+                    //csv writing
+//                    launch {
+//                        if(xVal.size > 1000) {
+//                            val subX = xVal.subList(0,1000)
+//                            val subY = yVal.subList(0,1000)
+//
+//                            val rows = map(subX,subY)
+//
+//                            for(row in rows) {
+//                                outputStream.write((row + "\n").toByteArray())
+//                            }
+//
+//                            subX.clear()
+//                            subY.clear()
+//                        }
+//                    }
                 }
+            }
+        }
+
+        stopButton.setOnClickListener{
+            if(state == STARTED) {
+                state = STOPPED
             }
         }
 
@@ -195,7 +211,7 @@ class GraphView : AppCompatActivity() {
 
 
 
-
+        chart.setTouchEnabled(false)
         chart.axisRight.isEnabled = false // Disable the right Y-axis
         chart.axisLeft.axisMinimum = 0f   // Set minimum Y value
         chart.axisLeft.axisMaximum = 100f // Set maximum Y value
@@ -203,7 +219,7 @@ class GraphView : AppCompatActivity() {
         chart.invalidate() // Refreshes the chart with the new data
 
 
-        chart.setVisibleXRange(100f,100f)
+        chart.setVisibleXRange(20f,20f)
 
         chart.invalidate()
 
@@ -227,8 +243,9 @@ class GraphView : AppCompatActivity() {
     fun updateView(chart: LineChart, x: Float) {
         chart.data.notifyDataChanged()
         chart.notifyDataSetChanged()
-        chart.setVisibleXRange(20f,20f)
+
         chart.moveViewToX(x)
+        chart.setVisibleXRange(20f,20f)
         chart.invalidate()
     }
 
@@ -241,5 +258,50 @@ class GraphView : AppCompatActivity() {
         return dataSet
     }
 
+    fun map(x : List<Float>, y: List<Float>) : List<String> {
+        val rows = x.indices.map { i -> "${x[i]},${y[i]}"}
+        return rows
+    }
 
+
+    private fun createFile(pickerInitialUri: Uri) {
+        val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "text/csv" // Set MIME type to CSV
+            putExtra(Intent.EXTRA_TITLE, "invoice.csv") // Give the file a name
+
+            // Optionally, specify a URI for the directory that should be opened in
+            // the system file picker before your app creates the document.
+            putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri)
+        }
+        startActivityForResult(intent, CREATE_FILE)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == CREATE_FILE && resultCode == Activity.RESULT_OK) {
+            data?.data?.let { uri ->
+                // Once the file is created, you can write to it
+                copyCsvFileToUri(uri)
+            }
+        }
+    }
+
+    private fun copyCsvFileToUri(destinationUri: Uri) {
+        // Path to your existing CSV file (from cache or internal storage)
+        val sourceFile = File(cacheDir, "temp.csv")  // Replace this with your actual file location
+
+        try {
+            contentResolver.openOutputStream(destinationUri)?.use { outputStream ->
+                // Open input stream for the existing file
+                FileInputStream(sourceFile).use { inputStream ->
+                    // Copy the contents of the source CSV file to the selected destination
+                    inputStream.copyTo(outputStream)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }
