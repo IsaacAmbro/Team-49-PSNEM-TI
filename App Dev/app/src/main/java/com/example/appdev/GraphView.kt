@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.DocumentsContract
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
@@ -27,9 +28,10 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.lang.Thread.sleep
 import kotlin.math.sin
 
-const val TIME_DELAY = 0.005f
+const val TIME_DELAY = 0.5f
 const val MAX_ENTRIES = 100000
 const val STARTED : Int = 1
 const val STOPPED : Int = 0
@@ -57,7 +59,7 @@ class GraphView : AppCompatActivity() {
 
         //start service to access bluetooth thread later
 
-        lateinit var outputStream: FileOutputStream
+        lateinit var oStream: FileOutputStream
 
         lateinit var chart: LineChart
 
@@ -67,8 +69,8 @@ class GraphView : AppCompatActivity() {
         var y = 0f
 
         val sineWave = Array(1000) { i ->
-            val x = i * (2*Math.PI/100)
-            25 * sin(x).toFloat() + 50
+            val r = i * (2*Math.PI/100)
+            25 * sin(r).toFloat() + 50
         }
 
 
@@ -79,8 +81,8 @@ class GraphView : AppCompatActivity() {
             file.delete()
         }
 
-        outputStream = FileOutputStream(file,true)
-        outputStream.write("1,2\n3,4\n5,6".toByteArray())
+        oStream = FileOutputStream(file,true)
+        //oStream.write("1,2\n3,4\n5,6".toByteArray())
 
 
         val startButton = findViewById<Button>(R.id.starter)
@@ -89,6 +91,7 @@ class GraphView : AppCompatActivity() {
 
 
         saveButton.setOnClickListener{
+            oStream.close()
             createFile(file.toUri())
         }
 
@@ -149,7 +152,7 @@ class GraphView : AppCompatActivity() {
                             //Log.d("Activity", "Running")
 
                             y = Random.nextFloat() * (80 - 20) + 20
-                            for(i in 0 until 100){
+                            for(i in 0 until 2){
                                 //y = sineWave[index]
                                 addData(chart, x, y)
                                 xVal.add(x)
@@ -159,26 +162,31 @@ class GraphView : AppCompatActivity() {
                                 if (index == 100) index = 0
                             }
 
-                            delay(45)
+                            delay(33)
                         }
                     }
 
                     //csv writing
-//                    launch {
-//                        if(xVal.size > 1000) {
-//                            val subX = xVal.subList(0,1000)
-//                            val subY = yVal.subList(0,1000)
-//
-//                            val rows = map(subX,subY)
-//
-//                            for(row in rows) {
-//                                outputStream.write((row + "\n").toByteArray())
-//                            }
-//
-//                            subX.clear()
-//                            subY.clear()
-//                        }
-//                    }
+                    launch {
+                            while(state == STARTED) {
+                                if (xVal.size > 1000) {
+                                    val subX = xVal.subList(0, 1000)
+                                    val subY = yVal.subList(0, 1000)
+
+                                    val rows = map(subX, subY)
+
+                                    for (row in rows) {
+                                        oStream.write((row + "\n").toByteArray())
+                                    }
+
+                                    Log.d("CSV", "wrote csv and xVal size:")
+                                    subX.clear()
+                                    subY.clear()
+                                    Log.d("xVal size", xVal.size.toString())
+                                }
+                                delay(500)
+                            }
+                    }
                 }
             }
         }
@@ -186,6 +194,13 @@ class GraphView : AppCompatActivity() {
         stopButton.setOnClickListener{
             if(state == STARTED) {
                 state = STOPPED
+                sleep(300)
+                val rows = map(xVal,yVal)
+                for (row in rows) {
+                    oStream.write((row + "\n").toByteArray())
+                }
+                xVal.clear()
+                yVal.clear()
             }
         }
 
@@ -268,7 +283,7 @@ class GraphView : AppCompatActivity() {
         val intent = Intent(Intent.ACTION_CREATE_DOCUMENT).apply {
             addCategory(Intent.CATEGORY_OPENABLE)
             type = "text/csv" // Set MIME type to CSV
-            putExtra(Intent.EXTRA_TITLE, "invoice.csv") // Give the file a name
+            putExtra(Intent.EXTRA_TITLE, "untitled.csv") // Give the file a name
 
             // Optionally, specify a URI for the directory that should be opened in
             // the system file picker before your app creates the document.
@@ -298,8 +313,10 @@ class GraphView : AppCompatActivity() {
                 FileInputStream(sourceFile).use { inputStream ->
                     // Copy the contents of the source CSV file to the selected destination
                     inputStream.copyTo(outputStream)
+
                 }
             }
+            Toast.makeText(this, "File saved successfully!", Toast.LENGTH_SHORT).show()
         } catch (e: Exception) {
             e.printStackTrace()
         }
