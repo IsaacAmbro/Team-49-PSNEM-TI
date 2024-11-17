@@ -29,10 +29,6 @@ import java.util.UUID
 class MainActivity : AppCompatActivity() {
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
-    private val REQUEST_ENABLE_BLUETOOTH = 1
-    private var serverSocket: BluetoothServerSocket? = null
-    private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
-    private lateinit var mHandler : Handler
     private lateinit var mService: BackgroundService
 
     private val connection = object : ServiceConnection {
@@ -62,6 +58,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         requestBluetooth()
+        startService(Intent(this, BackgroundService::class.java))
+
+
+        Intent(this, BackgroundService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
 
         val switchList = findViewById<Button>(R.id.switchList)
         switchList.setOnClickListener {
@@ -79,6 +82,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val toBTDemo = findViewById<Button>(R.id.toBT)
+        toBTDemo.setOnClickListener{
+            Intent(this, btDemo::class.java).also {
+                startActivity(it)
+            }
+        }
+
         // Check if bluetooth enabled
         if (mBluetoothAdapter?.isEnabled == false) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
@@ -86,12 +96,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        startService(Intent(this, BackgroundService::class.java))
 
-
-        Intent(this, BackgroundService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
 
 
     }

@@ -26,7 +26,7 @@ const val MESSAGE_WRITE: Int = 1
 const val MESSAGE_TOAST: Int = 2
 
 
-private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
+private val MY_UUID : UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
 // ... (Add other message types here as needed.)
 
 class MyBluetoothService(
@@ -108,66 +108,6 @@ class MyBluetoothService(
 
 
 
-
-    //Server side code
-    @SuppressLint("MissingPermission")
-    inner class AcceptThread : Thread() {
-
-        private val mmServerSocket: BluetoothServerSocket? by lazy(LazyThreadSafetyMode.NONE) {
-            mBluetoothAdapter?.listenUsingInsecureRfcommWithServiceRecord(mBluetoothAdapter!!.name, MY_UUID)
-        }
-
-        override fun run() {
-            // Keep listening until exception occurs or a socket is returned.
-            var shouldLoop = true
-            while (shouldLoop) {
-                val socket: BluetoothSocket? = try {
-                    Log.d("Bluetooth Server", "Server Started ")
-                     mmServerSocket?.accept()
-                } catch (e: IOException) {
-                    Log.e("Bluetooth Error", "Socket's accept() method failed", e)
-                    shouldLoop = false
-                    null
-                }
-                socket?.also {
-                    Log.d("Bluetooth Server", "Server Socket Connected ${it.remoteDevice.name}")
-                    mmServerSocket?.close()
-                    bluetoothThread = ConnectedThread(it)
-
-                    //make sure to start the connected thread
-                    bluetoothThread.start()
-                    Log.d("Bluetooth Server", "Server Socket Closed ")
-                    sleep(1000)
-                    bluetoothThread.write("Received Connection".toByteArray())
-
-                    shouldLoop = false
-                }
-            }
-        }
-
-        // Closes the connect socket and causes the thread to finish.
-        fun cancel() {
-            try {
-                mmServerSocket?.close()
-            } catch (e: IOException) {
-                Log.e("Close error", "Could not close the connect socket", e)
-            }
-        }
-    }
-
-    private val acceptThread: AcceptThread? by lazy {
-        AcceptThread()
-    }
-
-    fun startServer() {
-        acceptThread?.start()
-    }
-
-    fun stopServer() {
-        acceptThread?.cancel()
-    }
-
-
     //connection code
     @SuppressLint("MissingPermission")
     inner class ConnectThread(device: BluetoothDevice) : Thread() {
@@ -205,7 +145,7 @@ class MyBluetoothService(
                 } else {
                     Log.d("Bluetooth", "Bluetooth socket is not connected")
                 }
-                val number = 100
+
                 bluetoothThread.write("Hello".toByteArray())
 
             }
@@ -225,7 +165,7 @@ class MyBluetoothService(
     fun connect(context: Context, device: BluetoothDevice) {
         val connectThread = ConnectThread(device)
         connectThread.start()
-        Toast.makeText(context, "Connecting to ${device.name}", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "Connected to ${device.name}", Toast.LENGTH_LONG).show()
     }
 
 }

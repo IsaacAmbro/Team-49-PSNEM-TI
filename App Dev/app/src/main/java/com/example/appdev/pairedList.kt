@@ -46,9 +46,6 @@ class pairedList : AppCompatActivity() {
         }
     }
 
-//    private var serverSocket: BluetoothServerSocket? = null
-private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
-
 
     val registerForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -60,9 +57,6 @@ private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8
         }
     }
 
-    companion object {
-        val EXTRA_ADDRESS: String = "Device_address"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -126,9 +120,11 @@ private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8
             val address: String = device.address
             mService.mBluetoothService.connect(this,device)
 
-            //mService.mBluetoothService.bluetoothThread.write("Hello".toByteArray())
+            if(device.name == "ESP 32 Bluetooth Server") {
+                mService.connected()
+            }
 
-            pairedList.isEnabled = false
+            //pairedList.isEnabled = false
         }
     }
 

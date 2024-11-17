@@ -15,7 +15,6 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,6 +25,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppDev"
         tools:targetApi="31">
+        <activity
+            android:name=".btDemo"
+            android:exported="false" />
+        <activity
+            android:name=".BTDemo"
+            android:exported="false"
+            android:theme="@style/Theme.AppDev" />
         <activity
             android:name=".GraphView"
             android:exported="false" />

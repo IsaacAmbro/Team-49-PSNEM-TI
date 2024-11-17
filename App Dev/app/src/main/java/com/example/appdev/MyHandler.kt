@@ -20,6 +20,7 @@ class MyHandler(looper: Looper) : Handler(looper) {
                 Log.d("Bluetooth","Received message: $readMsg")
                 // Update UI with the received message (using context)
                 updateUi(context, readMsg)
+                Toast.makeText(context, readMsg, Toast.LENGTH_SHORT).show()
             }
             MESSAGE_WRITE -> {
                 // Handle successful write operation (optional)
