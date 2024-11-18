@@ -7,7 +7,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.Button
-import android.widget.Toast
+
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -22,7 +22,6 @@ class btDemo : AppCompatActivity() {
             val binder = service as BackgroundService.MyBinder
             mService = binder.getService()
             mService.setContext(this@btDemo)
-            Toast.makeText(this@btDemo,"Service connected", Toast.LENGTH_SHORT).show()
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -53,7 +52,7 @@ class btDemo : AppCompatActivity() {
             if(mService.isConnected()) {
                 val bluetoothService = mService.mBluetoothService
                 bluetoothService.bluetoothThread?.let {
-                    it.write("hello world".toByteArray())
+                    it.write("switch 1\n".toByteArray())
                 }
             }
         }

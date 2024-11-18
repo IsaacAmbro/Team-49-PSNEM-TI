@@ -10,6 +10,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
 import androidx.core.view.ViewCompat
@@ -21,9 +22,9 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlin.random.Random
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
+
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
+
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
@@ -42,8 +43,7 @@ class GraphView : AppCompatActivity() {
     val xVal = ArrayList<Float>()
     val yVal = ArrayList<Float>()
     private var state = STOPPED
-    private var isClosed : Boolean = true
-
+    lateinit var oStream: FileOutputStream
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,14 +59,14 @@ class GraphView : AppCompatActivity() {
 
         //start service to access bluetooth thread later
 
-        lateinit var oStream: FileOutputStream
+
 
         lateinit var chart: LineChart
 
         chart = findViewById(R.id.chart)
         var x = 0f
         var index = 0
-        var y = 0f
+        var y: Float
 
         val sineWave = Array(1000) { i ->
             val r = i * (2*Math.PI/100)
@@ -82,17 +82,54 @@ class GraphView : AppCompatActivity() {
         }
 
         oStream = FileOutputStream(file,true)
-        //oStream.write("1,2\n3,4\n5,6".toByteArray())
+        createChart(chart)
+
 
 
         val startButton = findViewById<Button>(R.id.starter)
         val stopButton = findViewById<Button>(R.id.stopper)
         val saveButton = findViewById<Button>(R.id.saver)
-
+        val clearButton = findViewById<Button>(R.id.clearer)
 
         saveButton.setOnClickListener{
-            oStream.close()
-            createFile(file.toUri())
+            if (state == STOPPED) {
+                createFile(file.toUri())
+            }
+        }
+
+        clearButton.setOnClickListener{
+            if(state == STOPPED) {
+                val dialogBuilder = AlertDialog.Builder(this)
+                dialogBuilder.setMessage("Confirm to clear all data")
+                    .setCancelable(false)  // Prevent dismiss by clicking outside
+                    .setPositiveButton("Confirm") { dialog, id ->
+
+                        //reset arrays
+                        xVal.clear()
+                        yVal.clear()
+
+                        //reset chart
+                        x = 0f
+                        chart.clear()
+                        createChart(chart)
+
+                        //reset csv
+                        oStream.close()
+                        oStream = FileOutputStream(file,false)
+                        oStream.write("".toByteArray())
+                        oStream.close()
+                        oStream = FileOutputStream(file,true)
+                    }
+                    .setNegativeButton("Cancel") { dialog, id ->
+                        dialog.dismiss() // Dismiss the dialog
+                    }
+
+                val alert = dialogBuilder.create()
+                alert.show()
+
+
+
+            }
         }
 
 
@@ -100,18 +137,7 @@ class GraphView : AppCompatActivity() {
             if(state == STOPPED) {
                 state = STARTED
 
-//                if(isClosed) {
-//                    val fileName = "temp.csv"
-//                    val file = File(cacheDir,fileName)
-//
-//                    if(file.exists()) {
-//                        file.delete()
-//                    }
-//
-//                    outputStream = FileOutputStream(file,true)
-//
-//                    isClosed = false
-//                }
+
 
 
                 lifecycleScope.launch {
@@ -191,10 +217,15 @@ class GraphView : AppCompatActivity() {
             }
         }
 
+
+        //stop code
         stopButton.setOnClickListener{
             if(state == STARTED) {
                 state = STOPPED
-                sleep(300)
+                sleep(100)
+                updateView(chart, x)
+                sleep(500)
+                //clear rest of xVal and yVal
                 val rows = map(xVal,yVal)
                 for (row in rows) {
                     oStream.write((row + "\n").toByteArray())
@@ -207,45 +238,34 @@ class GraphView : AppCompatActivity() {
 
 
 
-        val lineDataSet = LineDataSet(null, "Dynamic Graph")
-        lineDataSet.color = Color.BLUE
-        lineDataSet.lineWidth = 2f
-        lineDataSet.setDrawCircles(false)
-        lineDataSet.setDrawValues(false)
-
-
-        val lineData = LineData(lineDataSet)
-
-
-        chart.data = lineData
-
-        val xAxis = chart.xAxis
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(false)
-        xAxis.setGranularity(2f) // One unit per X label
-
-
-
-        chart.setTouchEnabled(false)
-        chart.axisRight.isEnabled = false // Disable the right Y-axis
-        chart.axisLeft.axisMinimum = 0f   // Set minimum Y value
-        chart.axisLeft.axisMaximum = 100f // Set maximum Y value
-
-        chart.invalidate() // Refreshes the chart with the new data
-
-
-        chart.setVisibleXRange(20f,20f)
-
-        chart.invalidate()
 
 
 
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        oStream.close()
         state = STOPPED
+        super.onDestroy()
     }
+
+    override fun onBackPressed() {
+        // Show a confirmation dialog when the back button is pressed
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Exiting will clear all data?")
+            .setCancelable(false)
+            .setPositiveButton("Exit") { dialog, id ->
+                // Proceed with closing the activity
+                super.onBackPressed()  // This actually performs the default back button action
+            }
+            .setNegativeButton("Cancel") { dialog, id ->
+                dialog.dismiss()  // Dismiss the dialog if the user chooses "No"
+            }
+
+        val alert = builder.create()
+        alert.show()
+    }
+
 
     //check for null later because we won't have any data or maybe i force data
     fun addData(chart: LineChart, x: Float, y: Float) {
@@ -264,14 +284,6 @@ class GraphView : AppCompatActivity() {
         chart.invalidate()
     }
 
-    fun createDataSet() : LineDataSet {
-        var dataSet = LineDataSet(null, "Dynamic Graph")
-        dataSet.color = Color.BLUE
-        dataSet.lineWidth = 2f
-        dataSet.setDrawCircles(false)
-        dataSet.setDrawValues(false)
-        return dataSet
-    }
 
     fun map(x : List<Float>, y: List<Float>) : List<String> {
         val rows = x.indices.map { i -> "${x[i]},${y[i]}"}
@@ -321,4 +333,40 @@ class GraphView : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
+    fun createChart(chart: LineChart) {
+        val lineDataSet = LineDataSet(null, "Dynamic Graph")
+        lineDataSet.color = Color.BLUE
+        lineDataSet.lineWidth = 2f
+        lineDataSet.setDrawCircles(false)
+        lineDataSet.setDrawValues(false)
+
+
+        val lineData = LineData(lineDataSet)
+
+
+        chart.data = lineData
+
+        val xAxis = chart.xAxis
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(false)
+        xAxis.setGranularity(2f) // One unit per X label
+
+
+
+        chart.setTouchEnabled(false)
+        chart.axisRight.isEnabled = false // Disable the right Y-axis
+        chart.axisLeft.axisMinimum = 0f   // Set minimum Y value
+        chart.axisLeft.axisMaximum = 100f // Set maximum Y value
+
+        chart.invalidate() // Refreshes the chart with the new data
+
+
+        chart.setVisibleXRange(20f,20f)
+
+        chart.invalidate()
+    }
+
+
+
 }

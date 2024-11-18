@@ -27,25 +27,26 @@
         tools:targetApi="31">
         <activity
             android:name=".btDemo"
-            android:exported="false" />
-        <activity
-            android:name=".BTDemo"
             android:exported="false"
-            android:theme="@style/Theme.AppDev" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".GraphView"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".pairedList"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <service

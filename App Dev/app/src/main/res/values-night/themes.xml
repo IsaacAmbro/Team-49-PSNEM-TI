@@ -1,7 +1,24 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AppDev" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+    <style name="Base.Theme.AppDev" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Primary colors -->
+        <item name="colorPrimary">#500000</item> <!-- Texas A&M maroon -->
+        <item name="colorPrimaryVariant">#3C0000</item> <!-- Darker maroon -->
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- White text/icons on maroon -->
+
+        <!-- Secondary colors -->
+        <item name="colorSecondary">#7A5230</item> <!-- Muted maroon -->
+        <item name="colorSecondaryVariant">#9E6F4E</item> <!-- Lighter brown tone -->
+        <item name="colorOnSecondary">#FFFFFF</item> <!-- White text/icons on secondary -->
+
+        <!-- Background -->
+        <item name="android:windowBackground">#eae7de</item> <!-- Yellow background -->
+
+
+        <!-- Text -->
+        <item name="android:textColorPrimary">#500000</item> <!-- Maroon text -->
+        <item name="android:textColorSecondary">#7A5230</item> <!-- Muted maroon text -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

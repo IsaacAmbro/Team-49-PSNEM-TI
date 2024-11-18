@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 
 class MyHandler(looper: Looper) : Handler(looper) {
@@ -20,7 +21,6 @@ class MyHandler(looper: Looper) : Handler(looper) {
                 Log.d("Bluetooth","Received message: $readMsg")
                 // Update UI with the received message (using context)
                 updateUi(context, readMsg)
-                Toast.makeText(context, readMsg, Toast.LENGTH_SHORT).show()
             }
             MESSAGE_WRITE -> {
                 // Handle successful write operation (optional)
@@ -37,6 +37,12 @@ class MyHandler(looper: Looper) : Handler(looper) {
 
     fun updateUi(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        if(context is btDemo) {
+            context.runOnUiThread {
+                // Update UI elements here
+                context.findViewById<TextView>(R.id.message).text = message
+            }
+        }
     }
 
     fun setContext(context: Context) {

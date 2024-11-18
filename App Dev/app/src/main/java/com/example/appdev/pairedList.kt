@@ -12,7 +12,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
+
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -23,13 +23,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.IOException
-import java.util.UUID
+
 
 class pairedList : AppCompatActivity() {
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
-    private val REQUEST_ENABLE_BLUETOOTH = 1
     lateinit var mPairedDevices: Set<BluetoothDevice>
     private lateinit var mService: BackgroundService
 
@@ -117,11 +115,13 @@ class pairedList : AppCompatActivity() {
         pairedList.adapter = adapater
         pairedList.onItemClickListener = AdapterView.OnItemClickListener{ _,_,position, _ ->
             val device : BluetoothDevice = list[position]
-            val address: String = device.address
-            mService.mBluetoothService.connect(this,device)
+
 
             if(device.name == "ESP 32 Bluetooth Server") {
                 mService.connected()
+                mService.mBluetoothService.connect(this,device)
+            } else {
+                Toast.makeText(this, "Not the right device", Toast.LENGTH_SHORT).show()
             }
 
             //pairedList.isEnabled = false
