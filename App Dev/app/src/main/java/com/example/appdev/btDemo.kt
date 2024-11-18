@@ -46,13 +46,32 @@ class btDemo : AppCompatActivity() {
         }
 
 
-
         val sender = findViewById<Button>(R.id.send)
-        sender.setOnClickListener{
-            if(mService.isConnected()) {
+        sender.setOnClickListener {
+            if (mService.isConnected()) {
                 val bluetoothService = mService.mBluetoothService
                 bluetoothService.bluetoothThread?.let {
                     it.write("switch 1\n".toByteArray())
+                }
+            }
+        }
+
+        val sender2 = findViewById<Button>(R.id.send2)
+        sender2.setOnClickListener {
+            if (mService.isConnected()) {
+                val bluetoothService = mService.mBluetoothService
+                bluetoothService.bluetoothThread?.let {
+                    it.write("switch 2\n".toByteArray())
+                }
+            }
+        }
+
+        val sender3 = findViewById<Button>(R.id.send3)
+        sender3.setOnClickListener {
+            if (mService.isConnected()) {
+                val bluetoothService = mService.mBluetoothService
+                bluetoothService.bluetoothThread?.let {
+                    it.write("switch 3\n".toByteArray())
                 }
             }
         }
