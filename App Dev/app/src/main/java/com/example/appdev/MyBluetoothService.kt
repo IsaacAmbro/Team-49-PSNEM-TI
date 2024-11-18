@@ -139,14 +139,14 @@ class MyBluetoothService(
                 bluetoothThread.start()
 
 
-                Thread.sleep(3000)
                 if (bluetoothThread.socket().isConnected) {
                     Log.d("Bluetooth", "Bluetooth socket is connected")
                 } else {
                     Log.d("Bluetooth", "Bluetooth socket is not connected")
                 }
 
-                bluetoothThread.write("Hello".toByteArray())
+                bluetoothThread.write("Connected to client successfully\n".toByteArray())
+
 
             }
         }
@@ -166,6 +166,7 @@ class MyBluetoothService(
         val connectThread = ConnectThread(device)
         connectThread.start()
         Toast.makeText(context, "Connected to ${device.name}", Toast.LENGTH_LONG).show()
+
     }
 
 }

@@ -36,7 +36,7 @@ class MyHandler(looper: Looper) : Handler(looper) {
     }
 
     fun updateUi(context: Context, message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        //Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         if(context is btDemo) {
             context.runOnUiThread {
                 // Update UI elements here
