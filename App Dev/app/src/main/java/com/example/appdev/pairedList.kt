@@ -118,12 +118,11 @@ class pairedList : AppCompatActivity() {
 
 
             if(device.name == "ESP 32 Bluetooth Server") {
-                mService.connected()
-                mService.mBluetoothService.connect(this,device)
-            } else {
-                Toast.makeText(this, "Not the right device", Toast.LENGTH_SHORT).show()
-            }
+                if (!mService.isConnected()) {
+                    mService.mBluetoothService.connect(this, device)
+                }
 
+            }
             //pairedList.isEnabled = false
         }
     }

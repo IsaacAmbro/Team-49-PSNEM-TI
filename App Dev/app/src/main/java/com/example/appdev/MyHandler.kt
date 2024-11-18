@@ -49,4 +49,8 @@ class MyHandler(looper: Looper) : Handler(looper) {
         this.context = context
     }
 
+    fun getContext(): Context {
+        return context
+    }
+
 }

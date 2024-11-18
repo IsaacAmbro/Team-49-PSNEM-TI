@@ -1,10 +1,8 @@
 package com.example.appdev
 
 import android.annotation.SuppressLint
-import android.app.Service
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothServerSocket
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.os.Bundle
@@ -15,7 +13,7 @@ import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.util.UUID
-import android.bluetooth.BluetoothProfile
+
 
 private const val TAG = "MY_APP_DEBUG_TAG"
 
@@ -31,8 +29,9 @@ private val MY_UUID : UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34
 
 class MyBluetoothService(
     // handler that gets info from Bluetooth service
-    private val handler: Handler,
-    private val mBluetoothAdapter: BluetoothAdapter?
+    private val handler: MyHandler,
+    private val mBluetoothAdapter: BluetoothAdapter?,
+    private val callback: BTStateListener?
 ) {
 
     lateinit var bluetoothThread : ConnectedThread
@@ -55,10 +54,14 @@ class MyBluetoothService(
             while (true) {
                 // Read from the InputStream.
                 numBytes = try {
-
                     mmInStream.read(mmBuffer)
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
+                    callback?.updateBTState(false)
+                    handler.post {
+                        Toast.makeText(handler.getContext(), "Bluetooth Connection Lost", Toast.LENGTH_SHORT).show()
+                    }
+                    cancel()
                     break
                 }
                 Log.d(TAG, "Received bytes: ${String(mmBuffer, 0, numBytes)}")
@@ -128,6 +131,7 @@ class MyBluetoothService(
                     Log.d("Bluetooth", "Connecting...")
                 } catch (e: IOException) {
                     Log.e("Bluetooth Error", "Error connecting to socket", e)
+                    cancel()
                 }
 
 
@@ -141,11 +145,13 @@ class MyBluetoothService(
 
                 if (bluetoothThread.socket().isConnected) {
                     Log.d("Bluetooth", "Bluetooth socket is connected")
+                    callback?.updateBTState(true)
+                    bluetoothThread.write("Connected to client successfully\n".toByteArray())
                 } else {
                     Log.d("Bluetooth", "Bluetooth socket is not connected")
                 }
 
-                bluetoothThread.write("Connected to client successfully\n".toByteArray())
+
 
 
             }
