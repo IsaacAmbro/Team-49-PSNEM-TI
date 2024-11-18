@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.DocumentsContract
 import android.util.Log
 import android.widget.Button
@@ -136,7 +138,7 @@ class GraphView : AppCompatActivity() {
         startButton.setOnClickListener {
             if(state == STOPPED) {
                 state = STARTED
-
+                startButton.isEnabled = false
 
 
 
@@ -215,6 +217,10 @@ class GraphView : AppCompatActivity() {
                     }
                 }
             }
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                startButton.isEnabled = true
+            }, 1000)
         }
 
 
@@ -222,9 +228,8 @@ class GraphView : AppCompatActivity() {
         stopButton.setOnClickListener{
             if(state == STARTED) {
                 state = STOPPED
-                sleep(100)
                 updateView(chart, x)
-                sleep(500)
+
                 //clear rest of xVal and yVal
                 val rows = map(xVal,yVal)
                 for (row in rows) {
