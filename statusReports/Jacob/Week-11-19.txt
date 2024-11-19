@@ -1,0 +1,6 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 11/18/2024:
+This week I presented to both Ti representatvies and for the Final presentation. My work included finishign the presentation and trying to finish my board.
+The current issues I am facing are htta the LDO is not function properly and is output the same voltage as the input, in addition on eof the control relays are oututting a different voltage than the input.
+My current plnas are to fix the voltgae issues in my board and then finish coding the arduino wiht a program to tetsthe DAC and get it to run.
