@@ -1,0 +1,5 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 11/18/2024:
+This week I coded most of the functionalitity of my SPI communication on my board , but it is still a little buggy.
+This week I will fix these minor issues to have a working product for demo.
