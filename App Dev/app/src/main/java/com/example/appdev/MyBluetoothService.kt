@@ -113,7 +113,7 @@ class MyBluetoothService(
 
     //connection code
     @SuppressLint("MissingPermission")
-    inner class ConnectThread(device: BluetoothDevice) : Thread() {
+    inner class ConnectThread(private val device: BluetoothDevice) : Thread() {
 
         private val mmSocket: BluetoothSocket? by lazy(LazyThreadSafetyMode.NONE) {
             device.createRfcommSocketToServiceRecord(MY_UUID)
@@ -146,6 +146,9 @@ class MyBluetoothService(
                 if (bluetoothThread.socket().isConnected) {
                     Log.d("Bluetooth", "Bluetooth socket is connected")
                     callback?.updateBTState(true)
+                    handler.post {
+                        Toast.makeText(handler.getContext(), "Connected to ${device.name}", Toast.LENGTH_LONG).show()
+                    }
                     bluetoothThread.write("Connected to client successfully\n".toByteArray())
                 } else {
                     Log.d("Bluetooth", "Bluetooth socket is not connected")
@@ -171,7 +174,6 @@ class MyBluetoothService(
     fun connect(context: Context, device: BluetoothDevice) {
         val connectThread = ConnectThread(device)
         connectThread.start()
-        Toast.makeText(context, "Connected to ${device.name}", Toast.LENGTH_LONG).show()
 
     }
 

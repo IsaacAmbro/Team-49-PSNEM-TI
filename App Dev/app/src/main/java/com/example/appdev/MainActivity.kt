@@ -2,18 +2,14 @@ package com.example.appdev
 
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothServerSocket
-import android.bluetooth.BluetoothSocket
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.Button
@@ -23,8 +19,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.IOException
-import java.util.UUID
+import android.net.Uri
 
 class MainActivity : AppCompatActivity() {
 
@@ -87,6 +82,13 @@ class MainActivity : AppCompatActivity() {
             Intent(this, btDemo::class.java).also {
                 startActivity(it)
             }
+        }
+
+        val toHelp = findViewById<Button>(R.id.toHelp)
+        toHelp.setOnClickListener{
+            val url = "https://docs.google.com/document/d/1bgfkXQ2Hf_5MBSoMh1vjBmfNc5Ladya9zAhhxq8S8tA/edit?usp=sharing"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
         }
 
         // Check if bluetooth enabled

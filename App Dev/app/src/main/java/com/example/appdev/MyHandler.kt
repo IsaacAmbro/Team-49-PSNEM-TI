@@ -40,7 +40,7 @@ class MyHandler(looper: Looper) : Handler(looper) {
         if(context is btDemo) {
             context.runOnUiThread {
                 // Update UI elements here
-                context.findViewById<TextView>(R.id.message).text = message
+                context.findViewById<TextView>(R.id.message).text = "Console Output: $message"
             }
         }
     }

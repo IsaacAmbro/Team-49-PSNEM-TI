@@ -14,11 +14,12 @@
         android:layout_height="97dp"
         android:layout_marginTop="132dp"
         android:gravity="center"
-        android:text="Howdy"
+        android:text="Console Output:"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.491" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -41,7 +42,7 @@
             android:layout_weight="1"
             android:layout_marginEnd="30dp"
 
-            android:text="send" />
+            android:text="Send1" />
 
         <Button
             android:id="@+id/send2"
@@ -49,14 +50,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="30dp"
-            android:text="send2" />
+            android:text="Send2" />
 
         <Button
             android:id="@+id/send3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="send3" />
+            android:text="Send3" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

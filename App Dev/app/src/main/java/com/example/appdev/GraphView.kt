@@ -1,12 +1,9 @@
 package com.example.appdev
-
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.DocumentsContract
 import android.util.Log
 import android.widget.Button
@@ -24,18 +21,15 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import kotlin.random.Random
 import androidx.lifecycle.lifecycleScope
-
 import kotlinx.coroutines.delay
-
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.lang.Thread.sleep
 import kotlin.math.sin
 
 const val TIME_DELAY = 0.5f
-const val MAX_ENTRIES = 100000
+const val MAX_ENTRIES = 10000
 const val STARTED : Int = 1
 const val STOPPED : Int = 0
 const val CREATE_FILE : Int = 1
@@ -139,7 +133,8 @@ class GraphView : AppCompatActivity() {
             if(state == STOPPED) {
                 state = STARTED
                 startButton.isEnabled = false
-
+                saveButton.isEnabled = false
+                clearButton.isEnabled = false
 
 
                 lifecycleScope.launch {
@@ -212,15 +207,12 @@ class GraphView : AppCompatActivity() {
                                     subY.clear()
                                     Log.d("xVal size", xVal.size.toString())
                                 }
-                                delay(500)
+                                delay(66)
                             }
                     }
                 }
             }
 
-            Handler(Looper.getMainLooper()).postDelayed({
-                startButton.isEnabled = true
-            }, 1000)
         }
 
 
@@ -237,7 +229,11 @@ class GraphView : AppCompatActivity() {
                 }
                 xVal.clear()
                 yVal.clear()
+                startButton.isEnabled = true
+                saveButton.isEnabled = true
+                clearButton.isEnabled = true
             }
+
         }
 
 
