@@ -1,0 +1,6 @@
+Isaac Ambro
+UIN: 631001040
+Status Update for week of 1/22/2025:
+This week I verified the connection between the MCU subsystem and the relays in the Power/DAC subsystem.
+I also worked with the Power/DAC subsystem to test the signal generation ccode on the DAC, but failed.
+This week, I am working on fixing the signal generation code and combining the MCU and Power subsystems into one board.
