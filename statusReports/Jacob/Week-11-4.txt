@@ -1,0 +1,5 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 11/4/2024:
+This week I recieievd nearly all of my parts except for the arduino unit.
+My next steps are to solder the board and begin testing.

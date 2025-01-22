@@ -1,0 +1,11 @@
+Added Component: Designator=R13(RESC1608X06N)
+Add component (AddParameter): Name = "value"; Value = "10K"; VariantName = "[No Variations]"
+Added Component: Designator=S1(L101011MS02Q)
+Added Pin To Net: NetName=+3.3V Pin=R13-2
+Added Pin To Net: NetName=GND Pin=S1-2
+Added Pin To Net: NetName=Mode_Switch Pin=R13-1
+Added Pin To Net: NetName=Mode_Switch Pin=S1-1
+Added Pin To Net: NetName=Mode_Switch Pin=U2-30
+Added Net: Name=Mode_Switch
+Added Member To Class: ClassName=U_MicroController Member=Component R13 10K
+Added Member To Class: ClassName=U_MicroController Member=Component S1 L101011MS02Q

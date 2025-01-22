@@ -71,6 +71,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val toGraph = findViewById<Button>(R.id.toGraph)
+        toGraph.setOnClickListener {
+            Log.d("Button", "Graph")
+            Intent(this, GraphView::class.java).also {
+                startActivity(it)
+            }
+        }
 
         // Check if bluetooth enabled
         if (mBluetoothAdapter?.isEnabled == false) {
@@ -87,52 +94,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-
     }
-//        val acceptThread: AcceptThread? by lazy {
-//            AcceptThread()
-//        }
-//
-//        acceptThread?.start()
-//    }
-//
-//    @SuppressLint("MissingPermission")
-//    private inner class AcceptThread : Thread() {
-//
-//        private val mmServerSocket: BluetoothServerSocket? by lazy(LazyThreadSafetyMode.NONE) {
-//            mBluetoothAdapter?.listenUsingInsecureRfcommWithServiceRecord(mBluetoothAdapter!!.name, MY_UUID)
-//        }
-//
-//        override fun run() {
-//            // Keep listening until exception occurs or a socket is returned.
-//            var shouldLoop = true
-//            while (shouldLoop) {
-//                val socket: BluetoothSocket? = try {
-//                    Log.d("Bluetooth Server", "Server Started ")
-//                    mmServerSocket?.accept()
-//                } catch (e: IOException) {
-//                    Log.e("Bluetooth Error", "Socket's accept() method failed", e)
-//                    shouldLoop = false
-//                    null
-//                }
-//                socket?.also {
-//                    mmServerSocket?.close()
-//                    Log.d("Bluetooth Server", "Server Closed ")
-//                    shouldLoop = false
-//                }
-//            }
-//        }
-//
-//        // Closes the connect socket and causes the thread to finish.
-//        fun cancel() {
-//            try {
-//                mmServerSocket?.close()
-//            } catch (e: IOException) {
-//                Log.e("Close error", "Could not close the connect socket", e)
-//            }
-//        }
-//    }
 
 
     val registerForResult = registerForActivityResult(

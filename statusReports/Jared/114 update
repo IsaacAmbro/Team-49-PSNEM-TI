@@ -1,0 +1,9 @@
+Jared Sutor
+330009308
+
+Got uart working (i thinking), have spi setup, dont know exactly how im going to grab the signal/how fast (though i know how to sendit thru b/t)
+Board soldering underway, probably will be here most of thurs/friday
+
+goals:
+Finish board, begin testing
+Finish code, think of how to test spi.
