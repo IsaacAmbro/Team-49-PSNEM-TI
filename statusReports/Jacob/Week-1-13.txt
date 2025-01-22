@@ -1,0 +1,6 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 1/13/2024:
+Last week I re-checked the functionality of the power and DAC susbsyetm developed last semester and completed the first status update presentation.
+Additionally I worked with Isaac to start verifying compatibility between his signal generation and the DAC, which is currently not functioning.
+This week I plan to work with Isaac to get the DAC function in terms of recicing and sending signals in additon to developing the main board which will consist of my power and DAC subsystem and Isaac's MCU and Signal Generation subsytem.
