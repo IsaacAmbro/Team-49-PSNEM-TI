@@ -1,0 +1,13 @@
+This week I worked on the (hopefully) final PCB for our auxilliary board. Meaning slightly reduced size, fixes to getting power on the board,
+adding fixes regarding the ADC (e.g. filtering, resistors missed in inital design, and changing the SPI connections pins to the ESP32), and adding mounting points.
+
+By  the end of this week I hope to have the board finished and ordered (all parts included)
+
+While parts are coming in, I will continue to work on integration with the main MCU and hopefully the phone app (can't with DAC system until ADC works).
+This means:
+-Check that uart signals from my esp32 are received and processed by the main msp430
+-Check how the app wants data to be sent/received , ensure I have proper formatting, then test with connecting to the actual app.
+
+Codewise:
+-Update code to reflect new board
+-Work on old code for current integration work (which can be mostly transffered to new boards change in code)
