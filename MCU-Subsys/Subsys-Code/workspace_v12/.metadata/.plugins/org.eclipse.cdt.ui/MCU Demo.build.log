@@ -1,0 +1,64 @@
+
+**** Build of configuration Debug for project MCU Demo ****
+
+"C:\\ti\\ccs1220\\ccs\\utils\\bin\\gmake" -k -j 12 all -O 
+ 
+Building file: "../main.c"
+Invoking: MSP430 Compiler
+"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --include_path="C:/ti/ccs1220/ccs/ccs_base/msp430/include" --include_path="C:/Users/isaac/workspace_v12/MCU Demo" --include_path="C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --advice:power=all --advice:hw_config=all --define=__MSP430FR5969__ --define=_MPU_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 --preproc_with_compile --preproc_dependency="main.d_raw"  "../main.c"
+"../main.c", line 31: remark #1544-D: (ULP 13.1) Detected loop counting up. Recommend loops count down as detecting zeros is easier
+"../main.c", line 33: remark #1544-D: (ULP 13.1) Detected loop counting up. Recommend loops count down as detecting zeros is easier
+"../main.c", line 33: remark #1527-D: (ULP 2.1) Detected SW delay loop using empty loop. Recommend using a timer module instead
+"../main.c", line 35: remark #1527-D: (ULP 2.1) Detected SW delay loop using __delay_cycles. Recommend using a timer module instead
+"../main.c", line 23: remark #1535-D: (ULP 8.1) variable "message" is used as a constant. Recommend declaring variable as either 'static const' or 'const'
+"../main.c", line 53: warning #70-D: integer conversion resulted in truncation
+Finished building: "../main.c"
+ 
+Building target: "MCU Demo.out"
+Invoking: MSP430 Linker
+"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all --define=__MSP430FR5969__ --define=_MPU_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"MCU Demo.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccs1220/ccs/ccs_base/msp430/include" -i"C:/ti/ccs1220/ccs/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"C:/ti/ccs1220/ccs/ccs_base/msp430/lib/FR59xx" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib" -i"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="MCU Demo_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "MCU Demo.out" "./main.obj" "../lnk_msp430fr5969.cmd"  -llibmpu_init.a -llibmath.a -llibc.a 
+<Linking>
+remark #10371-D: (ULP 1.1) Detected no uses of low power mode state changing instructions
+remark #10372-D: (ULP 4.1) Detected uninitialized Port A in this project. Recommend initializing all unused ports to eliminate wasted current consumption on unused pins.
+remark #10372-D: (ULP 4.1) Detected uninitialized Port B in this project. Recommend initializing all unused ports to eliminate wasted current consumption on unused pins.
+Finished building target: "MCU Demo.out"
+ 
+Building secondary target: "MCU Demo.hex"
+Invoking: MSP430 Hex Utility
+"C:/ti/ccs1220/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/hex430" --memwidth=8 --romwidth=8 --diag_wrap=off -o "MCU Demo.hex"  "MCU Demo.out" 
+Translating to Extended Tektronix format...
+   "MCU Demo.out" .text:_isr ==> .text:_isr
+   "MCU Demo.out" $fill000 ==> $fill000
+   "MCU Demo.out" $fill001 ==> $fill001
+   "MCU Demo.out" $fill002 ==> $fill002
+   "MCU Demo.out" AES256 ==> AES256
+   "MCU Demo.out" RTC ==> RTC
+   "MCU Demo.out" PORT4 ==> PORT4
+   "MCU Demo.out" PORT3 ==> PORT3
+   "MCU Demo.out" TIMER3_A1 ==> TIMER3_A1
+   "MCU Demo.out" TIMER3_A0 ==> TIMER3_A0
+   "MCU Demo.out" PORT2 ==> PORT2
+   "MCU Demo.out" TIMER2_A1 ==> TIMER2_A1
+   "MCU Demo.out" TIMER2_A0 ==> TIMER2_A0
+   "MCU Demo.out" PORT1 ==> PORT1
+   "MCU Demo.out" TIMER1_A1 ==> TIMER1_A1
+   "MCU Demo.out" TIMER1_A0 ==> TIMER1_A0
+   "MCU Demo.out" DMA ==> DMA
+   "MCU Demo.out" USCI_A1 ==> USCI_A1
+   "MCU Demo.out" TIMER0_A1 ==> TIMER0_A1
+   "MCU Demo.out" TIMER0_A0 ==> TIMER0_A0
+   "MCU Demo.out" ADC12 ==> ADC12
+   "MCU Demo.out" USCI_B0 ==> USCI_B0
+   "MCU Demo.out" USCI_A0 ==> USCI_A0
+   "MCU Demo.out" WDT ==> WDT
+   "MCU Demo.out" TIMER0_B1 ==> TIMER0_B1
+   "MCU Demo.out" TIMER0_B0 ==> TIMER0_B0
+   "MCU Demo.out" COMP_E ==> COMP_E
+   "MCU Demo.out" UNMI ==> UNMI
+   "MCU Demo.out" SYSNMI ==> SYSNMI
+   "MCU Demo.out" .reset ==> .reset
+   "MCU Demo.out" .text ==> .text
+Finished building secondary target: "MCU Demo.hex"
+ 
+
+**** Build Finished ****

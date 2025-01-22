@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;Subsystem Code&apos; to &apos;Subsystem-Code&apos;" description="Rename resource &apos;Subsystem Code&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/Subsystem Code" name="Subsystem-Code" stamp="1730483924409" updateReferences="true"/>
+</session>

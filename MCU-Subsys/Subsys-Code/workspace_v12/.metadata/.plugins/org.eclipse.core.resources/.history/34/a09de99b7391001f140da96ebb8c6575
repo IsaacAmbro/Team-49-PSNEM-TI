@@ -1,0 +1,229 @@
+#include <msp430.h> // Include the MSP430 header file
+
+void setupGPIO(void);
+void setupUART(void);
+void setupSPI(void);
+void initGPIO(void);
+void initUART(void);
+void initSPI(void);
+void checkMode(void);
+void remoteMode(void);
+void manualMode(void);
+void sendSPItoDAC(unsigned int data);
+
+volatile int mode = 0; // 0 = Manual, 1 = Remote
+volatile int ledState = 1; // Which LED is on
+
+
+int main(void) {
+    WDTCTL = WDTPW + WDTHOLD; // Stop the watchdog timer
+
+    initGPIO();
+    initUART();
+
+    //__enable_interrupt();
+
+    while (1) {
+        checkMode();
+        if (mode == 0){
+            manualMode();
+        } else{
+            remoteMode();
+        }
+
+        sendSPItoDAC(0x1234);
+    }
+
+
+
+
+}
+
+//-- Setup Functions
+
+//Set pins/directions
+void setupGPIO(){
+    // buttons as inputs
+    // LDO Button P1.1
+    P1DIR &= ~BIT1; //set bit 1 to input
+    P1SEL1 &= ~BIT1;
+    P1SEL0 &= ~BIT1;
+
+    // Buck Button P1.2
+    P1DIR &= ~BIT2; //set bit 2 to input
+    P1SEL1 &= ~BIT2;
+    P1SEL0 &= ~BIT2;
+
+    // PS Button P3.0
+    P3DIR &= ~BIT0; //set bit 0 to input
+    P3SEL1 &= ~BIT0;
+    P3SEL0 &= ~BIT0;
+
+    //Mode Switch P3.7
+    P3DIR &= ~BIT7; //set bit 7 to input
+    P3SEL1 &= ~BIT7;
+    P3SEL0 &= ~BIT7;
+
+    // LEDs as outputs
+    // LDO LED on at first
+    // LDO LED P3.1
+    P3DIR |= BIT1; //set bit 1 to output
+    P3SEL1 &= ~BIT1;
+    P3SEL0 &= ~BIT1;
+
+    // Buck LED P3.2
+    P3DIR |= BIT2; //set bit 2 to output
+    P3SEL1 &= ~BIT2;
+    P3SEL0 &= ~BIT2;
+
+    // PS LED P3.3
+    P3DIR |= BIT3; //set bit 3 to output
+    P3SEL1 &= ~BIT3;
+    P3SEL0 &= ~BIT3;
+}
+
+void setupUART(){
+
+}
+
+void setupSPI(){
+
+}
+
+
+//-- Initialization Functions
+
+//enable interrupts and establish starting values
+void initGPIO() {
+    /*
+    // buttons as inputs
+    // LDO Button P1.1
+    P1IES |= BIT1;
+    P1IE |= BIT1;
+    P1IFG &= ~BIT1;
+
+    // Buck Button P1.2
+    P1IES |= BIT2;
+    P1IE |= BIT2;
+    P1IFG &= ~BIT2;
+
+    // PS Button P3.0
+    P3IES |= BIT0;
+    P3IE |= BIT0;
+    P3IFG &= ~BIT0;
+
+    //Mode Switch P3.7
+    P3IES |= BIT7;
+    P3IE |= BIT7;
+    P3IFG &= ~BIT7;
+    */
+
+    // LEDs as outputs
+    // LDO LED on at first
+    // LDO LED P3.1
+    P3OUT |= BIT1; //turn on LDO LED
+
+    // Buck LED P3.2
+    P3OUT &= ~BIT2; //turn off Buck LED
+
+    // PS LED P3.3
+    P3OUT &= ~BIT3; //turn off PS LED
+
+}
+
+
+void initUART(){
+    UCA0CTLW0 |= UCSWRST;  // put UART A0 into SW Reset
+    UCA0CTLW0 |= UCSSEL__SMCLK; //Choose SMCLK for UART A0;
+
+    // Setup modulation
+    UCA0BRW = 8;
+    UCA0MCTLW |= 0xD600;
+
+    // Setup Pins
+    P2SEL1 |= BIT0;
+    P2SEL0 &= ~BIT0;
+
+    PM5CTL0 &= ~LOCKLPM5;
+    UCA0CTLW0 &= ~UCSWRST; //take UART A0 out of SW Reset
+}
+
+void initSPI(){
+
+}
+
+// Helper Functions
+void checkMode(){
+
+}
+
+void manualMode(){
+
+}
+
+void remoteMode(){
+
+}
+
+
+
+/*
+//-- ISRs
+
+//Interrupt for LDO and Buck button
+#pragma vector = PORT1_VECTOR
+__interrupt void ISR_PORT_1(void){
+    if (P1IFG & BIT1){ //if ldo button is pressed
+        led_state = 1;
+
+        P3OUT |= BIT1;
+        P3OUT &= ~BIT2;
+        P3OUT &= ~BIT3;
+
+        P1IFG &= ~BIT1;
+    } else if (P1IFG & BIT2){ //if buck button is pressed
+        led_state = 2;
+
+        P3OUT |= BIT2;
+        P3OUT &= ~BIT1;
+        P3OUT &= ~BIT3;
+
+        P1IFG &= ~BIT2;
+    }
+}
+
+#pragma vector = PORT3_VECTOR
+__interrupt void ISR_PORT_3(void){
+    if (P3IFG & BIT0){ //if ps button is pressed
+        led_state = 3;
+
+        P3OUT |= BIT3;
+        P3OUT &= ~BIT2;
+        P3OUT &= ~BIT1;
+
+        P3IFG &= ~BIT0;
+    } else if (P3IFG & BIT7){ // if mode is switched
+        mode = !(P3IN & BIT7)
+
+        P13FG &= ~BIT7;
+    }
+}
+
+*/
+
+/*
+// Function to blink LEDs
+void blinkLEDs(void) {
+    P1DIR |= 0x01;                          // Set P1.0 to output direction
+
+    for(;;) {
+        volatile unsigned int i;            // volatile to prevent optimization
+
+        P1OUT ^= 0x01;                      // Toggle P1.0 using exclusive-OR
+
+        i = 100000;                          // SW Delay
+        do i--;
+        while(i != 0);
+    }
+}
+*/
