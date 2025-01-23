@@ -1,0 +1,7 @@
+Wenbin
+UIN:130007632
+Status Update:
+Implemented csv datalogging succesfully. 
+App fully functional
+
+Next goals finish UI to make it prettier
