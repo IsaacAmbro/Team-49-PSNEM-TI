@@ -149,12 +149,11 @@ void initSPI(){
     UCA0CTLW0 |= UCMST;         // Set as SPI master
     UCA0CTLW0 |= UCSTEM;        // Enable STE pin
     UCA0CTLW0 |= UCMODE1;       // Set 4-wire SPI with STE active low
-    UCA0CTLW0 &= ~UCMODE0;       // Set 4-wire SPI with STE active low
 
     //Setup Pins
     // P1.4 (STE)
-    P1SEL1 |= BIT4;
-    P1SEL0 &= ~BIT4;
+    P1DIR |= BIT4; // Set P1.4 as output
+    P1OUT |= BIT4; // Set STE high initially (inactive state)
 
     // P1.5 (CLK)
     P1SEL1 |= BIT5;

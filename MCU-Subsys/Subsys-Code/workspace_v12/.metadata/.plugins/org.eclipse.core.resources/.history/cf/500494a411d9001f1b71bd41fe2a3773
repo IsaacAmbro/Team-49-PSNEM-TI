@@ -153,8 +153,8 @@ void initSPI(){
 
     //Setup Pins
     // P1.4 (STE)
-    P1SEL1 |= BIT4;
-    P1SEL0 &= ~BIT4;
+    P1DIR |= BIT4; // Set P1.4 as output
+    P1OUT |= BIT4; // Set STE high initially (inactive state)
 
     // P1.5 (CLK)
     P1SEL1 |= BIT5;
