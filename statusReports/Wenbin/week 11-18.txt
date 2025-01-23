@@ -1,0 +1,7 @@
+Wenbin
+UIN:130007632
+Status Update:
+Finished UI design
+Implemented Texas A&M Color scheme
+
+Next goals final demo and integration for 404
