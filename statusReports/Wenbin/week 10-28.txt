@@ -1,0 +1,8 @@
+Wenbin
+UIN:130007632
+Status Update:
+Graphing was successful
+Able to graph dynamically and update the graph
+Graphing gets slow after 300k data points or so. Needs to optimize it.
+
+Next goals optimize graphing
