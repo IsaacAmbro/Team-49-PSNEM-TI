@@ -1,0 +1,7 @@
+Wenbin
+UIN:130007632
+Status Update:
+Optimized graph by deleting old data when getting closed to full
+Need to store graph data locally
+
+Next goals use database or csv to store data.

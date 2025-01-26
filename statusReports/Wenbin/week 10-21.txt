@@ -1,0 +1,6 @@
+Wenbin
+UIN:130007632
+Status Update:
+Started working with MPAndroidChart Library
+Imported all the necessary libraries and build dependencies
+Next goals continue figuring out the library api.
