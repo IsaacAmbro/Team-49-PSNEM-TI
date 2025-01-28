@@ -1,0 +1,5 @@
+Jacob Kolba
+UIN: 731002540
+Status Update for week of 1/20/2025:
+Last week I worked with Isaac to get communication working between the MCU and DAC, as there were issues. We have recently had a breakthrought, being able to get values through.
+Our current trask is completeing the main board design and gettign that ordered so we can work out all of the minor issues.
