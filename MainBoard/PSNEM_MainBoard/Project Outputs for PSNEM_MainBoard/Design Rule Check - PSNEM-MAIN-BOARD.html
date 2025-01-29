@@ -1,0 +1,782 @@
+<html>
+<head>
+<META http-equiv="Content-Type" content="text/html">
+<style type="text/css">
+		h1, h2, h3, h4, h5, h6 {
+			font-family : segoe ui;
+			color : black;
+			background-color : #EDE7D9;
+			padding: 0.3em;
+		}
+
+		h1 {
+			font-size: 1.2em;
+		}		
+
+		h2 {
+			font-size: 1.2em;
+		}
+
+		body {
+			font-family : segoe ui;
+		}
+
+		td, th {
+			padding: 0.5em;
+			text-align : left;
+			width: 10em;
+		}
+		th {
+			background-color : #EEEEEE;
+
+		}
+		th.column1, td.column1 {
+			text-align: left;
+			width : auto;
+		}
+		table {
+			width : 100%;
+			font-size: 0.9em;
+		}
+
+		.DRC_summary_header {
+			padding-bottom : 0.1em;
+			border : 0px solid black;
+			width: 100%;
+			align: left;
+		}
+
+		.DRC_summary_header_col1,
+		.DRC_summary_header_col2, 
+		.DRC_summary_header_col3 {
+			color : black;
+			font-size:100%;
+			padding : 0em;
+			padding-top : 0.2em;
+			padding-bottom 0.2em;
+			border : 0px solid black;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.DRC_summary_header_col1 {
+			font-weight: bold;
+			width: 9em;
+		}
+
+		.DRC_summary_header_col2 {
+			width: 0.1em;
+		
+		}
+
+		.DRC_summary_header_col3 {
+			width : auto;
+		}
+
+		.header_holder {
+		    Width = 100%;
+		    border = 0px solid green;
+		    padding = 0;
+		}
+
+
+		.front_matter, .front_matter_column1, .front_matter_column2, .front_matter_column3
+		{
+			left : 0;
+			top : 0;
+			padding: 0em;
+			padding-top : 0.1em;
+			border : 0px solid black;
+			width : 100%;
+			vertical-align: top;
+			text-align: left;
+		}
+
+		.front_matter_column1 {
+			width : 8em;
+			font-weight: bold;
+		}
+
+		.front_matter_column2 {
+			width: 0.1em;
+		}
+
+		.front_matter_column3 {
+			width : auto;
+		}
+
+		.total_column1, .total_column {
+			font-weight : bold;
+		}
+		.total_column1 {
+			text-align : left;
+		}
+		.warning, .error {
+			color : red;
+			font-weight : bold;
+		}
+		tr.onmouseout_odd {
+			background-color : #white;
+		}
+		tr.onmouseout_even { 
+			background-color : #FAFAFA;
+		}
+		tr.onmouseover_odd, tr.onmouseover_even { 
+			background-color : #EEEEEE;
+		} 
+		a:link, a:visited, .q a:link,.q a:active,.q {
+			color: #21489e; 
+		}
+		a:link.callback, a:visited.callback { 
+			color: #21489e;
+		}
+		a:link.customize, a:visited.customize {
+			color: #C0C0C0;
+			position: absolute; 
+			right: 10px;
+		}	
+		p.contents_level1 {
+			font-weight : bold;
+			font-size : 110%;
+			margin : 0.5em;
+		}
+		p.contents_level2 {
+			position : relative;
+			left : 20px;
+			margin : 0.5em;
+		}
+	</style><script type="text/javascript">
+		function coordToMils(coord) {
+			var number = coord / 10000;
+			
+			if (number != number.toFixed(3))
+				number = number.toFixed(3);
+
+			return number + 'mil'
+		}
+
+		function coordToMM(coord) {
+			var number = 0.0254 * coord / 10000;
+			
+			if (number != number.toFixed(4))
+				number = number.toFixed(4);
+			
+			return number + 'mm'
+		}
+	
+		function convertCoord(coordNode, units) {
+			for (var i = 0; i < coordNode.childNodes.length; i++) {
+				coordNode.removeChild(coordNode.childNodes[i]);
+			}
+
+			var coord = coordNode.getAttribute('value');
+			if (coord != null) {
+				if (units == 'mm') {
+					textNode = document.createTextNode(coordToMM(coord));
+					coordNode.appendChild(textNode);
+				} else if (units == 'mil') {
+					textNode = document.createTextNode(coordToMils(coord));		
+					coordNode.appendChild(textNode);	
+				}
+			}
+		}
+	
+		function convertUnits(unitNode, units) {
+			for (var i = 0; i < unitNode.childNodes.length; i++) {
+				unitNode.removeChild(unitNode.childNodes[i]);		
+			}
+		
+			textNode = document.createTextNode(units); 
+			unitNode.appendChild(textNode);
+		}
+	
+		function changeUnits(radio_input, units) {
+			if (radio_input.checked) {
+			
+				var elements = document.getElementsByName('coordinate');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertCoord(elements[i], units);
+					}
+				}
+	
+				var elements = document.getElementsByName('units');
+				if (elements) {
+					for (var i = 0; i < elements.length; i++) {
+						convertUnits(elements[i], units);
+					}
+				}
+			}
+		}
+	</script><title>Design Rule Verification Report</title>
+</head>
+<body onload=""><img ALT="Altium" src="
+			file://C:\Users\Public\Documents\Altium\AD24\Templates\AD_logo.png
+		"><h1>Design Rule Verification Report</h1>
+<table class="header_holder">
+<td class="column1">
+<table class="front_matter">
+<tr class="front_matter">
+<td class="front_matter_column1">Date:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">1/29/2025</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">9:54:24 AM</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Elapsed Time:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3">00:00:00</td>
+</tr>
+<tr class="front_matter">
+<td class="front_matter_column1">Filename:</td>
+<td class="front_matter_column2"></td>
+<td class="front_matter_column3"><a href="file:///C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc" class="file"><acronym title="C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc">C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc</acronym></a></td>
+</tr>
+</table>
+</td>
+<td class="column2">
+<table class="DRC_summary_header">
+<tr>
+<td class="DRC_summary_header_col1">Warnings:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3">0</td></tr>
+<tr>
+<td class="DRC_summary_header_col1">Rule Violations:</td>
+<td class="DRC_summary_header_col2"></td>
+<td class="DRC_summary_header_col3" style="color : red">142</td></tr>
+</table>
+</td>
+</table><a name="IDVQ21KXZYWOI3BXH45WC4FIZO2P1NUS2UD1U1HJFZHE0H5PHPVT4N"><h2>Summary</h2></a><table>
+<tr>
+<th class="column1">Warnings</th>
+<th class="column2">Count</th>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">0</td>
+</tr>
+</table><br><table>
+<tr>
+<th class="column1">Rule Violations</th>
+<th class="column2">Count</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDVQ1XZPJKMWD0JWZJFS4LVKCAFCS3QJU1LRK0GZJL4FH2YOGB4EFO">Clearance Constraint (Gap=10mil) (All),(All)</a></td>
+<td class="column2">3</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDXAXCNEKIS15QH0F3HJD5K1ILCIN5IFN555DIX5C2VMGMHZWFTAKE">Short-Circuit Constraint (Allowed=No) (All),(All)</a></td>
+<td class="column2">1</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#ID5ZVV3N5UYJW2NWCUHPZR3FQCMMMIPVIYZII1RSIZIYK4DTX3DPDF">Un-Routed Net Constraint ( (All) )</a></td>
+<td class="column2">8</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDB2EXW0MHNFH0NV2F040MHI3TVCO4BS0LETFJGKPALWLJQXEWSV4F">Modified Polygon (Allow modified: No), (Allow shelved: No)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDOD4NZ3OVMU2IGGPNBRUJ32ZMRGDQP1RHJO55O1G0AHIYY1YIID0L">Width Constraint (Min=10mil) (Max=10mil) (Preferred=10mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDRCL0DBUR5A4IOATRNMXGR20SLPZAPKPHID15PAFQG4D1ZFCKJQGK">Routing Topology Rule(Topology=Shortest) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDRUCPRTZW53LSMZVTTRG1BRRYJKVUCNFPONGCMIMJ0LPZWMUV41EJ">Power Plane Connect Rule(Relief Connect )(Expansion=20mil) (Conductor Width=10mil) (Air Gap=10mil) (Entries=4) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDZB1532H1ZESRDUJLCQJL5XHU2C0NLNTVHGD15NMPF0UUUY5UH01O">Hole Size Constraint (Min=1mil) (Max=100mil) (All)</a></td>
+<td class="column2">4</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDMDZLEJKRCJDOMHUU0JOZOC4R2KTJ233ILDZVPUKDBNVRPNIK5IVD">Hole To Hole Clearance (Gap=10mil) (All),(All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDPHD2CZ14TFTCKI1ZFV5RR5DLQJ3DLRJASNHDWCHG0F0OMCSXEKXD">Minimum Solder Mask Sliver (Gap=10mil) (All),(All)</a></td>
+<td class="column2">55</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDVGRM1MCABCWIOLL5ER5V32BHYGC33PBVEL5Z2JBMMT2PQR2ERYMO">Silk To Solder Mask (Clearance=10mil) (IsPad),(All)</a></td>
+<td class="column2">55</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDBQBHQCH5UXLLPL5LUNRWX1NRBPAXDYSJATFFEWKXWKKHL4PWY1FG">Silk to Silk (Clearance=10mil) (All),(All)</a></td>
+<td class="column2">16</td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="#IDZ4IRWIRIZ5OUP23VUAEIKIDX0QJMP3ONJAK0FOIKN2YAWXFNAFI">Net Antennae (Tolerance=0mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="#IDXH24AAQNBBALOO1YKS2HE3XP2GICURVP3VHBFZNDKA5ZDR1BUBLG">Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (All)</a></td>
+<td class="column2">0</td>
+</tr>
+<tr>
+<td style="font-weight : bold; text-align : right" class="column1">Total</td>
+<td style="font-weight : bold" class="column2">142</td>
+</tr>
+</table><br><a name="IDVQ1XZPJKMWD0JWZJFS4LVKCAFCS3QJU1LRK0GZJL4FH2YOGB4EFO"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Clearance Constraint (Gap=10mil) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5533.007mil|Location2.X=5541.757mil|Location1.Y=5049.109mil|Location2.Y=5057.915mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5533.007mil|Location2.X=5541.757mil|Location1.Y=5049.109mil|Location2.Y=5057.915mil|Absolute=True">Clearance Constraint: (7.463mil &lt; 7.5mil) Between Pad U4-1(5544.764mil,5033.898mil) on Top Layer And Pad U4-48(5517.795mil,5060.866mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5764.306mil|Location2.X=5773.056mil|Location1.Y=5280.408mil|Location2.Y=5289.214mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5764.306mil|Location2.X=5773.056mil|Location1.Y=5280.408mil|Location2.Y=5289.214mil|Absolute=True">Clearance Constraint: (7.463mil &lt; 7.5mil) Between Pad U4-24(5788.268mil,5277.402mil) on Top Layer And Pad U4-25(5761.299mil,5304.37mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5533.007mil|Location2.X=5541.813mil|Location1.Y=5280.408mil|Location2.Y=5289.158mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5533.007mil|Location2.X=5541.813mil|Location1.Y=5280.408mil|Location2.Y=5289.158mil|Absolute=True">Clearance Constraint: (7.463mil &lt; 7.5mil) Between Pad U4-36(5544.764mil,5304.37mil) on Top Layer And Pad U4-37(5517.795mil,5277.402mil) on Top Layer </acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDXAXCNEKIS15QH0F3HJD5K1ILCIN5IFN555DIX5C2VMGMHZWFTAKE"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Short-Circuit Constraint (Allowed=No) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4573.881mil|Location2.X=4610.154mil|Location1.Y=5844.462mil|Location2.Y=5880.735mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4573.881mil|Location2.X=4610.154mil|Location1.Y=5844.462mil|Location2.Y=5880.735mil|Absolute=True">Short-Circuit Constraint: Between Pad Q1-(4602.756mil,5862.599mil) on Top Layer And Track (4519.363mil,5862.599mil)(4602.756mil,5862.599mil) on Top Layer Location : [X = 4592.017mil][Y = 5862.599mil]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="ID5ZVV3N5UYJW2NWCUHPZR3FQCMMMIPVIYZII1RSIZIYK4DTX3DPDF"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Un-Routed Net Constraint ( (All) )</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3196.769mil|Location2.X=3453.231mil|Location1.Y=6617.881mil|Location2.Y=6678.595mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3196.769mil|Location2.X=3453.231mil|Location1.Y=6617.881mil|Location2.Y=6678.595mil|Absolute=True">Un-Routed Net Constraint: Net BuckConv Between Pad C4-1(3250mil,6646.476mil) on Top Layer And Pad C5-1(3400mil,6650mil) on Top Layer </acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=990.097mil|Location2.X=8889.903mil|Location1.Y=1040.097mil|Location2.Y=6929.903mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=990.097mil|Location2.X=8889.903mil|Location1.Y=1040.097mil|Location2.Y=6929.903mil|Absolute=True">Un-Routed Net Constraint: Split Plane  (No Net) on Layer 2 Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.363mil|Location2.X=4607.756mil|Location1.Y=5857.599mil|Location2.Y=5867.599mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.363mil|Location2.X=4607.756mil|Location1.Y=5857.599mil|Location2.Y=5867.599mil|Absolute=True">Un-Routed Net Constraint: Track (4519.363mil,5862.599mil)(4602.756mil,5862.599mil) on Top Layer Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=8905mil|Location2.X=8915mil|Location1.Y=1015mil|Location2.Y=6955mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=8905mil|Location2.X=8915mil|Location1.Y=1015mil|Location2.Y=6955mil|Absolute=True">Un-Routed Net Constraint: Track (8910mil,1020mil)(8910mil,6950mil) on Top Layer Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=965mil|Location2.X=8915mil|Location1.Y=1015mil|Location2.Y=1025mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=965mil|Location2.X=8915mil|Location1.Y=1015mil|Location2.Y=1025mil|Absolute=True">Un-Routed Net Constraint: Track (970mil,1020mil)(8910mil,1020mil) on Top Layer Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=965mil|Location2.X=975mil|Location1.Y=1015mil|Location2.Y=6955mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=965mil|Location2.X=975mil|Location1.Y=1015mil|Location2.Y=6955mil|Absolute=True">Un-Routed Net Constraint: Track (970mil,1020mil)(970mil,6950mil) on Top Layer Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=965mil|Location2.X=8915mil|Location1.Y=6945mil|Location2.Y=6955mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=965mil|Location2.X=8915mil|Location1.Y=6945mil|Location2.Y=6955mil|Absolute=True">Un-Routed Net Constraint: Track (970mil,6950mil)(8910mil,6950mil) on Top Layer Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4491.863mil|Location2.X=4546.863mil|Location1.Y=5835.099mil|Location2.Y=5890.099mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4491.863mil|Location2.X=4546.863mil|Location1.Y=5835.099mil|Location2.Y=5890.099mil|Absolute=True">Un-Routed Net Constraint: Via (4519.363mil,5862.599mil) from Top Layer to Bottom Layer Dead Copper - Net Not Assigned.</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDZB1532H1ZESRDUJLCQJL5XHU2C0NLNTVHGD15NMPF0UUUY5UH01O"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Hole Size Constraint (Min=1mil) (Max=100mil) (All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1020.32mil|Location2.X=1139.68mil|Location1.Y=6785.32mil|Location2.Y=6904.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1020.32mil|Location2.X=1139.68mil|Location1.Y=6785.32mil|Location2.Y=6904.68mil|Absolute=True">Hole Size Constraint: (118.11mil &gt; 100mil) Pad Free-1(1080mil,6845mil) on Multi-Layer Actual Hole Size = 118.11mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1035.32mil|Location2.X=1154.68mil|Location1.Y=1070.32mil|Location2.Y=1189.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=1035.32mil|Location2.X=1154.68mil|Location1.Y=1070.32mil|Location2.Y=1189.68mil|Absolute=True">Hole Size Constraint: (118.11mil &gt; 100mil) Pad Free-1(1095mil,1130mil) on Multi-Layer Actual Hole Size = 118.11mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=8725.32mil|Location2.X=8844.68mil|Location1.Y=1075.32mil|Location2.Y=1194.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=8725.32mil|Location2.X=8844.68mil|Location1.Y=1075.32mil|Location2.Y=1194.68mil|Absolute=True">Hole Size Constraint: (118.11mil &gt; 100mil) Pad Free-1(8785mil,1135mil) on Multi-Layer Actual Hole Size = 118.11mil</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=8740.32mil|Location2.X=8859.68mil|Location1.Y=6780.32mil|Location2.Y=6899.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=8740.32mil|Location2.X=8859.68mil|Location1.Y=6780.32mil|Location2.Y=6899.68mil|Absolute=True">Hole Size Constraint: (118.11mil &gt; 100mil) Pad Free-1(8800mil,6840mil) on Multi-Layer Actual Hole Size = 118.11mil</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDPHD2CZ14TFTCKI1ZFV5RR5DLQJ3DLRJASNHDWCHG0F0OMCSXEKXD"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Minimum Solder Mask Sliver (Gap=10mil) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6674.375mil|Location2.X=6685.625mil|Location1.Y=5976.918mil|Location2.Y=5988.168mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6674.375mil|Location2.X=6685.625mil|Location1.Y=5976.918mil|Location2.Y=5988.168mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (3.811mil &lt; 10mil) Between Pad C18-1(6711.496mil,5950mil) on Top Layer And Pad C18-2(6648.504mil,5950mil) on Top Layer [Top Solder] Mask Sliver [3.811mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5361.832mil|Location2.X=5373.082mil|Location1.Y=5004.375mil|Location2.Y=5015.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5361.832mil|Location2.X=5373.082mil|Location1.Y=5004.375mil|Location2.Y=5015.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (3.811mil &lt; 10mil) Between Pad C19-1(5400mil,5041.496mil) on Top Layer And Pad C19-2(5400mil,4978.504mil) on Top Layer [Top Solder] Mask Sliver [3.811mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5271.832mil|Location2.X=5283.082mil|Location1.Y=5004.375mil|Location2.Y=5015.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5271.832mil|Location2.X=5283.082mil|Location1.Y=5004.375mil|Location2.Y=5015.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (3.811mil &lt; 10mil) Between Pad C20-1(5310mil,5041.496mil) on Top Layer And Pad C20-2(5310mil,4978.504mil) on Top Layer [Top Solder] Mask Sliver [3.811mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5559.044mil|Location2.X=5570.294mil|Location1.Y=5484.375mil|Location2.Y=5495.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5559.044mil|Location2.X=5570.294mil|Location1.Y=5484.375mil|Location2.Y=5495.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (9.717mil &lt; 10mil) Between Pad R1-1(5540mil,5463.425mil) on Top Layer And Pad R1-2(5540mil,5516.575mil) on Top Layer [Top Solder] Mask Sliver [9.717mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5624.375mil|Location2.X=5635.625mil|Location1.Y=5739.706mil|Location2.Y=5750.956mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5624.375mil|Location2.X=5635.625mil|Location1.Y=5739.706mil|Location2.Y=5750.956mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (9.717mil &lt; 10mil) Between Pad R2-1(5603.425mil,5770mil) on Top Layer And Pad R2-2(5656.575mil,5770mil) on Top Layer [Top Solder] Mask Sliver [9.717mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4069.044mil|Location2.X=4080.294mil|Location1.Y=6517.8mil|Location2.Y=6529.05mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4069.044mil|Location2.X=4080.294mil|Location1.Y=6517.8mil|Location2.Y=6529.05mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (9.717mil &lt; 10mil) Between Pad R4-1(4050mil,6496.85mil) on Top Layer And Pad R4-2(4050mil,6550mil) on Top Layer [Top Solder] Mask Sliver [9.717mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4069.044mil|Location2.X=4080.294mil|Location1.Y=6367.8mil|Location2.Y=6379.05mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4069.044mil|Location2.X=4080.294mil|Location1.Y=6367.8mil|Location2.Y=6379.05mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (9.717mil &lt; 10mil) Between Pad R5-1(4050mil,6346.85mil) on Top Layer And Pad R5-2(4050mil,6400mil) on Top Layer [Top Solder] Mask Sliver [9.717mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5504.541mil|Location2.X=5515.791mil|Location1.Y=5641.376mil|Location2.Y=5652.626mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5504.541mil|Location2.X=5515.791mil|Location1.Y=5641.376mil|Location2.Y=5652.626mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (3.936mil &lt; 10mil) Between Pad U1-2(5542.402mil,5649.685mil) on Top Layer And Via (5480mil,5640mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [3.936mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5504.525mil|Location2.X=5515.775mil|Location1.Y=5627.15mil|Location2.Y=5638.4mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5504.525mil|Location2.X=5515.775mil|Location1.Y=5627.15mil|Location2.Y=5638.4mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (4.008mil &lt; 10mil) Between Pad U1-3(5542.402mil,5630mil) on Top Layer And Via (5480mil,5640mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [4.008mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5548.981mil|Location2.X=5560.231mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5548.981mil|Location2.X=5560.231mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-1(5544.764mil,5033.898mil) on Top Layer And Pad U4-2(5564.449mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5726.147mil|Location2.X=5737.397mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5726.147mil|Location2.X=5737.397mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-10(5721.929mil,5033.898mil) on Top Layer And Pad U4-11(5741.614mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5706.462mil|Location2.X=5717.712mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5706.462mil|Location2.X=5717.712mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-10(5721.929mil,5033.898mil) on Top Layer And Pad U4-9(5702.244mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5745.832mil|Location2.X=5757.082mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5745.832mil|Location2.X=5757.082mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-11(5741.614mil,5033.898mil) on Top Layer And Pad U4-12(5761.299mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5065.084mil|Location2.Y=5076.334mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5065.084mil|Location2.Y=5076.334mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-13(5788.268mil,5060.866mil) on Top Layer And Pad U4-14(5788.268mil,5080.551mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5084.769mil|Location2.Y=5096.019mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5084.769mil|Location2.Y=5096.019mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-14(5788.268mil,5080.551mil) on Top Layer And Pad U4-15(5788.268mil,5100.236mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5104.454mil|Location2.Y=5115.704mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5104.454mil|Location2.Y=5115.704mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-15(5788.268mil,5100.236mil) on Top Layer And Pad U4-16(5788.268mil,5119.921mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5124.139mil|Location2.Y=5135.389mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5124.139mil|Location2.Y=5135.389mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-16(5788.268mil,5119.921mil) on Top Layer And Pad U4-17(5788.268mil,5139.606mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5143.824mil|Location2.Y=5155.074mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5143.824mil|Location2.Y=5155.074mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-17(5788.268mil,5139.606mil) on Top Layer And Pad U4-18(5788.268mil,5159.291mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5163.509mil|Location2.Y=5174.759mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5163.509mil|Location2.Y=5174.759mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-18(5788.268mil,5159.291mil) on Top Layer And Pad U4-19(5788.268mil,5178.976mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5183.194mil|Location2.Y=5194.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5183.194mil|Location2.Y=5194.444mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-19(5788.268mil,5178.976mil) on Top Layer And Pad U4-20(5788.268mil,5198.662mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5568.666mil|Location2.X=5579.916mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5568.666mil|Location2.X=5579.916mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-2(5564.449mil,5033.898mil) on Top Layer And Pad U4-3(5584.134mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5202.879mil|Location2.Y=5214.129mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5202.879mil|Location2.Y=5214.129mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-20(5788.268mil,5198.662mil) on Top Layer And Pad U4-21(5788.268mil,5218.346mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5222.564mil|Location2.Y=5233.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5222.564mil|Location2.Y=5233.814mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-21(5788.268mil,5218.346mil) on Top Layer And Pad U4-22(5788.268mil,5238.032mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5242.249mil|Location2.Y=5253.499mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5242.249mil|Location2.Y=5253.499mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-22(5788.268mil,5238.032mil) on Top Layer And Pad U4-23(5788.268mil,5257.717mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5261.934mil|Location2.Y=5273.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5766.599mil|Location2.X=5777.849mil|Location1.Y=5261.934mil|Location2.Y=5273.184mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-23(5788.268mil,5257.717mil) on Top Layer And Pad U4-24(5788.268mil,5277.402mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5745.832mil|Location2.X=5757.082mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5745.832mil|Location2.X=5757.082mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-25(5761.299mil,5304.37mil) on Top Layer And Pad U4-26(5741.614mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5726.147mil|Location2.X=5737.397mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5726.147mil|Location2.X=5737.397mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-26(5741.614mil,5304.37mil) on Top Layer And Pad U4-27(5721.929mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5706.462mil|Location2.X=5717.712mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5706.462mil|Location2.X=5717.712mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-27(5721.929mil,5304.37mil) on Top Layer And Pad U4-28(5702.244mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5686.777mil|Location2.X=5698.027mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5686.777mil|Location2.X=5698.027mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-28(5702.244mil,5304.37mil) on Top Layer And Pad U4-29(5682.559mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5667.092mil|Location2.X=5678.342mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5667.092mil|Location2.X=5678.342mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-29(5682.559mil,5304.37mil) on Top Layer And Pad U4-30(5662.874mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5588.351mil|Location2.X=5599.601mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5588.351mil|Location2.X=5599.601mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-3(5584.134mil,5033.898mil) on Top Layer And Pad U4-4(5603.819mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5647.407mil|Location2.X=5658.657mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5647.407mil|Location2.X=5658.657mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-30(5662.874mil,5304.37mil) on Top Layer And Pad U4-31(5643.189mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5627.721mil|Location2.X=5638.971mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5627.721mil|Location2.X=5638.971mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-31(5643.189mil,5304.37mil) on Top Layer And Pad U4-32(5623.504mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5608.036mil|Location2.X=5619.286mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5608.036mil|Location2.X=5619.286mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-32(5623.504mil,5304.37mil) on Top Layer And Pad U4-33(5603.819mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5588.351mil|Location2.X=5599.601mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5588.351mil|Location2.X=5599.601mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-33(5603.819mil,5304.37mil) on Top Layer And Pad U4-34(5584.134mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5568.666mil|Location2.X=5579.916mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5568.666mil|Location2.X=5579.916mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-34(5584.134mil,5304.37mil) on Top Layer And Pad U4-35(5564.449mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5548.981mil|Location2.X=5560.231mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5548.981mil|Location2.X=5560.231mil|Location1.Y=5314.788mil|Location2.Y=5326.038mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-35(5564.449mil,5304.37mil) on Top Layer And Pad U4-36(5544.764mil,5304.37mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5261.934mil|Location2.Y=5273.184mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5261.934mil|Location2.Y=5273.184mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-37(5517.795mil,5277.402mil) on Top Layer And Pad U4-38(5517.795mil,5257.717mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5242.249mil|Location2.Y=5253.499mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5242.249mil|Location2.Y=5253.499mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-38(5517.795mil,5257.717mil) on Top Layer And Pad U4-39(5517.795mil,5238.032mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5222.564mil|Location2.Y=5233.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5222.564mil|Location2.Y=5233.814mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-39(5517.795mil,5238.032mil) on Top Layer And Pad U4-40(5517.795mil,5218.346mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5608.036mil|Location2.X=5619.286mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5608.036mil|Location2.X=5619.286mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-4(5603.819mil,5033.898mil) on Top Layer And Pad U4-5(5623.504mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5202.879mil|Location2.Y=5214.129mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5202.879mil|Location2.Y=5214.129mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-40(5517.795mil,5218.346mil) on Top Layer And Pad U4-41(5517.795mil,5198.662mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5183.194mil|Location2.Y=5194.444mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5183.194mil|Location2.Y=5194.444mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-41(5517.795mil,5198.662mil) on Top Layer And Pad U4-42(5517.795mil,5178.976mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5163.509mil|Location2.Y=5174.759mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5163.509mil|Location2.Y=5174.759mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-42(5517.795mil,5178.976mil) on Top Layer And Pad U4-43(5517.795mil,5159.291mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5143.824mil|Location2.Y=5155.074mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5143.824mil|Location2.Y=5155.074mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-43(5517.795mil,5159.291mil) on Top Layer And Pad U4-44(5517.795mil,5139.606mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5124.139mil|Location2.Y=5135.389mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5124.139mil|Location2.Y=5135.389mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-44(5517.795mil,5139.606mil) on Top Layer And Pad U4-45(5517.795mil,5119.921mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5104.454mil|Location2.Y=5115.704mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5104.454mil|Location2.Y=5115.704mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-45(5517.795mil,5119.921mil) on Top Layer And Pad U4-46(5517.795mil,5100.236mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5084.769mil|Location2.Y=5096.019mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5084.769mil|Location2.Y=5096.019mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-46(5517.795mil,5100.236mil) on Top Layer And Pad U4-47(5517.795mil,5080.551mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5065.084mil|Location2.Y=5076.334mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5496.127mil|Location2.X=5507.377mil|Location1.Y=5065.084mil|Location2.Y=5076.334mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-47(5517.795mil,5080.551mil) on Top Layer And Pad U4-48(5517.795mil,5060.866mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5627.721mil|Location2.X=5638.971mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5627.721mil|Location2.X=5638.971mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-5(5623.504mil,5033.898mil) on Top Layer And Pad U4-6(5643.189mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5647.407mil|Location2.X=5658.657mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5647.407mil|Location2.X=5658.657mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-6(5643.189mil,5033.898mil) on Top Layer And Pad U4-7(5662.874mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5667.092mil|Location2.X=5678.342mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5667.092mil|Location2.X=5678.342mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-7(5662.874mil,5033.898mil) on Top Layer And Pad U4-8(5682.559mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5686.777mil|Location2.X=5698.027mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5686.777mil|Location2.X=5698.027mil|Location1.Y=5012.229mil|Location2.Y=5023.479mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (1.449mil &lt; 10mil) Between Pad U4-8(5682.559mil,5033.898mil) on Top Layer And Pad U4-9(5702.244mil,5033.898mil) on Top Layer [Top Solder] Mask Sliver [1.449mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3794.375mil|Location2.X=3805.625mil|Location1.Y=4219.375mil|Location2.Y=4230.625mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3794.375mil|Location2.X=3805.625mil|Location1.Y=4219.375mil|Location2.Y=4230.625mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (7mil &lt; 10mil) Between Via (3800mil,4200mil) from Top Layer to Bottom Layer And Via (3800mil,4250mil) from Top Layer to Bottom Layer [Bottom Solder] Mask Sliver [7mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5722.441mil|Location2.X=5733.691mil|Location1.Y=4953.75mil|Location2.Y=4965mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5722.441mil|Location2.X=5733.691mil|Location1.Y=4953.75mil|Location2.Y=4965mil|Absolute=True">Minimum Solder Mask Sliver Constraint: (2mil &lt; 10mil) Between Via (5700.424mil,4971.033mil) from Top Layer to Bottom Layer And Via (5755.709mil,4947.717mil) from Top Layer to Bottom Layer [Top Solder] Mask Sliver [2mil] / [Bottom Solder] Mask Sliver [2mil]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDVGRM1MCABCWIOLL5ER5V32BHYGC33PBVEL5Z2JBMMT2PQR2ERYMO"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Silk To Solder Mask (Clearance=10mil) (IsPad),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5108.775mil|Location2.X=5120.025mil|Location1.Y=4380.241mil|Location2.Y=4391.491mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5108.775mil|Location2.X=5120.025mil|Location1.Y=4380.241mil|Location2.Y=4391.491mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.897mil &lt; 10mil) Between Pad B1-1(5160mil,4390mil) on Multi-Layer And Text "R15" (5104.99mil,4345.024mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.897mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3190.511mil|Location2.X=3201.761mil|Location1.Y=6608.294mil|Location2.Y=6619.544mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3190.511mil|Location2.X=3201.761mil|Location1.Y=6608.294mil|Location2.Y=6619.544mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C4-1(3250mil,6646.476mil) on Top Layer And Track (3194.882mil,6590.406mil)(3194.882mil,6606.07mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3298.239mil|Location2.X=3309.489mil|Location1.Y=6608.294mil|Location2.Y=6619.544mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3298.239mil|Location2.X=3309.489mil|Location1.Y=6608.294mil|Location2.Y=6619.544mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C4-1(3250mil,6646.476mil) on Top Layer And Track (3305.118mil,6590.406mil)(3305.118mil,6606.07mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3190.511mil|Location2.X=3201.761mil|Location1.Y=6576.932mil|Location2.Y=6588.182mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3190.511mil|Location2.X=3201.761mil|Location1.Y=6576.932mil|Location2.Y=6588.182mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C4-2(3250mil,6550mil) on Top Layer And Track (3194.882mil,6590.406mil)(3194.882mil,6606.07mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3298.239mil|Location2.X=3309.489mil|Location1.Y=6576.932mil|Location2.Y=6588.182mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3298.239mil|Location2.X=3309.489mil|Location1.Y=6576.932mil|Location2.Y=6588.182mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C4-2(3250mil,6550mil) on Top Layer And Track (3305.118mil,6590.406mil)(3305.118mil,6606.07mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3340.511mil|Location2.X=3351.761mil|Location1.Y=6611.818mil|Location2.Y=6623.068mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3340.511mil|Location2.X=3351.761mil|Location1.Y=6611.818mil|Location2.Y=6623.068mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C5-1(3400mil,6650mil) on Top Layer And Track (3344.882mil,6593.93mil)(3344.882mil,6609.594mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3448.239mil|Location2.X=3459.489mil|Location1.Y=6611.818mil|Location2.Y=6623.068mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3448.239mil|Location2.X=3459.489mil|Location1.Y=6611.818mil|Location2.Y=6623.068mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C5-1(3400mil,6650mil) on Top Layer And Track (3455.118mil,6593.93mil)(3455.118mil,6609.594mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3340.511mil|Location2.X=3351.761mil|Location1.Y=6580.456mil|Location2.Y=6591.706mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3340.511mil|Location2.X=3351.761mil|Location1.Y=6580.456mil|Location2.Y=6591.706mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C5-2(3400mil,6553.524mil) on Top Layer And Track (3344.882mil,6593.93mil)(3344.882mil,6609.594mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3448.239mil|Location2.X=3459.489mil|Location1.Y=6580.456mil|Location2.Y=6591.706mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3448.239mil|Location2.X=3459.489mil|Location1.Y=6580.456mil|Location2.Y=6591.706mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (8.024mil &lt; 10mil) Between Pad C5-2(3400mil,6553.524mil) on Top Layer And Track (3455.118mil,6593.93mil)(3455.118mil,6609.594mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [8.024mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5570.167mil|Location2.X=5577.833mil|Location1.Y=5895.783mil|Location2.Y=5903.45mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5570.167mil|Location2.X=5577.833mil|Location1.Y=5895.783mil|Location2.Y=5903.45mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad J1-3(5590mil,5930mil) on Multi-Layer And Text "R2" (5574mil,5842mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5662.034mil|Location2.X=5673.284mil|Location1.Y=5900.274mil|Location2.Y=5911.524mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5662.034mil|Location2.X=5673.284mil|Location1.Y=5900.274mil|Location2.Y=5911.524mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (0.763mil &lt; 10mil) Between Pad J1-4(5690mil,5930mil) on Multi-Layer And Text "R2" (5574mil,5842mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0.763mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4714.946mil|Location2.X=4726.196mil|Location1.Y=6653.43mil|Location2.Y=6664.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4714.946mil|Location2.X=4726.196mil|Location1.Y=6653.43mil|Location2.Y=6664.68mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K1-2(4700mil,6650mil) on Top Layer And Track (4729.331mil,6659.055mil)(4862.598mil,6659.055mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=6653.43mil|Location2.Y=6664.68mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=6653.43mil|Location2.Y=6664.68mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K1-4(4500mil,6650mil) on Top Layer And Track (4529.331mil,6659.055mil)(4668.307mil,6659.055mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=6369.966mil|Location2.Y=6381.216mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=6369.966mil|Location2.Y=6381.216mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K1-5(4500mil,6384.646mil) on Top Layer And Track (4529.331mil,6375.591mil)(4768.307mil,6375.591mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4814.946mil|Location2.X=4826.196mil|Location1.Y=6369.966mil|Location2.Y=6381.216mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4814.946mil|Location2.X=4826.196mil|Location1.Y=6369.966mil|Location2.Y=6381.216mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K1-8(4800mil,6384.646mil) on Top Layer And Track (4829.331mil,6375.591mil)(4862.598mil,6375.591mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4714.946mil|Location2.X=4726.196mil|Location1.Y=5586.107mil|Location2.Y=5597.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4714.946mil|Location2.X=4726.196mil|Location1.Y=5586.107mil|Location2.Y=5597.357mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K2-2(4700mil,5582.677mil) on Top Layer And Track (4729.331mil,5591.732mil)(4862.598mil,5591.732mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=5586.107mil|Location2.Y=5597.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=5586.107mil|Location2.Y=5597.357mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K2-4(4500mil,5582.677mil) on Top Layer And Track (4529.331mil,5591.732mil)(4668.307mil,5591.732mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=5302.643mil|Location2.Y=5313.893mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=5302.643mil|Location2.Y=5313.893mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K2-5(4500mil,5317.323mil) on Top Layer And Track (4529.331mil,5308.268mil)(4768.307mil,5308.268mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4814.946mil|Location2.X=4826.196mil|Location1.Y=5302.643mil|Location2.Y=5313.893mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4814.946mil|Location2.X=4826.196mil|Location1.Y=5302.643mil|Location2.Y=5313.893mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K2-8(4800mil,5317.323mil) on Top Layer And Track (4829.331mil,5308.268mil)(4862.598mil,5308.268mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4714.946mil|Location2.X=4726.196mil|Location1.Y=4486.107mil|Location2.Y=4497.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4714.946mil|Location2.X=4726.196mil|Location1.Y=4486.107mil|Location2.Y=4497.357mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K3-2(4700mil,4482.677mil) on Top Layer And Track (4729.331mil,4491.732mil)(4862.598mil,4491.732mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=4486.107mil|Location2.Y=4497.357mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=4486.107mil|Location2.Y=4497.357mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K3-4(4500mil,4482.677mil) on Top Layer And Track (4529.331mil,4491.732mil)(4668.307mil,4491.732mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=4202.643mil|Location2.Y=4213.893mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4514.946mil|Location2.X=4526.196mil|Location1.Y=4202.643mil|Location2.Y=4213.893mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K3-5(4500mil,4217.323mil) on Top Layer And Track (4529.331mil,4208.268mil)(4768.307mil,4208.268mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4814.946mil|Location2.X=4826.196mil|Location1.Y=4202.643mil|Location2.Y=4213.893mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=4814.946mil|Location2.X=4826.196mil|Location1.Y=4202.643mil|Location2.Y=4213.893mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.646mil &lt; 10mil) Between Pad K3-8(4800mil,4217.323mil) on Top Layer And Track (4829.331mil,4208.268mil)(4862.598mil,4208.268mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.646mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6272.603mil|Location2.X=6283.853mil|Location1.Y=4910.753mil|Location2.Y=4922.003mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6272.603mil|Location2.X=6283.853mil|Location1.Y=4910.753mil|Location2.Y=4922.003mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED1-1(6259.528mil,4940mil) on Top Layer And Track (6200.472mil,4907.52mil)(6292.008mil,4907.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6235.202mil|Location2.X=6246.452mil|Location1.Y=4957.997mil|Location2.Y=4969.247mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6235.202mil|Location2.X=6246.452mil|Location1.Y=4957.997mil|Location2.Y=4969.247mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED1-1(6259.528mil,4940mil) on Top Layer And Track (6200.472mil,4972.48mil)(6292.008mil,4972.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6277.525mil|Location2.X=6288.775mil|Location1.Y=4915.674mil|Location2.Y=4926.924mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6277.525mil|Location2.X=6288.775mil|Location1.Y=4915.674mil|Location2.Y=4926.924mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED1-1(6259.528mil,4940mil) on Top Layer And Track (6292.008mil,4907.52mil)(6292.008mil,4972.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=4910.753mil|Location2.Y=4922.003mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=4910.753mil|Location2.Y=4922.003mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED1-2(6200.472mil,4940mil) on Top Layer And Track (6200.472mil,4907.52mil)(6292.008mil,4907.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=4957.997mil|Location2.Y=4969.247mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=4957.997mil|Location2.Y=4969.247mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED1-2(6200.472mil,4940mil) on Top Layer And Track (6200.472mil,4972.48mil)(6292.008mil,4972.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6274.395mil|Location2.X=6282.062mil|Location1.Y=5062.147mil|Location2.Y=5069.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6274.395mil|Location2.X=6282.062mil|Location1.Y=5062.147mil|Location2.Y=5069.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad LED2-1(6259.528mil,5055mil) on Top Layer And Text "LED1" (6188mil,5006mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6272.603mil|Location2.X=6283.853mil|Location1.Y=5025.753mil|Location2.Y=5037.003mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6272.603mil|Location2.X=6283.853mil|Location1.Y=5025.753mil|Location2.Y=5037.003mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED2-1(6259.528mil,5055mil) on Top Layer And Track (6200.472mil,5022.52mil)(6292.008mil,5022.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6235.202mil|Location2.X=6246.452mil|Location1.Y=5072.997mil|Location2.Y=5084.247mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6235.202mil|Location2.X=6246.452mil|Location1.Y=5072.997mil|Location2.Y=5084.247mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED2-1(6259.528mil,5055mil) on Top Layer And Track (6200.472mil,5087.48mil)(6292.008mil,5087.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6277.525mil|Location2.X=6288.775mil|Location1.Y=5030.674mil|Location2.Y=5041.924mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6277.525mil|Location2.X=6288.775mil|Location1.Y=5030.674mil|Location2.Y=5041.924mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED2-1(6259.528mil,5055mil) on Top Layer And Track (6292.008mil,5022.52mil)(6292.008mil,5087.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6184.167mil|Location2.X=6191.833mil|Location1.Y=5062.147mil|Location2.Y=5069.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6184.167mil|Location2.X=6191.833mil|Location1.Y=5062.147mil|Location2.Y=5069.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad LED2-2(6200.472mil,5055mil) on Top Layer And Text "LED1" (6188mil,5006mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6172.736mil|Location2.X=6183.986mil|Location1.Y=5033.362mil|Location2.Y=5044.612mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6172.736mil|Location2.X=6183.986mil|Location1.Y=5033.362mil|Location2.Y=5044.612mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (6.82mil &lt; 10mil) Between Pad LED2-2(6200.472mil,5055mil) on Top Layer And Text "R12" (6020mil,4999mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [6.82mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5025.753mil|Location2.Y=5037.003mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5025.753mil|Location2.Y=5037.003mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED2-2(6200.472mil,5055mil) on Top Layer And Track (6200.472mil,5022.52mil)(6292.008mil,5022.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5072.997mil|Location2.Y=5084.247mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5072.997mil|Location2.Y=5084.247mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED2-2(6200.472mil,5055mil) on Top Layer And Track (6200.472mil,5087.48mil)(6292.008mil,5087.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6274.395mil|Location2.X=6282.062mil|Location1.Y=5177.147mil|Location2.Y=5184.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6274.395mil|Location2.X=6282.062mil|Location1.Y=5177.147mil|Location2.Y=5184.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad LED3-1(6259.528mil,5170mil) on Top Layer And Text "LED2" (6188mil,5121mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6272.603mil|Location2.X=6283.853mil|Location1.Y=5140.753mil|Location2.Y=5152.003mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6272.603mil|Location2.X=6283.853mil|Location1.Y=5140.753mil|Location2.Y=5152.003mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED3-1(6259.528mil,5170mil) on Top Layer And Track (6200.472mil,5137.52mil)(6292.008mil,5137.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6235.202mil|Location2.X=6246.452mil|Location1.Y=5187.997mil|Location2.Y=5199.247mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6235.202mil|Location2.X=6246.452mil|Location1.Y=5187.997mil|Location2.Y=5199.247mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED3-1(6259.528mil,5170mil) on Top Layer And Track (6200.472mil,5202.48mil)(6292.008mil,5202.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6277.525mil|Location2.X=6288.775mil|Location1.Y=5145.674mil|Location2.Y=5156.924mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6277.525mil|Location2.X=6288.775mil|Location1.Y=5145.674mil|Location2.Y=5156.924mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED3-1(6259.528mil,5170mil) on Top Layer And Track (6292.008mil,5137.52mil)(6292.008mil,5202.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6184.167mil|Location2.X=6191.833mil|Location1.Y=5177.147mil|Location2.Y=5184.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6184.167mil|Location2.X=6191.833mil|Location1.Y=5177.147mil|Location2.Y=5184.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad LED3-2(6200.472mil,5170mil) on Top Layer And Text "LED2" (6188mil,5121mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6172.736mil|Location2.X=6183.986mil|Location1.Y=5158.359mil|Location2.Y=5169.609mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6172.736mil|Location2.X=6183.986mil|Location1.Y=5158.359mil|Location2.Y=5169.609mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (6.82mil &lt; 10mil) Between Pad LED3-2(6200.472mil,5170mil) on Top Layer And Text "R13" (6020mil,5114mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [6.82mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5140.753mil|Location2.Y=5152.003mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5140.753mil|Location2.Y=5152.003mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED3-2(6200.472mil,5170mil) on Top Layer And Track (6200.472mil,5137.52mil)(6292.008mil,5137.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5187.997mil|Location2.Y=5199.247mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6213.548mil|Location2.X=6224.798mil|Location1.Y=5187.997mil|Location2.Y=5199.247mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (9.842mil &lt; 10mil) Between Pad LED3-2(6200.472mil,5170mil) on Top Layer And Track (6200.472mil,5202.48mil)(6292.008mil,5202.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5557.216mil|Location2.X=5568.466mil|Location1.Y=5475.517mil|Location2.Y=5486.767mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5557.216mil|Location2.X=5568.466mil|Location1.Y=5475.517mil|Location2.Y=5486.767mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (4.344mil &lt; 10mil) Between Pad R1-1(5540mil,5463.425mil) on Top Layer And Text "R1" (5570.013mil,5460.01mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.344mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5557.216mil|Location2.X=5568.466mil|Location1.Y=5493.233mil|Location2.Y=5504.483mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5557.216mil|Location2.X=5568.466mil|Location1.Y=5493.233mil|Location2.Y=5504.483mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (4.344mil &lt; 10mil) Between Pad R1-2(5540mil,5516.575mil) on Top Layer And Text "R1" (5570.013mil,5460.01mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.344mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6016.167mil|Location2.X=6023.833mil|Location1.Y=5033.45mil|Location2.Y=5041.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6016.167mil|Location2.X=6023.833mil|Location1.Y=5033.45mil|Location2.Y=5041.117mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R13-1(6039.488mil,5055mil) on Top Layer And Text "R12" (6020mil,4999mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6086.144mil|Location2.X=6093.811mil|Location1.Y=5033.45mil|Location2.Y=5041.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6086.144mil|Location2.X=6093.811mil|Location1.Y=5033.45mil|Location2.Y=5041.117mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R13-2(6100.512mil,5055mil) on Top Layer And Text "R12" (6020mil,4999mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6016.167mil|Location2.X=6023.833mil|Location1.Y=5148.45mil|Location2.Y=5156.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6016.167mil|Location2.X=6023.833mil|Location1.Y=5148.45mil|Location2.Y=5156.117mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R14-1(6039.488mil,5170mil) on Top Layer And Text "R13" (6020mil,5114mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6086.144mil|Location2.X=6093.811mil|Location1.Y=5148.45mil|Location2.Y=5156.117mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6086.144mil|Location2.X=6093.811mil|Location1.Y=5148.45mil|Location2.Y=5156.117mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R14-2(6100.512mil,5170mil) on Top Layer And Text "R13" (6020mil,5114mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5858.154mil|Location2.X=5865.82mil|Location1.Y=4558.163mil|Location2.Y=4565.83mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5858.154mil|Location2.X=5865.82mil|Location1.Y=4558.163mil|Location2.Y=4565.83mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R16-1(5868.976mil,4580mil) on Top Layer And Text "B2" (5822mil,4552mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5907.466mil|Location2.X=5915.132mil|Location1.Y=4577.485mil|Location2.Y=4585.152mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5907.466mil|Location2.X=5915.132mil|Location1.Y=4577.485mil|Location2.Y=4585.152mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R16-2(5930mil,4580mil) on Top Layer And Text "B2" (5822mil,4552mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6526.954mil|Location2.X=6534.621mil|Location1.Y=4548.167mil|Location2.Y=4555.833mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6526.954mil|Location2.X=6534.621mil|Location1.Y=4548.167mil|Location2.Y=4555.833mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R17-1(6549.488mil,4560mil) on Top Layer And Text "B3" (6502mil,4552mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6588.138mil|Location2.X=6595.804mil|Location1.Y=4578.157mil|Location2.Y=4585.824mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6588.138mil|Location2.X=6595.804mil|Location1.Y=4578.157mil|Location2.Y=4585.824mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad R17-2(6610.512mil,4560mil) on Top Layer And Text "B3" (6502mil,4552mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5817.167mil|Location2.X=5824.833mil|Location1.Y=6326.147mil|Location2.Y=6333.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5817.167mil|Location2.X=5824.833mil|Location1.Y=6326.147mil|Location2.Y=6333.814mil|Absolute=True">Silk To Solder Mask Clearance Constraint: (Collision &lt; 10mil) Between Pad S1-1(5847.008mil,6380mil) on Multi-Layer And Text "R18" (5821mil,6270mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [0mil]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br><a name="IDBQBHQCH5UXLLPL5LUNRWX1NRBPAXDYSJATFFEWKXWKKHL4PWY1FG"><table>
+<tr>
+<th style="text-align : left" colspan="1" class="rule">Silk to Silk (Clearance=10mil) (All),(All)</th>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5106.989mil|Location2.X=5118.239mil|Location1.Y=4424.676mil|Location2.Y=4435.926mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5106.989mil|Location2.X=5118.239mil|Location1.Y=4424.676mil|Location2.Y=4435.926mil|Absolute=True">Silk To Silk Clearance Constraint: (8.574mil &lt; 10mil) Between Arc (5122.598mil,4437.244mil) on Top Overlay And Text "R15" (5104.99mil,4345.024mil) on Top Overlay Silk Text to Silk Clearance [8.574mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5536.777mil|Location2.X=5548.027mil|Location1.Y=5705.266mil|Location2.Y=5716.516mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5536.777mil|Location2.X=5548.027mil|Location1.Y=5705.266mil|Location2.Y=5716.516mil|Absolute=True">Silk To Silk Clearance Constraint: (8.238mil &lt; 10mil) Between Arc (5542.402mil,5696.929mil) on Top Overlay And Text "U1" (5480.013mil,5720.01mil) on Top Overlay Silk Text to Silk Clearance [8.238mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6528.157mil|Location2.X=6535.824mil|Location1.Y=4608.147mil|Location2.Y=4615.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6528.157mil|Location2.X=6535.824mil|Location1.Y=4608.147mil|Location2.Y=4615.814mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "B3" (6502mil,4552mil) on Top Overlay And Text "R17" (6530mil,4619mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6644.167mil|Location2.X=6651.833mil|Location1.Y=5406.147mil|Location2.Y=5413.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6644.167mil|Location2.X=6651.833mil|Location1.Y=5406.147mil|Location2.Y=5413.814mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "B4" (6648mil,5380mil) on Top Overlay And Text "R19" (6521mil,5350mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6648.157mil|Location2.X=6655.824mil|Location1.Y=6076.147mil|Location2.Y=6083.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6648.157mil|Location2.X=6655.824mil|Location1.Y=6076.147mil|Location2.Y=6083.814mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "C18" (6622mil,6020mil) on Top Overlay And Track (6390mil,6085mil)(7190mil,6085mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6173.351mil|Location2.X=6184.601mil|Location1.Y=5033.362mil|Location2.Y=5044.612mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6173.351mil|Location2.X=6184.601mil|Location1.Y=5033.362mil|Location2.Y=5044.612mil|Absolute=True">Silk To Silk Clearance Constraint: (8.049mil &lt; 10mil) Between Text "LED1" (6188mil,5006mil) on Top Overlay And Text "R12" (6020mil,4999mil) on Top Overlay Silk Text to Silk Clearance [8.049mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6244.147mil|Location2.X=6251.814mil|Location1.Y=5018.686mil|Location2.Y=5026.353mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6244.147mil|Location2.X=6251.814mil|Location1.Y=5018.686mil|Location2.Y=5026.353mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "LED1" (6188mil,5006mil) on Top Overlay And Track (6200.472mil,5022.52mil)(6292.008mil,5022.52mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6284.134mil|Location2.X=6291.801mil|Location1.Y=5062.147mil|Location2.Y=5069.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6284.134mil|Location2.X=6291.801mil|Location1.Y=5062.147mil|Location2.Y=5069.814mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "LED1" (6188mil,5006mil) on Top Overlay And Track (6292.008mil,5022.52mil)(6292.008mil,5087.48mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6173.351mil|Location2.X=6184.601mil|Location1.Y=5158.359mil|Location2.Y=5169.609mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6173.351mil|Location2.X=6184.601mil|Location1.Y=5158.359mil|Location2.Y=5169.609mil|Absolute=True">Silk To Silk Clearance Constraint: (8.049mil &lt; 10mil) Between Text "LED2" (6188mil,5121mil) on Top Overlay And Text "R13" (6020mil,5114mil) on Top Overlay Silk Text to Silk Clearance [8.049mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6244.147mil|Location2.X=6251.814mil|Location1.Y=5133.686mil|Location2.Y=5141.353mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6244.147mil|Location2.X=6251.814mil|Location1.Y=5133.686mil|Location2.Y=5141.353mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "LED2" (6188mil,5121mil) on Top Overlay And Track (6200.472mil,5137.52mil)(6292.008mil,5137.52mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6284.134mil|Location2.X=6291.801mil|Location1.Y=5177.147mil|Location2.Y=5184.814mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6284.134mil|Location2.X=6291.801mil|Location1.Y=5177.147mil|Location2.Y=5184.814mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "LED2" (6188mil,5121mil) on Top Overlay And Track (6292.008mil,5137.52mil)(6292.008mil,5202.48mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6173.351mil|Location2.X=6184.601mil|Location1.Y=5253.365mil|Location2.Y=5264.615mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6173.351mil|Location2.X=6184.601mil|Location1.Y=5253.365mil|Location2.Y=5264.615mil|Absolute=True">Silk To Silk Clearance Constraint: (8.049mil &lt; 10mil) Between Text "LED3" (6188mil,5236mil) on Top Overlay And Text "R14" (6020mil,5229mil) on Top Overlay Silk Text to Silk Clearance [8.049mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6424.375mil|Location2.X=6435.625mil|Location1.Y=6071.897mil|Location2.Y=6083.147mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=6424.375mil|Location2.X=6435.625mil|Location1.Y=6071.897mil|Location2.Y=6083.147mil|Absolute=True">Silk To Silk Clearance Constraint: (7.082mil &lt; 10mil) Between Text "R11" (6430mil,6009mil) on Top Overlay And Track (6390mil,6085mil)(7190mil,6085mil) on Top Overlay Silk Text to Silk Clearance [7.082mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5817.167mil|Location2.X=5824.833mil|Location1.Y=6275.97mil|Location2.Y=6283.636mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5817.167mil|Location2.X=5824.833mil|Location1.Y=6275.97mil|Location2.Y=6283.636mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "R18" (5821mil,6270mil) on Top Overlay And Track (5284.016mil,6279.803mil)(6035.984mil,6279.803mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_odd" onmouseover="className = 'onmouseover_odd'" onmouseout="className = 'onmouseout_odd'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5570.167mil|Location2.X=5577.833mil|Location1.Y=5873.214mil|Location2.Y=5880.881mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=5570.167mil|Location2.X=5577.833mil|Location1.Y=5873.214mil|Location2.Y=5880.881mil|Absolute=True">Silk To Silk Clearance Constraint: (Collision &lt; 10mil) Between Text "R2" (5574mil,5842mil) on Top Overlay And Track (5334.095mil,5877.047mil)(5945.905mil,5877.047mil) on Top Overlay Silk Text to Silk Clearance [0mil]</acronym></a><br></td>
+</tr>
+<tr class="onmouseout_even" onmouseover="className = 'onmouseover_even'" onmouseout="className = 'onmouseout_even'">
+<td class="column1"><a href="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3967.94mil|Location2.X=3979.19mil|Location1.Y=4207.893mil|Location2.Y=4219.143mil|Absolute=True" class="callback"><acronym title="dxpprocess://PCB:Zoom?document=C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc;viewname=PCBEditor;Action=AREA_DYNAMICZOOM|Location1.X=3967.94mil|Location2.X=3979.19mil|Location1.Y=4207.893mil|Location2.Y=4219.143mil|Absolute=True">Silk To Silk Clearance Constraint: (4.705mil &lt; 10mil) Between Text "R8" (3980.016mil,4150.01mil) on Top Overlay And Track (3885.125mil,4216.535mil)(3968.046mil,4216.535mil) on Top Overlay Silk Text to Silk Clearance [4.705mil]</acronym></a><br></td>
+</tr>
+</table></a><hr color="#EEEEEE"><a href="#top" style="font-size: 0.9em">Back to top</a><br><br></body>
+</html>
