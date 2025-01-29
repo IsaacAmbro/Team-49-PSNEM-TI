@@ -1,0 +1,9 @@
+Added Component: Designator=B4(FSM101)
+Added Pin To Net: NetName=GND Pin=B4-3
+Added Pin To Net: NetName=GND Pin=B4-4
+Add Pin To Net: Unknown Pin: Pin Q1-2
+Added Pin To Net: NetName=GO_Button Pin=B4-1
+Added Pin To Net: NetName=GO_Button Pin=B4-2
+Added Pin To Net: NetName=GO_Button Pin=U4-19
+Added Net: Name=GO_Button
+Added Member To Class: ClassName=U_MicroController Member=Component B4 FSM101
