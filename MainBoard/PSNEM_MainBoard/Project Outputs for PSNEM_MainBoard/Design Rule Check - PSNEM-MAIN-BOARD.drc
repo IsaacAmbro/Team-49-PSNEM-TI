@@ -1,25 +1,21 @@
 Protel Design System Design Rule Check
 PCB File : C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc
 Date     : 1/29/2025
-Time     : 11:30:08 AM
+Time     : 1:47:08 PM
 
 Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
 Rule Violations :0
 
 Processing Rule : Short-Circuit Constraint (Allowed=No) (All),(All)
-   Violation between Short-Circuit Constraint: Between Pad Q1-(4602.756mil,5862.599mil) on Top Layer And Track (4519.363mil,5862.599mil)(4602.756mil,5862.599mil) on Top Layer Location : [X = 4592.017mil][Y = 5862.599mil]
-Rule Violations :1
+Rule Violations :0
 
 Processing Rule : Un-Routed Net Constraint ( (All) )
-   Violation between Un-Routed Net Constraint: Net BuckConv Between Pad C4-1(3250mil,6646.476mil) on Top Layer And Pad C5-1(3400mil,6650mil) on Top Layer 
    Violation between Un-Routed Net Constraint: Split Plane  (No Net) on Layer 2 Dead Copper - Net Not Assigned.
-   Violation between Un-Routed Net Constraint: Track (4519.363mil,5862.599mil)(4602.756mil,5862.599mil) on Top Layer Dead Copper - Net Not Assigned.
    Violation between Un-Routed Net Constraint: Track (8910mil,1020mil)(8910mil,6950mil) on Top Layer Dead Copper - Net Not Assigned.
    Violation between Un-Routed Net Constraint: Track (970mil,1020mil)(8910mil,1020mil) on Top Layer Dead Copper - Net Not Assigned.
    Violation between Un-Routed Net Constraint: Track (970mil,1020mil)(970mil,6950mil) on Top Layer Dead Copper - Net Not Assigned.
    Violation between Un-Routed Net Constraint: Track (970mil,6950mil)(8910mil,6950mil) on Top Layer Dead Copper - Net Not Assigned.
-   Violation between Un-Routed Net Constraint: Via (4519.363mil,5862.599mil) from Top Layer to Bottom Layer Dead Copper - Net Not Assigned.
-Rule Violations :8
+Rule Violations :5
 
 Processing Rule : Modified Polygon (Allow modified: No), (Allow shelved: No)
 Rule Violations :0
@@ -137,15 +133,11 @@ Processing Rule : Silk To Solder Mask (Clearance=10mil) (IsPad),(All)
    Violation between Silk To Solder Mask Clearance Constraint: (9.842mil < 10mil) Between Pad LED3-1(6259.528mil,5170mil) on Top Layer And Track (6292.008mil,5137.52mil)(6292.008mil,5202.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]
    Violation between Silk To Solder Mask Clearance Constraint: (9.842mil < 10mil) Between Pad LED3-2(6200.472mil,5170mil) on Top Layer And Track (6200.472mil,5137.52mil)(6292.008mil,5137.52mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]
    Violation between Silk To Solder Mask Clearance Constraint: (9.842mil < 10mil) Between Pad LED3-2(6200.472mil,5170mil) on Top Layer And Track (6200.472mil,5202.48mil)(6292.008mil,5202.48mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.842mil]
-   Violation between Silk To Solder Mask Clearance Constraint: (4.344mil < 10mil) Between Pad R1-1(5540mil,5463.425mil) on Top Layer And Text "R1" (5570.013mil,5460.01mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.344mil]
-   Violation between Silk To Solder Mask Clearance Constraint: (4.344mil < 10mil) Between Pad R1-2(5540mil,5516.575mil) on Top Layer And Text "R1" (5570.013mil,5460.01mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [4.344mil]
-Rule Violations :37
+   Violation between Silk To Solder Mask Clearance Constraint: (9.339mil < 10mil) Between Pad R2-1(5603.425mil,5770mil) on Top Layer And Text "R2" (5538.347mil,5805.008mil) on Top Overlay [Top Overlay] to [Top Solder] clearance [9.339mil]
+Rule Violations :36
 
 Processing Rule : Silk to Silk (Clearance=10mil) (All),(All)
-   Violation between Silk To Silk Clearance Constraint: (8.364mil < 10mil) Between Arc (5542.402mil,5696.929mil) on Top Overlay And Text "U1" (5460.013mil,5720.01mil) on Top Overlay Silk Text to Silk Clearance [8.364mil]
-   Violation between Silk To Silk Clearance Constraint: (8.12mil < 10mil) Between Text "R2" (5450.016mil,5800.01mil) on Top Overlay And Track (5334.095mil,5877.047mil)(5945.905mil,5877.047mil) on Top Overlay Silk Text to Silk Clearance [8.12mil]
-   Violation between Silk To Silk Clearance Constraint: (4.705mil < 10mil) Between Text "R8" (3980.016mil,4150.01mil) on Top Overlay And Track (3885.125mil,4216.535mil)(3968.046mil,4216.535mil) on Top Overlay Silk Text to Silk Clearance [4.705mil]
-Rule Violations :3
+Rule Violations :0
 
 Processing Rule : Net Antennae (Tolerance=0mil) (All)
 Rule Violations :0
@@ -154,6 +146,6 @@ Processing Rule : Height Constraint (Min=0mil) (Max=1000mil) (Prefered=500mil) (
 Rule Violations :0
 
 
-Violations Detected : 108
+Violations Detected : 100
 Waived Violations : 0
-Time Elapsed        : 00:00:00
+Time Elapsed        : 00:00:01
