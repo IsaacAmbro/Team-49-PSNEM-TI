@@ -1,0 +1,6 @@
+Added Component: Designator=J5(61300411121)
+Added Pin To Net: NetName=NetJ1_2 Pin=J5-1
+Added Pin To Net: NetName=NetJ1_2 Pin=J5-2
+Added Pin To Net: NetName=GND Pin=J5-3
+Added Pin To Net: NetName=GND Pin=J5-4
+Added Member To Class: ClassName=U_PowerDACSUB Member=Component J5 61300411121

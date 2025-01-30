@@ -9,7 +9,7 @@ void initSPI(void);
 void checkMode(void);
 void remoteMode(void);
 void manualMode(void);
-void sendSPItoDAC(unsigned int data);
+void spi_send_data_with_command(unsigned int command, unsigned int data);
 void updateRampSignal(void);
 
 
@@ -42,7 +42,7 @@ int main(void) {
        }
 
        updateRampSignal();    // Update the DAC output with a ramp signal
-       __delay_cycles(100);   // Small delay for ramp rate adjustment
+       __delay_cycles(10000);   // Small delay for ramp rate adjustment
    }
 
 
@@ -145,16 +145,20 @@ void initSPI(){
 
     UCA0CTLW0 |= UCSSEL__SMCLK; // Select SMCLK as the clock source
     UCA0CTLW0 |= UCSYNC;        // Enable synchronous mode
-    UCA0CTLW0 |= UCMSB;        // MSB First
     UCA0CTLW0 |= UCMST;         // Set as SPI master
     UCA0CTLW0 |= UCSTEM;        // Enable STE pin
-    UCA0CTLW0 |= UCMODE1;       // Set 4-wire SPI with STE active low
+    UCA0CTLW0 &= ~UCMODE1;       // Set 4-wire SPI with STE active low
     UCA0CTLW0 &= ~UCMODE0;       // Set 4-wire SPI with STE active low
+    UCA0CTLW0 &= ~UCCKPH;
+    UCA0CTLW0 |= UCMSB;        // MSB First
 
     //Setup Pins
     // P1.4 (STE)
-    P1SEL1 |= BIT4;
+    P1SEL1 &= ~BIT4;
     P1SEL0 &= ~BIT4;
+
+    P1DIR |= BIT4;
+    P1OUT |= BIT4;
 
     // P1.5 (CLK)
     P1SEL1 |= BIT5;
@@ -177,7 +181,7 @@ void initSPI(){
 
 // Function to check and update the current mode (manual or remote)
 void checkMode(){
-    if (!(P3IN & BIT7)){ // If Mode Switch (P3.7) is set to remote side
+     if (!(P3IN & BIT7)){ // If Mode Switch (P3.7) is set to remote side
         mode = 1;   // set mode to remote
     } else {
         mode = 0; // set mode to manual
@@ -240,25 +244,38 @@ void remoteMode(){
       __delay_cycles(100);
 }
 
-void sendSPItoDAC(unsigned int data) {
-    unsigned int dacCommand = (data & MAX_DAC_VALUE) << 4;
+void spi_send_data_with_command(unsigned int command, unsigned int data) {
+    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)data);
+    int i;
+    P1OUT &= ~BIT4;
+    __delay_cycles(100);
+    unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
+    // Transmit the 24-bit word
 
-    // Manually control STE pin
-    P1OUT &= ~BIT4; // Assert STE (active low)
-    UCA0TXBUF = (dacCommand >> 8) & 0xFF; // Send MSB
-    UCA0TXBUF = dacCommand & 0xFF;        // Send LSB
+    for (i = 2; i >= 0; i--) {
+        UCA0TXBUF = (prog >> (i * 8)) & 0xFF; // Send 8 bits at a time starting with MSB
+    }
+    __delay_cycles(1000);
+    P1OUT |= BIT4;
+    __delay_cycles(1000);
+    // Combine command byte and data bytes into a 24-bit word
+    P1OUT &= ~BIT4;
+    __delay_cycles(100);
+    // Transmit the 24-bit word
 
-    P1OUT |= BIT4; // Deassert STE
+    for (i = 2; i >= 0; i--) {
+        UCA0TXBUF = (word >> (i * 8)) & 0xFF; // Send 8 bits at a time starting with MSB
+    }
+    __delay_cycles(1000);
+    P1OUT |= BIT4;
 }
 
 void updateRampSignal() {
     // Define the 4 ramp values
-       unsigned int rampValues[4] = {0, 1365, 2730, 4095};
+       unsigned int rampValues[5] = {0x00, 0xF000, 0xF00F, 0xFFF0, 0xFFFF};
        static int index = 0; // Static to retain value across function calls
-
-       sendSPItoDAC(rampValues[index]); // Send current value to the DAC
+       spi_send_data_with_command(0x08, rampValues[index]); // Send current value to the DAC
        index = (index + 1) % 4;         // Increment index with wrap-around
-       __delay_cycles(100000);          // Delay for testing (adjust as needed)
 }
 
 
@@ -310,5 +327,3 @@ __interrupt void ISR_PORT_3(void){
 }
 
 */
-
-
