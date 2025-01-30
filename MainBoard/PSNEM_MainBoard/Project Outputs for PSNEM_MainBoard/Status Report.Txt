@@ -1,0 +1,12 @@
+Output: NC Drill Files
+Type  : NC Drill
+From  : Project [PSNEM_MainBoard.PrjPcb]
+   Generated File[PSNEM-MAIN-BOARD.TXT]
+   Generated File[PSNEM-MAIN-BOARD.LDP]
+   Generated File[PSNEM-MAIN-BOARD.DRR]
+
+
+Files Generated   : 3
+Documents Printed : 0
+
+Finished Output Generation At 1:44:38 PM On 1/30/2025
