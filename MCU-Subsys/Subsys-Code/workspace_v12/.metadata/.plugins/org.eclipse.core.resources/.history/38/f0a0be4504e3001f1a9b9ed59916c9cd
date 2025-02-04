@@ -15,7 +15,7 @@ void updateRampSignal(void);
 
 // global variables
 volatile int mode = 0; // 0 = Manual, 1 = Remote
-volatile int ledState = 0; // Which LED is on
+volatile int ledState = 1; // Which LED is on
 // Constants for ramp generation
 const unsigned int MAX_DAC_VALUE = 0xFFF; // 12-bit max value (4095 for DAC80501)
 unsigned int dacValue = 0;                // Current DAC value in the ramp
@@ -74,11 +74,6 @@ void setupGPIO(){
     P3SEL1 &= ~BIT7;
     P3SEL0 &= ~BIT7;
 
-    // GO Button P4.3
-    P4DIR &= ~BIT3; //set bit 3 to input
-    P4SEL1 &= ~BIT3;
-    P4SEL0 &= ~BIT3;
-
     // LEDs as outputs
     // LDO LED on at first
     // LDO LED P3.1
@@ -95,10 +90,6 @@ void setupGPIO(){
     P3DIR |= BIT3; //set bit 3 to output
     P3SEL1 &= ~BIT3;
     P3SEL0 &= ~BIT3;
-
-
-
-
 }
 
 
@@ -199,28 +190,24 @@ void checkMode(){
 
 void manualMode() {
     // Check each button and update ledState only if no other buttons are pressed
-    if (!(P1IN & BIT1) && (P1IN & BIT2) && (P3IN & BIT0) && (P4IN & BIT3)) { // LDO button only
+    if (!(P1IN & BIT1) && (P1IN & BIT2) && (P3IN & BIT0)) { // LDO button only
         ledState = 1; // Set state to LED1
-    } else if (!(P1IN & BIT2) && (P1IN & BIT1) && (P3IN & BIT0) && (P4IN & BIT3)) { // Buck button only
+    } else if (!(P1IN & BIT2) && (P1IN & BIT1) && (P3IN & BIT0)) { // Buck button only
         ledState = 2; // Set state to LED2
-    } else if (!(P3IN & BIT0) && (P1IN & BIT1) && (P1IN & BIT2) && (P4IN & BIT3)) { // PS button only
+    } else if (!(P3IN & BIT0) && (P1IN & BIT1) && (P1IN & BIT2)) { // PS button only
         ledState = 3; // Set state to LED3
     }
 
-    // Only update LEDs if the GO Button (P4.3) is pressed
-    if (!(P4IN & BIT3) && (P1IN & BIT1) && (P1IN & BIT2) && (P3IN & BIT0)) { // If GO Button is pressed (active low)
-        // Turn off all LEDs
-        P3OUT &= ~(BIT1 | BIT2 | BIT3);
-        __delay_cycles(1000000); // Delay so no power supplies are connected at once
-
-        // Turn on the correct LED based on ledState
-        if (ledState == 1) {
-            P3OUT |= BIT1;            // Turn on LED1
-        } else if (ledState == 2) {
-            P3OUT |= BIT2;            // Turn on LED2
-        } else if (ledState == 3) {
-            P3OUT |= BIT3;            // Turn on LED3
-        }
+    // Update LEDs based on ledState value
+    if (ledState == 1) {
+        P3OUT |= BIT1;            // Turn on LED1
+        P3OUT &= ~(BIT2 | BIT3);  // Turn off other LEDs
+    } else if (ledState == 2) {
+        P3OUT |= BIT2;            // Turn on LED2
+        P3OUT &= ~(BIT1 | BIT3);  // Turn off other LEDs
+    } else if (ledState == 3) {
+        P3OUT |= BIT3;            // Turn on LED3
+        P3OUT &= ~(BIT1 | BIT2);  // Turn off other LEDs
     }
 
     // Small delay for debouncing
@@ -242,7 +229,7 @@ void remoteMode(){
               ledState = 3;
           }
       }
-  // NEED TO UPDATE FOR GO BUTTON
+
   // Update LEDs based on ledState value
       if (ledState == 1) {
           P3OUT |= BIT1;            // Turn on LED1
