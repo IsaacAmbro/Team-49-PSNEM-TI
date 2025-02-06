@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import java.io.IOException
@@ -23,17 +22,16 @@ const val MESSAGE_READ: Int = 0
 const val MESSAGE_WRITE: Int = 1
 const val MESSAGE_TOAST: Int = 2
 
-
+// Change UUID to match the app's
 private val MY_UUID : UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
-// ... (Add other message types here as needed.)
+
 
 class MyBluetoothService(
     // handler that gets info from Bluetooth service
     private val handler: MyHandler,
     private val mBluetoothAdapter: BluetoothAdapter?,
-    private val callback: BTStateListener?
 ) {
-
+    private var status = false
     lateinit var bluetoothThread : ConnectedThread
 
     //handle connected threads
@@ -57,7 +55,6 @@ class MyBluetoothService(
                     mmInStream.read(mmBuffer)
                 } catch (e: IOException) {
                     Log.d(TAG, "Input stream was disconnected", e)
-                    callback?.updateBTState(false)
                     handler.post {
                         Toast.makeText(handler.getContext(), "Bluetooth Connection Lost", Toast.LENGTH_SHORT).show()
                     }
@@ -137,6 +134,7 @@ class MyBluetoothService(
 
                 // The connection attempt succeeded. Perform work associated with
                 // the connection in a separate thread.
+                status = true
                 bluetoothThread = ConnectedThread(socket)
 
                 //make sure to start the connected thread
@@ -145,7 +143,6 @@ class MyBluetoothService(
 
                 if (bluetoothThread.socket().isConnected) {
                     Log.d("Bluetooth", "Bluetooth socket is connected")
-                    callback?.updateBTState(true)
                     handler.post {
                         Toast.makeText(handler.getContext(), "Connected to ${device.name}", Toast.LENGTH_LONG).show()
                     }
@@ -172,9 +169,13 @@ class MyBluetoothService(
 
     @SuppressLint("MissingPermission")
     fun connect(context: Context, device: BluetoothDevice) {
-        val connectThread = ConnectThread(device)
-        connectThread.start()
-
+        if(!status) {
+            val connectThread = ConnectThread(device)
+            connectThread.start()
+        }
     }
 
+    fun getStatus() : Boolean {
+        return status
+    }
 }

@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothServerSocket
-import android.bluetooth.BluetoothSocket
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -118,9 +116,8 @@ class pairedList : AppCompatActivity() {
 
 
             if(device.name == "ESP 32 Bluetooth Server") {
-                if (!mService.isConnected()) {
+
                     mService.mBluetoothService.connect(this, device)
-                }
 
             }
             //pairedList.isEnabled = false

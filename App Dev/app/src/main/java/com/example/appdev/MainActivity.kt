@@ -1,6 +1,4 @@
 package com.example.appdev
-
-
 import android.Manifest
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
@@ -20,6 +18,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import android.net.Uri
+
+
+/*
+*
+* Main Activity to include homescreen
+*
+* */
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,15 +58,21 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        //check for bluetooth connection
         requestBluetooth()
         startService(Intent(this, BackgroundService::class.java))
 
-
+        //launch bluetooth connection request
         Intent(this, BackgroundService::class.java).also { intent ->
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
 
 
+        /*
+        *
+        * On click buttons to listen
+        *
+        * */
         val switchList = findViewById<Button>(R.id.switchList)
         switchList.setOnClickListener {
             Log.d("Button", "Pushed ")

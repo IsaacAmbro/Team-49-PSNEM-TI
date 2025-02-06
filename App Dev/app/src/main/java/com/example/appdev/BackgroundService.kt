@@ -13,22 +13,18 @@ import android.util.Log
 import android.widget.Toast
 import java.util.UUID
 
-interface BTStateListener {
-    fun updateBTState(state: Boolean) {
-    }
-}
-class BackgroundService : Service(), BTStateListener {
+
+class BackgroundService : Service(){
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
     lateinit var mBluetoothService: MyBluetoothService
-    private var connected : Boolean = false
     val mHandler = MyHandler(Looper.getMainLooper())
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("onStartCommand", "Started ")
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        mBluetoothService = MyBluetoothService(mHandler, mBluetoothAdapter, this)
+        mBluetoothService = MyBluetoothService(mHandler, mBluetoothAdapter)
         return START_STICKY
     }
 
@@ -50,22 +46,7 @@ class BackgroundService : Service(), BTStateListener {
     }
 
     fun isConnected() : Boolean {
-        return connected
-    }
-
-    fun connected() {
-        connected = true
-    }
-    fun disconnected() {
-        connected = false
-    }
-
-    override fun updateBTState(state: Boolean) {
-        if(state) {
-            connected()
-        } else {
-            disconnected()
-        }
+        return mBluetoothService.getStatus()
     }
 
 
