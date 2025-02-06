@@ -1,0 +1,6 @@
+Wenbin
+UIN:130007632
+Status Update:
+Continuing Bluetooth transfer protocol development.
+
+Still waiting for Jared Board to arrive.
