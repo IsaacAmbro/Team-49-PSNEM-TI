@@ -1,7 +1,7 @@
 Protel Design System Design Rule Check
-PCB File : C:\ECEN403\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc
-Date     : 1/30/2025
-Time     : 9:22:47 AM
+PCB File : C:\Users\Jacob Kolba\Documents\GitHub\Team-49-PSNEM-TI\MainBoard\PSNEM_MainBoard\PSNEM-MAIN-BOARD.PcbDoc
+Date     : 2/10/2025
+Time     : 12:12:14 PM
 
 Processing Rule : Clearance Constraint (Gap=10mil) (All),(All)
 Rule Violations :0
@@ -139,4 +139,4 @@ Rule Violations :0
 
 Violations Detected : 91
 Waived Violations : 0
-Time Elapsed        : 00:00:03
+Time Elapsed        : 00:00:01
