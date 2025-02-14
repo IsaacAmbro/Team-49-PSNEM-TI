@@ -115,11 +115,8 @@ class pairedList : AppCompatActivity() {
             val device : BluetoothDevice = list[position]
 
 
-            if(device.name == "ESP 32 Bluetooth Server") {
+            mService.mBluetoothService.connect(this, device)
 
-                    mService.mBluetoothService.connect(this, device)
-
-            }
             //pairedList.isEnabled = false
         }
     }

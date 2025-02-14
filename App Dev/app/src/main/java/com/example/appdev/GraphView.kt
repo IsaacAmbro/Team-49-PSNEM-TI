@@ -1,9 +1,13 @@
 package com.example.appdev
 import android.app.Activity
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
 import android.provider.DocumentsContract
 import android.util.Log
 import android.widget.Button
@@ -40,6 +44,27 @@ class GraphView : AppCompatActivity() {
     val yVal = ArrayList<Float>()
     private var state = STOPPED
     lateinit var oStream: FileOutputStream
+    lateinit var BTdata: ArrayDeque<Float>
+
+    private lateinit var mService: BackgroundService
+
+    private val connection = object : ServiceConnection {
+
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder = service as BackgroundService.MyBinder
+            mService = binder.getService()
+            mService.setContext(this@GraphView)
+            setFloatDeque()
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+
+        }
+    }
+
+    fun setFloatDeque() {
+        BTdata = mService.mHandler.floatDeque
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +79,15 @@ class GraphView : AppCompatActivity() {
 
 
         //start service to access bluetooth thread later
+        Intent(this, BackgroundService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
 
 
 
         lateinit var chart: LineChart
+
 
         chart = findViewById(R.id.chart)
         var x = 0f
@@ -135,6 +165,7 @@ class GraphView : AppCompatActivity() {
                 startButton.isEnabled = false
                 saveButton.isEnabled = false
                 clearButton.isEnabled = false
+                BTdata.clear()
 
 
                 lifecycleScope.launch {
@@ -173,18 +204,19 @@ class GraphView : AppCompatActivity() {
                     launch{
                         while (state == STARTED) {
                             //Log.d("Activity", "Running")
+                            if(!BTdata.isEmpty()) {
+                                y = BTdata.removeFirst()
 
-                            y = Random.nextFloat() * (80 - 20) + 20
-                            for(i in 0 until 2){
-                                //y = sineWave[index]
-                                addData(chart, x, y)
-                                xVal.add(x)
-                                yVal.add(y)
-                                x += TIME_DELAY
-                                index++
-                                if (index == 100) index = 0
+                                for (i in 0 until 2) {
+                                    //y = sineWave[index]
+                                    addData(chart, x, y)
+                                    xVal.add(x)
+                                    yVal.add(y)
+                                    x += TIME_DELAY
+//                                index++
+//                                if (index == 100) index = 0
+                                }
                             }
-
                             delay(33)
                         }
                     }

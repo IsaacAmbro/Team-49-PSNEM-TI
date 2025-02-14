@@ -45,6 +45,7 @@ class MyBluetoothService(
             return mmSocket
         }
 
+        //read messages
         override fun run() {
             var numBytes: Int // bytes returned from read()
             Log.d(TAG, "ConnectedThread started")
@@ -59,6 +60,7 @@ class MyBluetoothService(
                         Toast.makeText(handler.getContext(), "Bluetooth Connection Lost", Toast.LENGTH_SHORT).show()
                     }
                     cancel()
+                    status = false
                     break
                 }
                 Log.d(TAG, "Received bytes: ${String(mmBuffer, 0, numBytes)}")

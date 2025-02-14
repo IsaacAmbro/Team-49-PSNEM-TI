@@ -7,20 +7,34 @@ import android.os.Message
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
 
 class MyHandler(looper: Looper) : Handler(looper) {
     // ... your custom methods and properties ...
     private lateinit var context: Context
+    val floatDeque = ArrayDeque<Float>()
 
     override fun handleMessage(msg: Message) {
         when (msg.what) {
             MESSAGE_READ -> {
                 val numBytes = msg.arg1
                 val buffer = msg.obj as ByteArray
-                val readMsg = String(buffer, 0, numBytes)
-                Log.d("Bluetooth","Received message: $readMsg")
-                // Update UI with the received message (using context)
-                updateUi(context, readMsg)
+                val wrapped = ByteBuffer.wrap(buffer).order(ByteOrder.LITTLE_ENDIAN)
+                val numFloats = numBytes / 4
+
+                for (i in 0 until numFloats) {
+                    floatDeque.add(wrapped.getFloat(i*4))
+                }
+
+                displayFloat(context, floatDeque)
+                if(context !is GraphView) {
+                    floatDeque.clear()
+                }
+//                val readMsg = String(buffer, 0, numBytes)
+//                Log.d("Bluetooth","Received message: $readMsg")
+//                // Update UI with the received message (using context)
+//                updateUi(context, readMsg)
             }
             MESSAGE_WRITE -> {
                 // Handle successful write operation (optional)
@@ -45,12 +59,23 @@ class MyHandler(looper: Looper) : Handler(looper) {
         }
     }
 
-    fun setContext(context: Context) {
-        this.context = context
+    fun displayFloat(context: Context, floatDeque: ArrayDeque<Float>) {
+        if (context is btDemo) {
+            context.runOnUiThread {
+                // Update UI elements here
+                context.findViewById<TextView>(R.id.message).text =
+                    "Console Output: ${floatDeque.joinToString(", ")}"
+            }
+            floatDeque.clear()
+        }
     }
+        fun setContext(context: Context) {
+            this.context = context
+        }
 
-    fun getContext(): Context {
-        return context
-    }
+        fun getContext(): Context {
+            return context
+        }
+
 
 }

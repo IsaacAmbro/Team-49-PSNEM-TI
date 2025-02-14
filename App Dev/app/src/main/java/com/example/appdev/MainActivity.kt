@@ -79,6 +79,7 @@ class MainActivity : AppCompatActivity() {
             Intent(this, pairedList::class.java).also {
                 startActivity(it)
             }
+
         }
 
         val toGraph = findViewById<Button>(R.id.toGraph)
