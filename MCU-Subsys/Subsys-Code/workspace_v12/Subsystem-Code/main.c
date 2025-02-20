@@ -1,6 +1,5 @@
 #include <msp430.h> // Include the MSP430 header file
 
-
 // function declarations
 void setupGPIO(void);
 void initGPIO(void);
@@ -9,17 +8,17 @@ void initSPI(void);
 void checkMode(void);
 void remoteMode(void);
 void manualMode(void);
-void spi_send_data_with_command(unsigned int command, unsigned int data);
+void spiCommand(unsigned long command);
 void updateRampSignal(void);
 
-
 // global variables
-volatile int mode = 0; // 0 = Manual, 1 = Remote
-volatile int ledState = 0; // Which LED is on
+volatile int mode = 0;      // 0 = Manual, 1 = Remote
+volatile int ledState = 0;  // Which LED is selected
+volatile int goCommand = 0; // Flag for "go" command in remote mode
+
 // Constants for ramp generation
 const unsigned int MAX_DAC_VALUE = 0xFFF; // 12-bit max value (4095 for DAC80501)
 unsigned int dacValue = 0;                // Current DAC value in the ramp
-
 
 int main(void) {
 
@@ -31,141 +30,115 @@ int main(void) {
     initSPI();                // Initialize SPI for communication with DAC
     PM5CTL0 &= ~LOCKLPM5;     // Disable the GPIO high-impedance mode to enable I/O
 
+    __enable_interrupt();
 
     // Infinite loop to handle system operations
-   while (1) {
+    while (1) {
        checkMode(); // Check the mode switch and update the mode variable
        if (mode == 0) {
            manualMode(); // Execute manual mode logic
        } else {
            remoteMode(); // Execute remote mode logic
        }
-
-       updateRampSignal();    // Update the DAC output with a ramp signal
-       __delay_cycles(10000);   // Small delay for ramp rate adjustment
+       // Optionally update the ramp signal if needed:
+       // updateRampSignal();
+       // __delay_cycles(10000); // Small delay for ramp rate adjustment
    }
-
-
-
 }
 
 //-- Setup Functions
 
-//Set pins/directions
+// Set pins/directions
 void setupGPIO(){
     // buttons as inputs
     // LDO Button P1.1
-    P1DIR &= ~BIT1; //set bit 1 to input
+    P1DIR &= ~BIT1; // set bit 1 to input
     P1SEL1 &= ~BIT1;
     P1SEL0 &= ~BIT1;
 
     // Buck Button P1.2
-    P1DIR &= ~BIT2; //set bit 2 to input
+    P1DIR &= ~BIT2; // set bit 2 to input
     P1SEL1 &= ~BIT2;
     P1SEL0 &= ~BIT2;
 
     // PS Button P3.0
-    P3DIR &= ~BIT0; //set bit 0 to input
+    P3DIR &= ~BIT0; // set bit 0 to input
     P3SEL1 &= ~BIT0;
     P3SEL0 &= ~BIT0;
 
-    //Mode Switch P3.7
-    P3DIR &= ~BIT7; //set bit 7 to input
+    // Mode Switch P3.7
+    P3DIR &= ~BIT7; // set bit 7 to input
     P3SEL1 &= ~BIT7;
     P3SEL0 &= ~BIT7;
 
-    // GO Button P4.3
-    P4DIR &= ~BIT3; //set bit 3 to input
+    // GO Button P4.3 (for manual mode)
+    P4DIR &= ~BIT3; // set bit 3 to input
     P4SEL1 &= ~BIT3;
     P4SEL0 &= ~BIT3;
 
     // LEDs as outputs
-    // LDO LED on at first
-    // LDO LED P3.1
-    P3DIR |= BIT1; //set bit 1 to output
+    // LDO LED on P3.1
+    P3DIR |= BIT1; // set bit 1 to output
     P3SEL1 &= ~BIT1;
     P3SEL0 &= ~BIT1;
 
-    // Buck LED P3.2
-    P3DIR |= BIT2; //set bit 2 to output
+    // Buck LED on P3.2
+    P3DIR |= BIT2; // set bit 2 to output
     P3SEL1 &= ~BIT2;
     P3SEL0 &= ~BIT2;
 
-    // PS LED P3.3
-    P3DIR |= BIT3; //set bit 3 to output
+    // PS LED on P3.3
+    P3DIR |= BIT3; // set bit 3 to output
     P3SEL1 &= ~BIT3;
     P3SEL0 &= ~BIT3;
-
-
-
-
 }
-
-
 
 //-- Initialization Functions
 
-//enable interrupts and establish starting values
+// Enable interrupts and establish starting values
 void initGPIO() {
-    // LEDs as outputs
-    // LDO LED on at first
-    // LDO LED P3.1
-    P3OUT |= BIT1; //turn on LDO LED
-
-    // Buck LED P3.2
-    P3OUT &= ~BIT2; //turn off Buck LED
-
-    // PS LED P3.3
-    P3OUT &= ~BIT3; //turn off PS LED
-
+    // Initialize LED states (assume LDO LED on initially)
+    P3OUT &= ~BIT1; // Turn off LDO LED
+    P3OUT &= ~BIT2; // Turn off Buck LED
+    P3OUT &= ~BIT3; // Turn off PS LED
 }
 
-
 void initUART(){
-    UCA1CTLW0 |= UCSWRST;  // put UART A1 into SW Reset
-    UCA1CTLW0 |= UCSSEL__SMCLK; //Choose SMCLK for UART A0;
+    UCA1CTLW0 |= UCSWRST;             // Put UART A1 into SW Reset
+    UCA1CTLW0 |= UCSSEL__SMCLK;        // Choose SMCLK for UART A1
 
     // Setup modulation
-    // 1 MHz clock
-    // 115200  baud rate
+    // 1 MHz clock, 115200 baud rate
     UCA1BRW = 8;
     UCA1MCTLW |= 0xD600;
 
-    // Setup Pins
-    // TXD
-    P2SEL1 |= BIT5;
+    // Setup Pins for TXD and RXD
+    P2SEL1 |= BIT5;   // TXD
     P2SEL0 &= ~BIT5;
-
-    //RXD
-    P2SEL1 |= BIT6;
+    P2SEL1 |= BIT6;   // RXD
     P2SEL0 &= ~BIT6;
 
+    UCA1CTLW0 &= ~UCSWRST; // Release UART A1 from SW Reset
 
-
-    UCA1CTLW0 &= ~UCSWRST; //take UART A1 out of SW Reset
-
-
+    UCA1IE |= UCRXIE; // Enable RX interrupt
 }
 
-
 void initSPI(){
-
     UCA0CTLW0 |= UCSWRST;       // Put SPI module into software reset
 
-    UCA0CTLW0 |= UCSSEL__SMCLK; // Select SMCLK as the clock source
-    UCA0CTLW0 |= UCSYNC;        // Enable synchronous mode
-    UCA0CTLW0 |= UCMST;         // Set as SPI master
-    UCA0CTLW0 |= UCSTEM;        // Enable STE pin
-    UCA0CTLW0 &= ~UCMODE1;       // Set 4-wire SPI with STE active low
-    UCA0CTLW0 &= ~UCMODE0;       // Set 4-wire SPI with STE active low
+    UCA0CTLW0 |= UCSSEL__SMCLK;  // Select SMCLK as the clock source
+    UCA0CTLW0 |= UCSYNC;         // Enable synchronous mode
+    UCA0CTLW0 |= UCMST;          // Set as SPI master
+    UCA0CTLW0 |= UCSTEM;         // Enable STE pin
+    UCA0CTLW0 &= ~UCMODE1;       // 4-wire SPI with STE active low
+    UCA0CTLW0 &= ~UCMODE0;
     UCA0CTLW0 &= ~UCCKPH;
-    UCA0CTLW0 |= UCMSB;        // MSB First
+    UCA0CTLW0 |= UCMSB;          // MSB First
 
-    //Setup Pins
+    // Setup SPI Pins:
     // P1.4 (STE)
     P1SEL1 &= ~BIT4;
     P1SEL0 &= ~BIT4;
-
     P1DIR |= BIT4;
     P1OUT |= BIT4;
 
@@ -181,19 +154,17 @@ void initSPI(){
     P2SEL1 |= BIT1;
     P2SEL0 &= ~BIT1;
 
-    // Release SPI module from reset
-    UCA0CTLW0 &= ~UCSWRST;
-
+    UCA0CTLW0 &= ~UCSWRST; // Release SPI module from reset
 }
 
 // Helper Functions
 
-// Function to check and update the current mode (manual or remote)
+// Check and update the current mode (manual or remote)
 void checkMode(){
-     if (!(P3IN & BIT7)){ // If Mode Switch (P3.7) is set to remote side
-        mode = 1;   // set mode to remote
+     if (!(P3IN & BIT7)) { // If Mode Switch (P3.7) is set to remote side
+        mode = 1;   // Set mode to remote
     } else {
-        mode = 0; // set mode to manual
+        mode = 0;   // Set mode to manual
     }
 }
 
@@ -207,136 +178,101 @@ void manualMode() {
         ledState = 3; // Set state to LED3
     }
 
-    // Only update LEDs if the GO Button (P4.3) is pressed
-    if (!(P4IN & BIT3) && (P1IN & BIT1) && (P1IN & BIT2) && (P3IN & BIT0)) { // If GO Button is pressed (active low)
+    // Only update LEDs if the GO Button (P4.3) is pressed (active low)
+    if (!(P4IN & BIT3) && (P1IN & BIT1) && (P1IN & BIT2) && (P3IN & BIT0)) {
         // Turn off all LEDs
         P3OUT &= ~(BIT1 | BIT2 | BIT3);
         __delay_cycles(1000000); // Delay so no power supplies are connected at once
 
         // Turn on the correct LED based on ledState
         if (ledState == 1) {
-            P3OUT |= BIT1;            // Turn on LED1
+            P3OUT |= BIT1;
         } else if (ledState == 2) {
-            P3OUT |= BIT2;            // Turn on LED2
+            P3OUT |= BIT2;
         } else if (ledState == 3) {
-            P3OUT |= BIT3;            // Turn on LED3
+            P3OUT |= BIT3;
         }
+        // Reconfigure DAC after changing power rail
+        unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
+        spiCommand(prog);
     }
-
-    // Small delay for debouncing
-    __delay_cycles(100);
+    __delay_cycles(100); // Debounce delay
 }
-
 
 void remoteMode(){
-    // Poll the UART receive flag
-      if (UCA1IFG & UCRXIFG) {  // Check if RX flag is set (data available)
-          unsigned char received = UCA1RXBUF; // Read received data from RX buffer
+    // In remote mode, the LED selection is set by UART commands ('1', '2', '3')
+    // and the actual update occurs when a "go" command is received ('g' or 'G').
+    if (goCommand) {
+        // Turn off all LEDs
+        P3OUT &= ~(BIT1 | BIT2 | BIT3);
+        __delay_cycles(1000000); // Delay so no power supplies are connected at once
 
-          // Interpret received data to control LEDs
-          if (received == '1') {
-              ledState = 1;
-          } else if (received == '2') {
-              ledState = 2;
-          } else if (received == '3') {
-              ledState = 3;
-          }
-      }
-  // NEED TO UPDATE FOR GO BUTTON
-  // Update LEDs based on ledState value
-      if (ledState == 1) {
-          P3OUT |= BIT1;            // Turn on LED1
-          P3OUT &= ~(BIT2 | BIT3);  // Turn off other LEDs
-      } else if (ledState == 2) {
-          P3OUT |= BIT2;            // Turn on LED2
-          P3OUT &= ~(BIT1 | BIT3);  // Turn off other LEDs
-      } else if (ledState == 3) {
-          P3OUT |= BIT3;            // Turn on LED3
-          P3OUT &= ~(BIT1 | BIT2);  // Turn off other LEDs
-      }
-      __delay_cycles(100);
+        // Turn on the selected LED based on ledState
+        if (ledState == 1) {
+            P3OUT |= BIT1;
+        } else if (ledState == 2) {
+            P3OUT |= BIT2;
+        } else if (ledState == 3) {
+            P3OUT |= BIT3;
+        }
+        // Reconfigure DAC after changing power rail
+        unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
+        spiCommand(prog);
+
+        // Clear the go command flag after processing
+        goCommand = 0;
+    }
+    __delay_cycles(100);
 }
 
-void spi_send_data_with_command(unsigned int command, unsigned int data) {
-    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)data);
+void spiCommand(unsigned long command) {
     int i;
-    P1OUT &= ~BIT4;
-    __delay_cycles(100);
-    unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
-    // Transmit the 24-bit word
-
+    P1OUT &= ~BIT4; // Assert STE (active low)
+    // Transmit the 24-bit command to the DAC
     for (i = 2; i >= 0; i--) {
-        UCA0TXBUF = (prog >> (i * 8)) & 0xFF; // Send 8 bits at a time starting with MSB
+        UCA0TXBUF = (command >> (i * 8)) & 0xFF;
     }
-    __delay_cycles(1000);
-    P1OUT |= BIT4;
-    __delay_cycles(1000);
-    // Combine command byte and data bytes into a 24-bit word
-    P1OUT &= ~BIT4;
-    __delay_cycles(100);
-    // Transmit the 24-bit word
-
-    for (i = 2; i >= 0; i--) {
-        UCA0TXBUF = (word >> (i * 8)) & 0xFF; // Send 8 bits at a time starting with MSB
-    }
-    __delay_cycles(1000);
-    P1OUT |= BIT4;
+    P1OUT |= BIT4; // Deassert STE
 }
 
 void updateRampSignal() {
-    // Define the 4 ramp values
-       unsigned int rampValues[5] = {0x00, 0xF000, 0xF00F, 0xFFF0, 0xFFFF};
-       static int index = 0; // Static to retain value across function calls
-       spi_send_data_with_command(0x08, rampValues[index]); // Send current value to the DAC
-       index = (index + 1) % 4;         // Increment index with wrap-around
+    // Define the ramp values (example values)
+    unsigned int rampValues[5] = {0x00, 0xF000, 0xF00F, 0xFFF0, 0xFFFF};
+    static int index = 0; // Retain value between calls
+    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)0xFFFF);
+    spiCommand(word);
+    index = (index + 1) % 4; // Increment with wrap-around
 }
 
-
-
-/*
 //-- ISRs
+// UART RX Interrupt Service Routine
+#pragma vector = USCI_A1_VECTOR
+__interrupt void USCI_A1_ISR(void) {
+    unsigned char received;
+    // Process UART commands only in remote mode
+    if (mode == 1) {
+        switch (__even_in_range(UCA1IV, 4)) {
+            case 0: break; // No interrupt
+            case 2: // RXIFG (data received)
+                  received = UCA1RXBUF; // Read the received byte
 
-
-
-
-
-//Interrupt for LDO and Buck button
-#pragma vector = PORT1_VECTOR
-__interrupt void ISR_PORT_1(void){
-    if (P1IFG & BIT1){ //if ldo button is pressed
-        led_state = 1;
-
-        P3OUT |= BIT1;
-        P3OUT &= ~BIT2;
-        P3OUT &= ~BIT3;
-
-        P1IFG &= ~BIT1;
-    } else if (P1IFG & BIT2){ //if buck button is pressed
-        led_state = 2;
-
-        P3OUT |= BIT2;
-        P3OUT &= ~BIT1;
-        P3OUT &= ~BIT3;
-
-        P1IFG &= ~BIT2;
+                  // Interpret received data to control LED selection
+                  if (received == '1') {
+                      ledState = 1;
+                  } else if (received == '2') {
+                      ledState = 2;
+                  } else if (received == '3') {
+                      ledState = 3;
+                  } else if (received == 'g' || received == 'G') {
+                      // Set flag to trigger LED update and DAC configuration
+                      goCommand = 1;
+                  }
+                break;
+            case 4: break; // TXIFG
+            default: break;
+        }
+    } else {
+        // If not in remote mode, discard the received data
+        UCA1RXBUF;
     }
 }
-
-#pragma vector = PORT3_VECTOR
-__interrupt void ISR_PORT_3(void){
-    if (P3IFG & BIT0){ //if ps button is pressed
-        led_state = 3;
-
-        P3OUT |= BIT3;
-        P3OUT &= ~BIT2;
-        P3OUT &= ~BIT1;
-
-        P3IFG &= ~BIT0;
-    } else if (P3IFG & BIT7){ // if mode is switched
-        mode = !(P3IN & BIT7)
-
-        P13FG &= ~BIT7;
-    }
-}
-
-*/

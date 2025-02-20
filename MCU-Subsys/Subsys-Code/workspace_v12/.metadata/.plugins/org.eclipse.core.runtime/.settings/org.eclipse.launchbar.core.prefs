@@ -1,8 +1,10 @@
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch=x86_64
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=win32
-configDescList=org.eclipse.launchbar.core.descriptorType.default\:introProj,org.eclipse.launchbar.core.descriptorType.default\:Subsystem Code,org.eclipse.launchbar.core.descriptorType.default\:MCU Demo,org.eclipse.launchbar.core.descriptorType.default\:Subsystem-Code
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:introProj,org.eclipse.launchbar.core.descriptorType.default\:Subsystem Code,org.eclipse.launchbar.core.descriptorType.default\:MCU Demo,org.eclipse.launchbar.core.descriptorType.default\:EvalBoard,org.eclipse.launchbar.core.descriptorType.default\:Subsystem-Code
 eclipse.preferences.version=1
+org.eclipse.launchbar.core.descriptorType.default\:EvalBoard/activeLaunchMode=run
+org.eclipse.launchbar.core.descriptorType.default\:EvalBoard/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
 org.eclipse.launchbar.core.descriptorType.default\:LaunchPadCodeForDemo/activeLaunchMode=debug
 org.eclipse.launchbar.core.descriptorType.default\:LaunchPadCodeForDemo/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
 org.eclipse.launchbar.core.descriptorType.default\:MCU\ Demo/activeLaunchMode=debug
