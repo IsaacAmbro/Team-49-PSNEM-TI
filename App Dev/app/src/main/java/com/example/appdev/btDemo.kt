@@ -49,7 +49,7 @@ class btDemo : AppCompatActivity() {
             if (mService.isConnected()) {
                 val bluetoothService = mService.mBluetoothService
                 bluetoothService.bluetoothThread?.let {
-                    it.write("switch 1\n".toByteArray())
+                    it.write("1\n".toByteArray())
                 }
             }
         }
@@ -59,7 +59,7 @@ class btDemo : AppCompatActivity() {
             if (mService.isConnected()) {
                 val bluetoothService = mService.mBluetoothService
                 bluetoothService.bluetoothThread?.let {
-                    it.write("switch 2\n".toByteArray())
+                    it.write("2\n".toByteArray())
                 }
             }
         }
@@ -69,7 +69,7 @@ class btDemo : AppCompatActivity() {
             if (mService.isConnected()) {
                 val bluetoothService = mService.mBluetoothService
                 bluetoothService.bluetoothThread?.let {
-                    it.write("switch 3\n".toByteArray())
+                    it.write("3\n".toByteArray())
                 }
             }
         }
