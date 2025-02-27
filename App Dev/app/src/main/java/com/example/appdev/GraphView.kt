@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.math.sin
 
 const val TIME_DELAY = 0.5f
@@ -44,7 +45,7 @@ class GraphView : AppCompatActivity() {
     val yVal = ArrayList<Float>()
     private var state = STOPPED
     lateinit var oStream: FileOutputStream
-    lateinit var BTdata: ArrayDeque<Float>
+    lateinit var BTdata: ConcurrentLinkedQueue<Float>
 
     private lateinit var mService: BackgroundService
 
@@ -165,7 +166,7 @@ class GraphView : AppCompatActivity() {
                 startButton.isEnabled = false
                 saveButton.isEnabled = false
                 clearButton.isEnabled = false
-                BTdata.clear()
+                //BTdata.clear()
 
 
                 lifecycleScope.launch {
@@ -204,18 +205,17 @@ class GraphView : AppCompatActivity() {
                     launch{
                         while (state == STARTED) {
                             //Log.d("Activity", "Running")
-                            if(!BTdata.isEmpty()) {
-                                y = BTdata.removeFirst()
-
-                                for (i in 0 until 2) {
+                            val poll = BTdata.poll()
+                            if(poll != null) {
                                     //y = sineWave[index]
+                                    y = poll
                                     addData(chart, x, y)
                                     xVal.add(x)
                                     yVal.add(y)
                                     x += TIME_DELAY
 //                                index++
 //                                if (index == 100) index = 0
-                                }
+
                             }
                             delay(33)
                         }

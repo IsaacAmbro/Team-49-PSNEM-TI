@@ -9,11 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class MyHandler(looper: Looper) : Handler(looper) {
     // ... your custom methods and properties ...
     private lateinit var context: Context
-    val floatDeque = ArrayDeque<Float>()
+    val floatDeque : ConcurrentLinkedQueue<Float> = ConcurrentLinkedQueue()
 
     override fun handleMessage(msg: Message) {
         when (msg.what) {
@@ -59,12 +60,13 @@ class MyHandler(looper: Looper) : Handler(looper) {
         }
     }
 
-    fun displayFloat(context: Context, floatDeque: ArrayDeque<Float>) {
+    fun displayFloat(context: Context, floatDeque: ConcurrentLinkedQueue<Float>) {
         if (context is btDemo) {
             context.runOnUiThread {
                 // Update UI elements here
+                val floatList = floatDeque.toList()
                 context.findViewById<TextView>(R.id.message).text =
-                    "Console Output: ${floatDeque.joinToString(", ")}"
+                    "Console Output: ${floatList.joinToString(", ")}"
             }
             floatDeque.clear()
         }
