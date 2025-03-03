@@ -55,6 +55,7 @@ class GraphView : AppCompatActivity() {
             mService = binder.getService()
             mService.setContext(this@GraphView)
             setFloatDeque()
+            enableButtons()
         }
 
         override fun onServiceDisconnected(name: ComponentName) {
@@ -76,7 +77,7 @@ class GraphView : AppCompatActivity() {
             insets
         }
 
-
+        disableButtons()
 
         //start service to access bluetooth thread later
         Intent(this, BackgroundService::class.java).also { intent ->
@@ -399,6 +400,29 @@ class GraphView : AppCompatActivity() {
         chart.invalidate()
     }
 
+    fun disableButtons() {
+        val startButton = findViewById<Button>(R.id.starter)
+        val stopButton = findViewById<Button>(R.id.stopper)
+        val saveButton = findViewById<Button>(R.id.saver)
+        val clearButton = findViewById<Button>(R.id.clearer)
+
+        startButton.isEnabled = false
+        stopButton.isEnabled = false
+        saveButton.isEnabled = false
+        clearButton.isEnabled = false
+    }
+
+    fun enableButtons() {
+        val startButton = findViewById<Button>(R.id.starter)
+        val stopButton = findViewById<Button>(R.id.stopper)
+        val saveButton = findViewById<Button>(R.id.saver)
+        val clearButton = findViewById<Button>(R.id.clearer)
+
+        startButton.isEnabled = true
+        stopButton.isEnabled = true
+        saveButton.isEnabled = true
+        clearButton.isEnabled = true
+    }
 
 
 }
