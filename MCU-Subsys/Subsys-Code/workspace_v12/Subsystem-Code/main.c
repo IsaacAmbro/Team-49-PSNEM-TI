@@ -17,7 +17,7 @@ volatile int ledState = 0;  // Which LED is selected
 volatile int goCommand = 0; // Flag for "go" command in remote mode
 
 // Constants for ramp generation
-const unsigned int MAX_DAC_VALUE = 0xFFF; // 12-bit max value (4095 for DAC80501)
+const unsigned int MAX_DAC_VALUE = 0xFFFF; // 16-bit max value
 unsigned int dacValue = 0;                // Current DAC value in the ramp
 
 int main(void) {
@@ -41,8 +41,7 @@ int main(void) {
            remoteMode(); // Execute remote mode logic
        }
        // Optionally update the ramp signal if needed:
-       // updateRampSignal();
-       // __delay_cycles(10000); // Small delay for ramp rate adjustment
+       updateRampSignal();
    }
 }
 
@@ -192,6 +191,7 @@ void manualMode() {
         } else if (ledState == 3) {
             P3OUT |= BIT3;
         }
+        __delay_cycles(10000);
         // Reconfigure DAC after changing power rail
         unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
         spiCommand(prog);
@@ -204,10 +204,11 @@ void remoteMode(){
     // and the actual update occurs when a "go" command is received ('g' or 'G').
     if (goCommand) {
         // Turn off all LEDs
+        // Turn off all LEDs
         P3OUT &= ~(BIT1 | BIT2 | BIT3);
         __delay_cycles(1000000); // Delay so no power supplies are connected at once
 
-        // Turn on the selected LED based on ledState
+        // Turn on the correct LED based on ledState
         if (ledState == 1) {
             P3OUT |= BIT1;
         } else if (ledState == 2) {
@@ -215,6 +216,7 @@ void remoteMode(){
         } else if (ledState == 3) {
             P3OUT |= BIT3;
         }
+        __delay_cycles(10000);
         // Reconfigure DAC after changing power rail
         unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
         spiCommand(prog);
@@ -237,12 +239,22 @@ void spiCommand(unsigned long command) {
 
 void updateRampSignal() {
     // Define the ramp values (example values)
-    unsigned int rampValues[5] = {0x00, 0xF000, 0xF00F, 0xFFF0, 0xFFFF};
-    static int index = 0; // Retain value between calls
-    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)0xFFFF);
+    dacValue += 256;  // Adjust step size for desired ramp rate
+
+   // Wrap around if exceeding max value
+   if (dacValue > MAX_DAC_VALUE) {
+       dacValue = 0;
+   }
+
+   unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
+   spiCommand(prog);
+
+
+    //CHANGE THIS NEXT COMMAND FOR MAKING THE RAMP AS THIS IS THE DATA COMMAND
+    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)(dacValue));
     spiCommand(word);
-    index = (index + 1) % 4; // Increment with wrap-around
 }
+
 
 //-- ISRs
 // UART RX Interrupt Service Routine
@@ -263,7 +275,7 @@ __interrupt void USCI_A1_ISR(void) {
                       ledState = 2;
                   } else if (received == '3') {
                       ledState = 3;
-                  } else if (received == 'g' || received == 'G') {
+                  } else if (received == '4') {
                       // Set flag to trigger LED update and DAC configuration
                       goCommand = 1;
                   }
@@ -276,3 +288,4 @@ __interrupt void USCI_A1_ISR(void) {
         UCA1RXBUF;
     }
 }
+

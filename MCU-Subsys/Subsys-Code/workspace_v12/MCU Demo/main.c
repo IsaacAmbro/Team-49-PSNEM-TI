@@ -1,57 +1,135 @@
 #include <msp430.h> // Include the MSP430 header file
 
-void initUART(void);         // Forward declaration of initUART
-void blinkLEDs(void);        // Forward declaration of blinkLEDs
+// function declarations
+void setupGPIO(void);
+void initGPIO(void);
+void initUART(void);
+void initSPI(void);
+void checkMode(void);
+void remoteMode(void);
+void manualMode(void);
+void spiCommand(unsigned long command);
+void updateRampSignal(void);
+
+// global variables
+volatile int mode = 0;      // 0 = Manual, 1 = Remote
+volatile int ledState = 0;  // Which LED is selected
+volatile int goCommand = 0; // Flag for "go" command in remote mode
+
+// Constants for ramp generation
+const unsigned int MAX_DAC_VALUE = 0xFFFF; // 16-bit max value
+unsigned int dacValue = 0;                // Current DAC value in the ramp
 
 int main(void) {
+
     WDTCTL = WDTPW + WDTHOLD; // Stop the watchdog timer
 
+    setupGPIO();              // Configure GPIO pins for buttons and LEDs
+    initGPIO();               // Initialize GPIO pin states
+    PM5CTL0 &= ~LOCKLPM5;     // Disable the GPIO high-impedance mode to enable I/O
 
-    UCA0CTLW0 |= UCSWRST;  // put UART A0 into SW Reset
-    UCA0CTLW0 |= UCSSEL__SMCLK; //Choose SMCLK for UART A0;
-
-    // Setup modulation
-    UCA0BRW = 8;
-    UCA0MCTLW |= 0xD600;
-
-    // Setup Pins
-    P2SEL1 |= BIT0;
-    P2SEL0 &= ~BIT0;
-
-    PM5CTL0 &= ~LOCKLPM5;
-    UCA0CTLW0 &= ~UCSWRST; //take UART A0 out of SW Reset
-    char message = '1';
+    __enable_interrupt();
 
 
-    //Send message through UART TXD pin character at a time
-    int pos;
-    int j = 0;
-    int k;
-    while (j < 10){
-        for (pos = 0; pos < sizeof(message); pos++){
-                UCA0TXBUF = message;
-                for (k = 0; k < 3000; k++){}
+    while(1){
+        // Check each button and update ledState only if no other buttons are pressed
+            if (!(P1IN & BIT1)) { // LDO button only
+                ledState = 1; // Set state to LED1
+            } else if (!(P1IN & BIT2)) { // Buck button only
+                ledState = 2; // Set state to LED2
+            } else if (!(P3IN & BIT0)) { // PS button only
+                ledState = 3; // Set state to LED3
             }
-        __delay_cycles(20000);
-        j ++;
+
+
+
+            // Only update LEDs if the GO Button (P4.3) is pressed (active low)
+            if (!(P4IN & BIT3)) {
+                // Turn off all LEDs
+                P3OUT &= ~BIT1;
+                P3OUT &= ~BIT2;
+                P3OUT &= ~BIT3;
+                __delay_cycles(1000000); // Delay so no power supplies are connected at once
+
+                // Turn on the correct LED based on ledState
+                if (ledState == 1) {
+                    P3OUT |= BIT1;
+                }
+                if (ledState == 2) {
+                    P3OUT |= BIT2;
+                }
+                if (ledState == 3) {
+                    P3OUT |= BIT3;
+                }
+                //__delay_cycles(100000);
+                // Reconfigure DAC after changing power rail
+                unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
+                //spiCommand(prog);
+            }
+            __delay_cycles(1000); // Debounce delay
     }
-
-
-    blinkLEDs(); // Blink the LEDs
-
 }
 
-// Function to blink LEDs
-void blinkLEDs(void) {
-    P1DIR |= 0x01;                          // Set P1.0 to output direction
 
-    for(;;) {
-        volatile unsigned int i;            // volatile to prevent optimization
+//-- Setup Functions
 
-        P1OUT ^= 0x01;                      // Toggle P1.0 using exclusive-OR
+// Set pins/directions
+void setupGPIO(){
+    // buttons as inputs
+    // LDO Button P1.1
+    P1DIR &= ~BIT1; // set bit 1 to input
+    P1SEL1 &= ~BIT1;
+    P1SEL0 &= ~BIT1;
 
-        i = 100000;                          // SW Delay
-        do i--;
-        while(i != 0);
-    }
+    // Buck Button P1.2
+    P1DIR &= ~BIT2; // set bit 2 to input
+    P1SEL1 &= ~BIT2;
+    P1SEL0 &= ~BIT2;
+
+    // PS Button P3.0
+    P3DIR &= ~BIT0; // set bit 0 to input
+    P3SEL1 &= ~BIT0;
+    P3SEL0 &= ~BIT0;
+
+    // Mode Switch P3.7
+    P3DIR &= ~BIT7; // set bit 7 to input
+    P3SEL1 &= ~BIT7;
+    P3SEL0 &= ~BIT7;
+
+    // GO Button P4.3 (for manual mode)
+    P4DIR &= ~BIT3; // set bit 3 to input
+    P4SEL1 &= ~BIT3;
+    P4SEL0 &= ~BIT3;
+
+    // LEDs as outputs
+    // LDO LED on P3.1
+    P3DIR |= BIT1; // set bit 1 to output
+    P3SEL1 &= ~BIT1;
+    P3SEL0 &= ~BIT1;
+
+    // Buck LED on P3.2
+    P3DIR |= BIT2; // set bit 2 to output
+    P3SEL1 &= ~BIT2;
+    P3SEL0 &= ~BIT2;
+
+    // PS LED on P3.3
+    P3DIR |= BIT3; // set bit 3 to output
+    P3SEL1 &= ~BIT3;
+    P3SEL0 &= ~BIT3;
 }
+
+//-- Initialization Functions
+
+// Enable interrupts and establish starting values
+void initGPIO() {
+    // Initialize LED states (assume LDO LED on initially)
+    P3OUT &= ~BIT1; // Turn off LDO LED
+    P3OUT &= ~BIT2; // Turn off Buck LED
+    P3OUT &= ~BIT3; // Turn off PS LED
+}
+
+
+
+
+
+

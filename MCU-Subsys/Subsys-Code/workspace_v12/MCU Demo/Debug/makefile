@@ -122,16 +122,16 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-MCU\ Demo.out \
+MCU\ Demo.out 
 
 EXE_OUTPUTS__QUOTED += \
-"MCU Demo.out" \
+"MCU Demo.out" 
 
 BIN_OUTPUTS += \
-MCU\ Demo.hex \
+MCU\ Demo.hex 
 
 BIN_OUTPUTS__QUOTED += \
-"MCU Demo.hex" \
+"MCU Demo.hex" 
 
 
 # All Target
