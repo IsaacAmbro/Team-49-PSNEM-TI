@@ -32,7 +32,7 @@ import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.math.sin
 
-const val TIME_DELAY = 0.5f
+const val TIME_DELAY = 0.001f
 const val MAX_ENTRIES = 10000
 const val STARTED : Int = 1
 const val STOPPED : Int = 0
@@ -97,7 +97,7 @@ class GraphView : AppCompatActivity() {
 
         val sineWave = Array(1000) { i ->
             val r = i * (2*Math.PI/100)
-            25 * sin(r).toFloat() + 50
+            4 * sin(r).toFloat()
         }
 
 
@@ -166,7 +166,7 @@ class GraphView : AppCompatActivity() {
                 startButton.isEnabled = false
                 saveButton.isEnabled = false
                 clearButton.isEnabled = false
-                //BTdata.clear()
+                mService.mHandler.start()
 
 
                 lifecycleScope.launch {
@@ -205,19 +205,28 @@ class GraphView : AppCompatActivity() {
                     launch{
                         while (state == STARTED) {
                             //Log.d("Activity", "Running")
+                            for(i in 1..10) {
                             val poll = BTdata.poll()
-                            if(poll != null) {
-                                    //y = sineWave[index]
-                                    y = poll
-                                    addData(chart, x, y)
-                                    xVal.add(x)
-                                    yVal.add(y)
-                                    x += TIME_DELAY
-//                                index++
-//                                if (index == 100) index = 0
-
+                                if(poll != null) {
+                                        y = poll
+                                        addData(chart, x, y)
+                                        xVal.add(x)
+                                        yVal.add(y)
+                                        x += TIME_DELAY
+                                }
                             }
-                            delay(33)
+//                                y = sineWave[index]
+//                                x += TIME_DELAY
+//                                addData(chart,x,y)
+//                                xVal.add(x)
+//                                yVal.add(y)
+//                                index++
+//                                if(index == 1000) {
+//                                    index = 0
+//                                }
+//                            }
+
+                            delay(1)
                         }
                     }
 
@@ -252,6 +261,8 @@ class GraphView : AppCompatActivity() {
         stopButton.setOnClickListener{
             if(state == STARTED) {
                 state = STOPPED
+                mService.mHandler.stop()
+
                 updateView(chart, x)
 
                 //clear rest of xVal and yVal
@@ -313,7 +324,7 @@ class GraphView : AppCompatActivity() {
         chart.notifyDataSetChanged()
 
         chart.moveViewToX(x)
-        chart.setVisibleXRange(20f,20f)
+        chart.setVisibleXRange(5f,5f)
         chart.invalidate()
     }
 
@@ -368,12 +379,13 @@ class GraphView : AppCompatActivity() {
     }
 
     fun createChart(chart: LineChart) {
-        val lineDataSet = LineDataSet(null, "Dynamic Graph")
+        val lineDataSet = LineDataSet(null, "Voltage")
         lineDataSet.color = Color.BLUE
         lineDataSet.lineWidth = 2f
         lineDataSet.setDrawCircles(false)
         lineDataSet.setDrawValues(false)
 
+        chart.getDescription().setEnabled(false);
 
         val lineData = LineData(lineDataSet)
 
@@ -383,19 +395,19 @@ class GraphView : AppCompatActivity() {
         val xAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
-        xAxis.setGranularity(2f) // One unit per X label
+        xAxis.setGranularity(1f) // One unit per X label
 
 
 
         chart.setTouchEnabled(false)
         chart.axisRight.isEnabled = false // Disable the right Y-axis
-        chart.axisLeft.axisMinimum = 0f   // Set minimum Y value
-        chart.axisLeft.axisMaximum = 100f // Set maximum Y value
+        chart.axisLeft.axisMinimum = -5f   // Set minimum Y value
+        chart.axisLeft.axisMaximum = 5f // Set maximum Y value
 
         chart.invalidate() // Refreshes the chart with the new data
 
 
-        chart.setVisibleXRange(20f,20f)
+        chart.setVisibleXRange(5f,5f)
 
         chart.invalidate()
     }

@@ -73,6 +73,15 @@ class btDemo : AppCompatActivity() {
                 }
             }
         }
+        val sender4 = findViewById<Button>(R.id.send4)
+        sender4.setOnClickListener{
+            if(mService.isConnected()) {
+                val bluetoothService = mService.mBluetoothService
+                bluetoothService.bluetoothThread?.let {
+                    it.write("4\n".toByteArray())
+                }
+            }
+        }
     }
 
     override fun onDestroy() {

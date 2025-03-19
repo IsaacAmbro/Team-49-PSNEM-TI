@@ -15,6 +15,7 @@ class MyHandler(looper: Looper) : Handler(looper) {
     // ... your custom methods and properties ...
     private lateinit var context: Context
     val floatDeque : ConcurrentLinkedQueue<Float> = ConcurrentLinkedQueue()
+    var state : Boolean = false
 
     override fun handleMessage(msg: Message) {
         when (msg.what) {
@@ -24,18 +25,21 @@ class MyHandler(looper: Looper) : Handler(looper) {
                 val wrapped = ByteBuffer.wrap(buffer).order(ByteOrder.LITTLE_ENDIAN)
                 val numFloats = numBytes / 4
 
-                for (i in 0 until numFloats) {
-                    floatDeque.add(wrapped.getFloat(i*4))
+                if(state) {
+                    for (i in 0 until numFloats) {
+                        floatDeque.add(wrapped.getFloat(i * 4))
+                    }
                 }
 
-                displayFloat(context, floatDeque)
-                if(context !is GraphView) {
-                    floatDeque.clear()
+                if(context is btDemo) {
+                    val displayDeque : ConcurrentLinkedQueue<Float> = ConcurrentLinkedQueue()
+                    for(i in 0 until numFloats) {
+                        displayDeque.add(wrapped.getFloat(i*4))
+                    }
+                    displayFloat(context, displayDeque)
+                    displayDeque.clear()
                 }
-//                val readMsg = String(buffer, 0, numBytes)
-//                Log.d("Bluetooth","Received message: $readMsg")
-//                // Update UI with the received message (using context)
-//                updateUi(context, readMsg)
+
             }
             MESSAGE_WRITE -> {
                 // Handle successful write operation (optional)
@@ -50,15 +54,7 @@ class MyHandler(looper: Looper) : Handler(looper) {
         }
     }
 
-    fun updateUi(context: Context, message: String) {
-        //Toast.makeText(context, message, Toast.LENGTH_LONG).show()
-        if(context is btDemo) {
-            context.runOnUiThread {
-                // Update UI elements here
-                context.findViewById<TextView>(R.id.message).text = "Console Output: $message"
-            }
-        }
-    }
+
 
     fun displayFloat(context: Context, floatDeque: ConcurrentLinkedQueue<Float>) {
         if (context is btDemo) {
@@ -79,5 +75,11 @@ class MyHandler(looper: Looper) : Handler(looper) {
             return context
         }
 
+        fun start() {
+            state = true
+        }
 
+        fun stop() {
+            state = false
+        }
 }
