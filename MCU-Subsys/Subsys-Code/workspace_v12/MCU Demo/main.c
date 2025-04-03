@@ -44,29 +44,29 @@ int main(void) {
 
 
             // Only update LEDs if the GO Button (P4.3) is pressed (active low)
-            if (!(P4IN & BIT3)) {
+           // if (!(P4IN & BIT3)) {
                 // Turn off all LEDs
+
+            /*
                 P3OUT &= ~BIT1;
                 P3OUT &= ~BIT2;
                 P3OUT &= ~BIT3;
                 __delay_cycles(1000000); // Delay so no power supplies are connected at once
+                */
 
                 // Turn on the correct LED based on ledState
-                if (ledState == 1) {
-                    P3OUT |= BIT1;
-                }
-                if (ledState == 2) {
-                    P3OUT |= BIT2;
-                }
+
                 if (ledState == 3) {
+                    __delay_cycles(1000000);
                     P3OUT |= BIT3;
+                    __delay_cycles(1000000);
+                    P3OUT &= ~BIT1;
                 }
                 //__delay_cycles(100000);
                 // Reconfigure DAC after changing power rail
-                unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
+                //unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
                 //spiCommand(prog);
-            }
-            __delay_cycles(1000); // Debounce delay
+           // }
     }
 }
 

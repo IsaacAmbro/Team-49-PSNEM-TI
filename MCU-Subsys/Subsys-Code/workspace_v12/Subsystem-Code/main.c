@@ -17,7 +17,7 @@ volatile int ledState = 0;  // Which LED is selected
 volatile int goCommand = 0; // Flag for "go" command in remote mode
 
 // Constants for ramp generation
-const unsigned int MAX_DAC_VALUE = 0xFFFF; // 16-bit max value
+const unsigned int MAX_DAC_VALUE = 0xCCC; // 16-bit max value
 unsigned int dacValue = 0;                // Current DAC value in the ramp
 
 int main(void) {
@@ -191,7 +191,7 @@ void manualMode() {
         } else if (ledState == 3) {
             P3OUT |= BIT3;
         }
-        __delay_cycles(10000);
+        __delay_cycles(100000);
         // Reconfigure DAC after changing power rail
         unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
         spiCommand(prog);
@@ -200,8 +200,6 @@ void manualMode() {
 }
 
 void remoteMode(){
-    // In remote mode, the LED selection is set by UART commands ('1', '2', '3')
-    // and the actual update occurs when a "go" command is received ('g' or 'G').
     if (goCommand) {
         // Turn off all LEDs
         // Turn off all LEDs
@@ -238,21 +236,18 @@ void spiCommand(unsigned long command) {
 }
 
 void updateRampSignal() {
-    // Define the ramp values (example values)
-    dacValue += 256;  // Adjust step size for desired ramp rate
+    dacValue += 1;  // Increment DAC output value to create a ramp signal
 
-   // Wrap around if exceeding max value
-   if (dacValue > MAX_DAC_VALUE) {
-       dacValue = 0;
-   }
+    // Wrap around if exceeding max value
+    if (dacValue > MAX_DAC_VALUE) {
+        dacValue = 0;  // Reset to 0 when the maximum DAC value is exceeded
+    }
 
-   unsigned long prog = ((unsigned long)0x04 << 16) | ((unsigned long)0x101);
-   spiCommand(prog);
+    // - Bits [23:16]: Command (0x08 for DAC update)
+    // - Bits [15:4]:  12-bit DAC value shifted left by 4 bits
+    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)(dacValue << 4));
 
-
-    //CHANGE THIS NEXT COMMAND FOR MAKING THE RAMP AS THIS IS THE DATA COMMAND
-    unsigned long word = ((unsigned long)0x08 << 16) | ((unsigned long)(dacValue));
-    spiCommand(word);
+    spiCommand(word);  // Send the command to the DAC via SPI
 }
 
 
