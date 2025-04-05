@@ -1,0 +1,21 @@
+Added Pin To Net: NetName=GND Pin=C5-2
+Added Pin To Net: NetName=GND Pin=R8-2
+Added Pin To Net: NetName=GND Pin=SW2-2
+Added Pin To Net: NetName=GND Pin=SW2-3
+Added Pin To Net: NetName=GND Pin=U1-38
+Added Pin To Net: NetName=GND Pin=U1-39
+Added Pin To Net: NetName=GND Pin=U1-40
+Added Pin To Net: NetName=GND Pin=U1-41
+Added Pin To Net: NetName=GND Pin=U1-42
+Added Pin To Net: NetName=GND Pin=U1-43
+Added Pin To Net: NetName=GND Pin=U1-44
+Added Pin To Net: NetName=GND Pin=U1-45
+Added Pin To Net: NetName=GND Pin=U1-46
+Added Pin To Net: NetName=GND Pin=U1-47
+Added Pin To Net: NetName=NetR5_1 Pin=R5-1
+Added Pin To Net: NetName=NetR5_1 Pin=U1-30
+Added Net: Name=NetR5_1
+Added Member To Class: ClassName=BoardDesign Member=Component C2 100 nF/.1 uF
+Added Member To Class: ClassName=BoardDesign Member=Component J2 PREC003SAAN-RC
+Added Member To Class: ClassName=BoardDesign Member=Component R10 0R
+Added Member To Class: ClassName=BoardDesign Member=Component SW2 D6R90F1LFS
