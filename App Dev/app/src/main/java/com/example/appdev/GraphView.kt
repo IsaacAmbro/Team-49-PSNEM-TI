@@ -32,22 +32,46 @@ import java.io.FileOutputStream
 import java.util.concurrent.ConcurrentLinkedQueue
 import kotlin.math.sin
 
-const val TIME_DELAY = 0.001f
+
+// --- Constants ---
+
+// Time delay (in arbitrary units, likely seconds or fraction of seconds) between consecutive x-values on the chart.
+const val TIME_DELAY = 1f
+// Maximum number of data points (entries) to display on the chart at once before clearing older points.
 const val MAX_ENTRIES = 10000
+// State flag indicating that data plotting is active.
 const val STARTED : Int = 1
+// State flag indicating that data plotting is stopped.
 const val STOPPED : Int = 0
+// Request code used for the Intent that allows the user to create/select a file for saving.
 const val CREATE_FILE : Int = 1
+
+/**
+ * Activity responsible for displaying a real-time line graph of data received
+ * from a background service. It allows starting/stopping
+ * data plotting, clearing the graph and data, and saving the collected data to a CSV file.
+ */
 
 class GraphView : AppCompatActivity() {
 
+    // ArrayLists to temporarily store X and Y values before writing them to the CSV file in batches.
     val xVal = ArrayList<Float>()
     val yVal = ArrayList<Float>()
+
+    // Tracks the current state of the plotting process (STARTED or STOPPED).
     private var state = STOPPED
+
+    // FileOutputStream for writing data to a temporary CSV file in the app's cache directory.
     lateinit var oStream: FileOutputStream
+    // ConcurrentLinkedQueue to safely receive Float data points from the background service's thread.
     lateinit var BTdata: ConcurrentLinkedQueue<Float>
 
+    // Reference to the bound BackgroundService instance.
     private lateinit var mService: BackgroundService
 
+    /**
+     * ServiceConnection implementation to manage the connection lifecycle with the BackgroundService.
+     */
     private val connection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
@@ -63,10 +87,17 @@ class GraphView : AppCompatActivity() {
         }
     }
 
+    /**
+     * Retrieves the ConcurrentLinkedQueue for Float data from the BackgroundService's handler.
+     */
     fun setFloatDeque() {
         BTdata = mService.mHandler.floatDeque
     }
 
+    /**
+     * Called when the activity is first created. Sets up the UI, initializes the chart,
+     * binds to the background service, and configures button listeners.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -204,7 +235,6 @@ class GraphView : AppCompatActivity() {
                     //plotting
                     launch{
                         while (state == STARTED) {
-                            //Log.d("Activity", "Running")
                             for(i in 1..10) {
                             val poll = BTdata.poll()
                                 if(poll != null) {
@@ -215,16 +245,6 @@ class GraphView : AppCompatActivity() {
                                         x += TIME_DELAY
                                 }
                             }
-//                                y = sineWave[index]
-//                                x += TIME_DELAY
-//                                addData(chart,x,y)
-//                                xVal.add(x)
-//                                yVal.add(y)
-//                                index++
-//                                if(index == 1000) {
-//                                    index = 0
-//                                }
-//                            }
 
                             delay(1)
                         }
@@ -395,14 +415,14 @@ class GraphView : AppCompatActivity() {
         val xAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.setDrawGridLines(false)
-        xAxis.setGranularity(1f) // One unit per X label
+        xAxis.setGranularity(2f) // One unit per X label
 
 
 
         chart.setTouchEnabled(false)
         chart.axisRight.isEnabled = false // Disable the right Y-axis
-        chart.axisLeft.axisMinimum = -5f   // Set minimum Y value
-        chart.axisLeft.axisMaximum = 5f // Set maximum Y value
+        chart.axisLeft.axisMinimum = -0.5f   // Set minimum Y value
+        chart.axisLeft.axisMaximum = 2.5f // Set maximum Y value
 
         chart.invalidate() // Refreshes the chart with the new data
 
