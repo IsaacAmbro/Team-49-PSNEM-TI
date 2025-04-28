@@ -13,27 +13,24 @@ import android.util.Log
 import android.widget.Toast
 import java.util.UUID
 
-class BackgroundService : Service() {
+
+class BackgroundService : Service(){
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
-    private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
     lateinit var mBluetoothService: MyBluetoothService
-
-    private val mHandler = MyHandler(Looper.getMainLooper())
+    val mHandler = MyHandler(Looper.getMainLooper())
 
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("onStartCommand", "Started ")
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
         mBluetoothService = MyBluetoothService(mHandler, mBluetoothAdapter)
-        mBluetoothService.startServer()
         return START_STICKY
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        mBluetoothService.stopServer()
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -48,4 +45,10 @@ class BackgroundService : Service() {
         mHandler.setContext(context)
     }
 
+    fun isConnected() : Boolean {
+        return mBluetoothService.getStatus()
+    }
+
+
 }
+

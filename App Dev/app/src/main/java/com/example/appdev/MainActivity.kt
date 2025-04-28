@@ -1,19 +1,13 @@
 package com.example.appdev
-
-
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.bluetooth.BluetoothServerSocket
-import android.bluetooth.BluetoothSocket
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.os.IBinder
 import android.util.Log
 import android.widget.Button
@@ -23,16 +17,19 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.IOException
-import java.util.UUID
+import android.net.Uri
+
+
+/*
+*
+* Main Activity to include homescreen
+*
+* */
+
 
 class MainActivity : AppCompatActivity() {
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
-    private val REQUEST_ENABLE_BLUETOOTH = 1
-    private var serverSocket: BluetoothServerSocket? = null
-    private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
-    private lateinit var mHandler : Handler
     private lateinit var mService: BackgroundService
 
     private val connection = object : ServiceConnection {
@@ -61,14 +58,28 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
+        //check for bluetooth connection
         requestBluetooth()
+        startService(Intent(this, BackgroundService::class.java))
 
+        //launch bluetooth connection request
+        Intent(this, BackgroundService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
+
+        /*
+        *
+        * On click buttons to listen
+        *
+        * */
         val switchList = findViewById<Button>(R.id.switchList)
         switchList.setOnClickListener {
             Log.d("Button", "Pushed ")
             Intent(this, pairedList::class.java).also {
                 startActivity(it)
             }
+
         }
 
         val toGraph = findViewById<Button>(R.id.toGraph)
@@ -79,6 +90,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val toBTDemo = findViewById<Button>(R.id.toBT)
+        toBTDemo.setOnClickListener{
+            Intent(this, btDemo::class.java).also {
+                startActivity(it)
+            }
+        }
+
+        val toHelp = findViewById<Button>(R.id.toHelp)
+        toHelp.setOnClickListener{
+            val url = "https://docs.google.com/document/d/1bgfkXQ2Hf_5MBSoMh1vjBmfNc5Ladya9zAhhxq8S8tA/edit?usp=sharing"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
+        }
+
         // Check if bluetooth enabled
         if (mBluetoothAdapter?.isEnabled == false) {
             val enableBtIntent = Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE)
@@ -86,12 +111,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-        startService(Intent(this, BackgroundService::class.java))
 
-
-        Intent(this, BackgroundService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
 
 
     }

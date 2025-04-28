@@ -4,15 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
-import android.bluetooth.BluetoothServerSocket
-import android.bluetooth.BluetoothSocket
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
+
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -23,13 +21,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import java.io.IOException
-import java.util.UUID
+
 
 class pairedList : AppCompatActivity() {
 
     private var mBluetoothAdapter: BluetoothAdapter? = null
-    private val REQUEST_ENABLE_BLUETOOTH = 1
     lateinit var mPairedDevices: Set<BluetoothDevice>
     private lateinit var mService: BackgroundService
 
@@ -46,9 +42,6 @@ class pairedList : AppCompatActivity() {
         }
     }
 
-//    private var serverSocket: BluetoothServerSocket? = null
-private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8a4")
-
 
     val registerForResult = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
@@ -60,9 +53,6 @@ private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8
         }
     }
 
-    companion object {
-        val EXTRA_ADDRESS: String = "Device_address"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -123,12 +113,11 @@ private val MY_UUID : UUID = UUID.fromString("4af7db82-9136-45ea-af6a-62300fb0d8
         pairedList.adapter = adapater
         pairedList.onItemClickListener = AdapterView.OnItemClickListener{ _,_,position, _ ->
             val device : BluetoothDevice = list[position]
-            val address: String = device.address
-            mService.mBluetoothService.connect(this,device)
 
-            //mService.mBluetoothService.bluetoothThread.write("Hello".toByteArray())
 
-            pairedList.isEnabled = false
+            mService.mBluetoothService.connect(this, device)
+
+            //pairedList.isEnabled = false
         }
     }
 
